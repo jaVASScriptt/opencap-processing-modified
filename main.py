@@ -37,6 +37,8 @@ import sys
 from InquirerPy import inquirer
 
 from Adapt_to_usage.DataController import DataController
+from UtilsDynamicSimulations.OpenSimAD.mainOpenSimAD import run_tracking
+from UtilsDynamicSimulations.OpenSimAD.utilsOpenSimAD import processInputsOpenSimAD, plotResultsOpenSimAD
 from utils import *
 
 baseDir = os.getcwd()
@@ -44,8 +46,6 @@ opensimADDir = os.path.join(baseDir, 'UtilsDynamicSimulations', 'OpenSimAD')
 sys.path.append(baseDir)
 sys.path.append(opensimADDir)
 
-from utilsOpenSimAD import processInputsOpenSimAD, plotResultsOpenSimAD
-from mainOpenSimAD import run_tracking
 
 # %% User inputs.
 '''
