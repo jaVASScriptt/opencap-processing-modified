@@ -46,6 +46,8 @@ opensimADDir = os.path.join(baseDir, 'UtilsDynamicSimulations', 'OpenSimAD')
 sys.path.append(baseDir)
 sys.path.append(opensimADDir)
 
+# from utilsOpenSimAD import processInputsOpenSimAD, plotResultsOpenSimAD
+# from mainOpenSimAD import run_tracking
 
 # %% User inputs.
 '''
@@ -133,56 +135,22 @@ def menu():
 dc = DataController()
 menu()
 
-case = '0'
-
-if dc.motion_type == 'squats':
-    repetition = 1
-elif dc.motion_type == 'sit_to_stand':
-    repetition = 1
-elif dc.motion_type == 'jumping':
-    time_window = [1.3, 2.2]
-elif dc.motion_type == 'walking':
-    time_window = [1.0, 2.5]
-    treadmill_speed = 1.25
-elif dc.motion_type == 'running':  # Running, 2.5 m/s
-    time_window = [1.4, 2.6]
-    treadmill_speed = 2.5
-elif dc.motion_type == 'my_periodic_running':
-    time_window = [3.1833333, 3.85]
-    treadmill_speed = 4.0
-else:
-    time_window = [1.0, 2.0]
-
-# Set to True to solve the optimal control problem.
 solveProblem = True
-# Set to True to analyze the results of the optimal control problem. If you
-# solved the problem already, and only want to analyze/process the results, you
-# can set solveProblem to False and run this script with analyzeResults set to
-# True. This is useful if you do additional post-processing but do not want to
-# re-run the problem.
 analyzeResults = True
 
-# Path to where you want the data to be downloaded.
 dataFolder = os.path.join(baseDir, 'Data')
 
-# %% Setup.
-if not 'time_window' in locals():
-    time_window = None
-if not 'repetition' in locals():
-    repetition = None
-if not 'treadmill_speed' in locals():
-    treadmill_speed = 0
 if not 'contact_side' in locals():
     contact_side = 'all'
 
 settings = processInputsOpenSimAD(baseDir, dataFolder, dc.session_id, dc.trial_name,
-                                  dc.motion_type, time_window, repetition,
-                                  treadmill_speed, contact_side)
+                                  dc.motion_type, time_window=dc.time_window, repetition=dc.repetition,
+                                  treadmill_speed=dc.treadmill_speed, contact_side=contact_side)
 
 # %% Simulation.
-run_tracking(baseDir, dataFolder, dc.session_id, settings, case=case,
+run_tracking(baseDir, dataFolder, dc.session_id, settings, case=dc.case,
              solveProblem=solveProblem, analyzeResults=analyzeResults)
 
 # %% Plots.
 # To compare different cases, add to the cases list, eg cases=['0','1'].
-plotResultsOpenSimAD(dataFolder, dc.session_id, dc.trial_name, settings, cases=[case])
+plotResultsOpenSimAD(dataFolder, dc.session_id, dc.trial_name, settings, cases=[dc.case])
