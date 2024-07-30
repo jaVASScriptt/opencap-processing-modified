@@ -2161,7 +2161,7 @@ def run_tracking(baseDir, dataDir, subject, settings, case='0',
         
         if writeGUI:
             # Kinematics and activations.
-            from utils import numpy_to_storage
+            from Utils.utils import numpy_to_storage
             labels = ['time'] + joints 
             if torque_driven_model:
                 coordLabels = ([joint + '/activation' 

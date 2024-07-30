@@ -24,7 +24,7 @@
 # We recommend only saving this .env file on your own encrypted machine
 # and not while running on google collab.
 
-from utilsAuthentication import get_token
+from Utils.utilsAuthentication import get_token
 import os
 
 get_token(saveEnvPath=os.getcwd())

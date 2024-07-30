@@ -23,7 +23,7 @@ from decouple import config
 import getpass
 import os
 import maskpass
-from utilsAPI import get_api_url
+from Utils.utilsAPI import get_api_url
 
 API_URL = get_api_url()
 

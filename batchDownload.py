@@ -18,7 +18,7 @@
     limitations under the License.
 '''
 
-from utils import download_session
+from Utils.utils import download_session
 import os
 
 # List of sessions you'd like to download. They go to the Data folder in the 

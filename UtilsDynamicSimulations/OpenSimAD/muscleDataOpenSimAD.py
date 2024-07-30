@@ -61,7 +61,7 @@ def get_mtu_length_and_moment_arm(pathModel, data, coordinates_table,
     import opensim
     
     # Create temporary motion file.
-    from utils import numpy_to_storage  
+    from Utils.utils import numpy_to_storage
     labels = ['time'] + coordinates_table      
     time = np.linspace(0, data.shape[0]/100-0.01, data.shape[0])    
     c_data = np.concatenate((np.expand_dims(time, axis=1), data),axis=1)

@@ -21,8 +21,7 @@
 import os
 import opensim
 import copy
-import utils
-import numpy as np
+from Utils import utils
 import pandas as pd
 import scipy.interpolate as interpolate
 

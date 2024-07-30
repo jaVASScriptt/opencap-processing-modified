@@ -27,7 +27,7 @@ import pandas as pd
 from scipy.signal import find_peaks
 from matplotlib import pyplot as plt
 
-from utilsKinematics import kinematics
+from Utils.utilsKinematics import kinematics
 
 
 class gait_analysis(kinematics):
