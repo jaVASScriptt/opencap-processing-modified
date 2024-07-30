@@ -4,41 +4,43 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="878c8489-bd1d-4a43-8dc4-70878a59f97c" name="Changes" comment="del jupiter Notebook">
-      <change beforePath="$PROJECT_DIR$/ActivityAnalyses/gait_analysis.py" beforeDir="false" afterPath="$PROJECT_DIR$/ActivityAnalyses/gait_analysis.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Examples/ForcePlateIntegration/ID_setup/Setup_ExternalLoads.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Examples/ForcePlateIntegration/ID_setup/Setup_ID.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Examples/ForcePlateIntegration/example_integrate_forceplates.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Examples/ForcePlateIntegration/readme.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Examples/example_COM_analysis.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Examples/example_gait_analysis.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Examples/example_get_sessions_subject.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Examples/example_walking_opensimAD.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Moco/exampleSquat/exampleSquat.m" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Moco/exampleSquat/squats1_videoAndMocap.mot" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Moco/exampleWalking/exampleWalking.m" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Moco/exampleWalking/walking1_videoAndMocap.mot" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Resources/README.txt" beforeDir="false" />
+    <list default="true" id="878c8489-bd1d-4a43-8dc4-70878a59f97c" name="Changes" comment="Rangement éléments et suppression des exemples">
+      <change afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ActivityAnalyses/gait_analysis.py" beforeDir="false" afterPath="$PROJECT_DIR$/ActivityAnalyses/GaitAnalysis.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CHANGELOG.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/LICENSE.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Utils/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/Utils/utils.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Utils/utilsAPI.py" beforeDir="false" afterPath="$PROJECT_DIR$/Utils/utilsAPI.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Utils/utilsAuthentication.py" beforeDir="false" afterPath="$PROJECT_DIR$/Utils/utilsAuthentication.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Utils/utilsKinematics.py" beforeDir="false" afterPath="$PROJECT_DIR$/Utils/utilsKinematics.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Utils/utilsPlotting.py" beforeDir="false" afterPath="$PROJECT_DIR$/Utils/utilsPlotting.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Utils/utilsProcessing.py" beforeDir="false" afterPath="$PROJECT_DIR$/Utils/utilsProcessing.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Utils/utilsTRC.py" beforeDir="false" afterPath="$PROJECT_DIR$/Utils/utilsTRC.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UtilsDynamicSimulations/OpenSimAD/boundsOpenSimAD.py" beforeDir="false" afterPath="$PROJECT_DIR$/UtilsDynamicSimulations/OpenSimAD/boundsOpenSimAD.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UtilsDynamicSimulations/OpenSimAD/functionCasADiOpenSimAD.py" beforeDir="false" afterPath="$PROJECT_DIR$/UtilsDynamicSimulations/OpenSimAD/functionCasADiOpenSimAD.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UtilsDynamicSimulations/OpenSimAD/initialGuessOpenSimAD.py" beforeDir="false" afterPath="$PROJECT_DIR$/UtilsDynamicSimulations/OpenSimAD/initialGuessOpenSimAD.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/UtilsDynamicSimulations/OpenSimAD/mainOpenSimAD.py" beforeDir="false" afterPath="$PROJECT_DIR$/UtilsDynamicSimulations/OpenSimAD/mainOpenSimAD.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/UtilsDynamicSimulations/OpenSimAD/muscleDataOpenSimAD.py" beforeDir="false" afterPath="$PROJECT_DIR$/UtilsDynamicSimulations/OpenSimAD/muscleDataOpenSimAD.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UtilsDynamicSimulations/OpenSimAD/muscleModelOpenSimAD.py" beforeDir="false" afterPath="$PROJECT_DIR$/UtilsDynamicSimulations/OpenSimAD/muscleModelOpenSimAD.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UtilsDynamicSimulations/OpenSimAD/plotsOpenSimAD.py" beforeDir="false" afterPath="$PROJECT_DIR$/UtilsDynamicSimulations/OpenSimAD/plotsOpenSimAD.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UtilsDynamicSimulations/OpenSimAD/polynomialsOpenSimAD.py" beforeDir="false" afterPath="$PROJECT_DIR$/UtilsDynamicSimulations/OpenSimAD/polynomialsOpenSimAD.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UtilsDynamicSimulations/OpenSimAD/settingsOpenSimAD.py" beforeDir="false" afterPath="$PROJECT_DIR$/UtilsDynamicSimulations/OpenSimAD/settingsOpenSimAD.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/UtilsDynamicSimulations/OpenSimAD/utilsKineticsOpenSimAD.py" beforeDir="false" afterPath="$PROJECT_DIR$/UtilsDynamicSimulations/OpenSimAD/utilsKineticsOpenSimAD.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/UtilsDynamicSimulations/OpenSimAD/utilsOpenSimAD.py" beforeDir="false" afterPath="$PROJECT_DIR$/UtilsDynamicSimulations/OpenSimAD/utilsOpenSimAD.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/batchDownload.py" beforeDir="false" afterPath="$PROJECT_DIR$/batchDownload.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/createAuthenticationEnvFile.py" beforeDir="false" afterPath="$PROJECT_DIR$/createAuthenticationEnvFile.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/example_kinetics.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/Utils/utils.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utilsAPI.py" beforeDir="false" afterPath="$PROJECT_DIR$/Utils/utilsAPI.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utilsAuthentication.py" beforeDir="false" afterPath="$PROJECT_DIR$/Utils/utilsAuthentication.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utilsKinematics.py" beforeDir="false" afterPath="$PROJECT_DIR$/Utils/utilsKinematics.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utilsPlotting.py" beforeDir="false" afterPath="$PROJECT_DIR$/Utils/utilsPlotting.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utilsProcessing.py" beforeDir="false" afterPath="$PROJECT_DIR$/Utils/utilsProcessing.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utilsTRC.py" beforeDir="false" afterPath="$PROJECT_DIR$/Utils/utilsTRC.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -78,6 +80,14 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\NNL_L\OneDrive\Documents\opencap-processing-modified" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\NNL_L\OneDrive\Documents\opencap-processing-modified\Utils" />
+    </key>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -94,7 +104,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1722345303090</updated>
-      <workItem from="1722345304133" duration="2320000" />
+      <workItem from="1722345304133" duration="8230000" />
     </task>
     <task id="LOCAL-00001" summary="README.md">
       <option name="closed" value="true" />
@@ -120,7 +130,23 @@
       <option name="project" value="LOCAL" />
       <updated>1722347102693</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Rangement éléments et suppression des exemples">
+      <option name="closed" value="true" />
+      <created>1722347795020</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1722347795020</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Rangement éléments et suppression des exemples">
+      <option name="closed" value="true" />
+      <created>1722347824456</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1722347824456</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -130,6 +156,7 @@
     <MESSAGE value="README.md" />
     <MESSAGE value="refresh" />
     <MESSAGE value="del jupiter Notebook" />
-    <option name="LAST_COMMIT_MESSAGE" value="del jupiter Notebook" />
+    <MESSAGE value="Rangement éléments et suppression des exemples" />
+    <option name="LAST_COMMIT_MESSAGE" value="Rangement éléments et suppression des exemples" />
   </component>
 </project>

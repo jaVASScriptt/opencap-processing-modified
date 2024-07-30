@@ -21,17 +21,17 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-def plot_dataframe(dataframes, x=None, y=[], xlabel=None, ylabel=None, 
+
+def plot_dataframe(dataframes, x=None, y=[], xlabel=None, ylabel=None,
                    labels=None, title=None, xrange=None):
-    
     # Handle case specific number of subplots.
     if not x and not y:
-        nRow = int(np.ceil(np.sqrt(dataframes[0].shape[1]-1)))
-        nCol = int(np.ceil(np.sqrt(dataframes[0].shape[1]-1)))
+        nRow = int(np.ceil(np.sqrt(dataframes[0].shape[1] - 1)))
+        nCol = int(np.ceil(np.sqrt(dataframes[0].shape[1] - 1)))
         if not xlabel:
             xlabel = list(dataframes[0].columns)[0]
         x = 'time'
-        y = list(dataframes[0].columns)[1:]        
+        y = list(dataframes[0].columns)[1:]
     elif not x and y:
         nRow = int(np.ceil(np.sqrt(len(y))))
         nCol = int(np.ceil(np.sqrt(len(y))))
@@ -44,58 +44,60 @@ def plot_dataframe(dataframes, x=None, y=[], xlabel=None, ylabel=None,
         if not xlabel:
             xlabel = x
         if not ylabel:
-            ylabel = y[0]        
+            ylabel = y[0]
     if nRow >= len(y):
         nRow = 1
     nAxs = len(y)
-        
+
     # Labels for legend.
     if not labels:
         labels = ['dataframe_' + str(i) for i in range(len(dataframes))]
     elif len(labels) != len(dataframes):
-        print("WARNING: The number of labels ({}) does not match the number of input dataframes ({})".format(len(labels), len(dataframes)))
+        print(
+            "WARNING: The number of labels ({}) does not match the number of input dataframes ({})".format(len(labels),
+                                                                                                           len(dataframes)))
         labels = ['dataframe_' + str(i) for i in range(dataframes)]
- 
-    if nCol == 1: # Single plot.
+
+    if nCol == 1:  # Single plot.
         fig = plt.figure()
-        color=iter(plt.cm.rainbow(np.linspace(0,1,len(dataframes)))) 
+        color = iter(plt.cm.rainbow(np.linspace(0, 1, len(dataframes))))
         for c, dataframe in enumerate(dataframes):
-            c_color = next(color)     
+            c_color = next(color)
             plt.plot(dataframe[x], dataframe[y], c=c_color, label=labels[c])
             if xrange is not None:
                 plt.xlim(xrange)
-    else: # Multiple subplots.
-        fig, axs = plt.subplots(nRow, nCol, sharex=True)     
+    else:  # Multiple subplots.
+        fig, axs = plt.subplots(nRow, nCol, sharex=True)
         for i, ax in enumerate(axs.flat):
-            color=iter(plt.cm.rainbow(np.linspace(0,1,len(dataframes)))) 
+            color = iter(plt.cm.rainbow(np.linspace(0, 1, len(dataframes))))
             if i < nAxs:
                 for c, dataframe in enumerate(dataframes):
-                    c_color = next(color)                
+                    c_color = next(color)
                     ax.plot(dataframe[x], dataframe[y[i]], c=c_color, label=labels[c])
                     ax.set_title(y[i])
                     if xrange is not None:
                         plt.xlim(xrange)
             if i == 0:
                 handles, labels = ax.get_legend_handles_labels()
-        
+
     # Axis labels and legend.
     if nRow > 1 and nCol > 1:
         plt.setp(axs[-1, :], xlabel=xlabel)
         plt.setp(axs[:, 0], ylabel=ylabel)
         axs[0][0].legend(handles, labels)
     elif nRow == 1 and nCol > 1:
-        plt.setp(axs[:,], xlabel=xlabel)
+        plt.setp(axs[:, ], xlabel=xlabel)
         plt.setp(axs[0,], ylabel=ylabel)
         axs[0,].legend(handles, labels)
     else:
         plt.xlabel(xlabel)
         plt.ylabel(ylabel)
         plt.legend(labels)
-        
+
     if nRow == 1 and nCol == 1:
         # Add figure title.
         if title:
-            plt.title(title)        
+            plt.title(title)
     else:
         # Add figure title.
         if title:
@@ -103,30 +105,30 @@ def plot_dataframe(dataframes, x=None, y=[], xlabel=None, ylabel=None,
         # Align labels.        
         fig.align_ylabels()
         # Hidde empty subplots.
-        nEmptySubplots = (nRow*nCol) - len(y)
+        nEmptySubplots = (nRow * nCol) - len(y)
         axs_flat = axs.flat
-        for ax in (axs_flat[len(axs_flat)-nEmptySubplots:]):
+        for ax in (axs_flat[len(axs_flat) - nEmptySubplots:]):
             ax.set_visible(False)
-                   
+
     # Tight layout (should make figure big enough first).
     # fig.tight_layout()
-    
+
     # Show plot (needed if running through terminal).
     plt.show()
-    
 
-def plot_dataframe_with_shading(mean_dataframe, sd_dataframe=None, y=None, 
+
+def plot_dataframe_with_shading(mean_dataframe, sd_dataframe=None, y=None,
                                 leg=None, xlabel=None, title=None, legend_entries=None):
     if not isinstance(mean_dataframe, list):
         mean_dataframe = [mean_dataframe]
-    
+
     if sd_dataframe is not None:
         if not isinstance(sd_dataframe, list):
             sd_dataframe = [sd_dataframe]
-            
+
     if not isinstance(leg, list):
         leg = [leg] * len(mean_dataframe)
-    
+
     if y is None:
         y = [col for col in mean_dataframe[0].columns if col != 'time']
 
@@ -151,22 +153,22 @@ def plot_dataframe_with_shading(mean_dataframe, sd_dataframe=None, y=None,
 
         for j, (mean_df, sd_df) in enumerate(zip(mean_dataframe, sd_dataframe)):
             if len(mean_dataframe) > 1:
-                color = np.multiply(colormap(j),.7) # avoid yellow at end of viridis
+                color = np.multiply(colormap(j), .7)  # avoid yellow at end of viridis
             else:
                 color = 'black'
-            
+
             if leg[j] is not None and (column.endswith('_r') or column.endswith('_l')):
-                col=column[:-2] + '_' + leg[j]
+                col = column[:-2] + '_' + leg[j]
                 colLabel = column[:-2]
             else:
                 col = column
                 colLabel = column
-            
+
             mean_values = mean_df[col]
-            
-            if legend_entries is None: 
-                thisLegend = [] 
-            else: 
+
+            if legend_entries is None:
+                thisLegend = []
+            else:
                 thisLegend = legend_entries[j]
 
             ax.plot(mean_values, color=color, label=thisLegend)
@@ -184,14 +186,13 @@ def plot_dataframe_with_shading(mean_dataframe, sd_dataframe=None, y=None,
                         alpha=0.3,
                         linewidth=0,  # Remove surrounding line
                     )
-                    
 
         ax.set_xlabel(xlabel if row == num_rows - 1 else None, fontsize=12)
         ax.set_ylabel(colLabel, fontsize=12)
 
         # Increase font size for axis labels
         ax.tick_params(axis='both', which='major', labelsize=10)
-        
+
     # Create the legend in the first subplot if legend_entries is provided
     if legend_entries:
         axes[0].legend()

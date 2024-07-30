@@ -7,6 +7,7 @@ from scipy.spatial.transform import Rotation as R
 import numpy as np
 from numpy.lib.recfunctions import append_fields
 
+
 class TRCFile(object):
     """A plain-text file format for storing motion capture marker trajectories.
     TRC stands for Track Row Column.
@@ -18,19 +19,20 @@ class TRCFile(object):
     for more information.
 
     """
+
     def __init__(self, fpath=None, **kwargs):
-            #path=None,
-            #data_rate=None,
-            #camera_rate=None,
-            #num_frames=None,
-            #num_markers=None,
-            #units=None,
-            #orig_data_rate=None,
-            #orig_data_start_frame=None,
-            #orig_num_frames=None,
-            #marker_names=None,
-            #time=None,
-            #):
+        # path=None,
+        # data_rate=None,
+        # camera_rate=None,
+        # num_frames=None,
+        # num_markers=None,
+        # units=None,
+        # orig_data_rate=None,
+        # orig_data_start_frame=None,
+        # orig_num_frames=None,
+        # marker_names=None,
+        # time=None,
+        # ):
         """
         Parameters
         ----------
@@ -82,9 +84,9 @@ class TRCFile(object):
         len_marker_names = len(self.marker_names)
         if len_marker_names != self.num_markers:
             warnings.warn('Header entry NumMarkers, %i, does not '
-                    'match actual number of markers, %i. Changing '
-                    'NumMarkers to match actual number.' % (
-                        self.num_markers, len_marker_names))
+                          'match actual number of markers, %i. Changing '
+                          'NumMarkers to match actual number.' % (
+                              self.num_markers, len_marker_names))
             self.num_markers = len_marker_names
 
         # Load the actual data.
@@ -95,7 +97,7 @@ class TRCFile(object):
         for mark in self.marker_names:
             col_names += [mark + '_tx', mark + '_ty', mark + '_tz']
         dtype = {'names': col_names,
-                'formats': ['int'] + ['float64'] * (3 * self.num_markers + 1)}
+                 'formats': ['int'] + ['float64'] * (3 * self.num_markers + 1)}
         usecols = [i for i in range(3 * self.num_markers + 1 + 1)]
         self.data = np.loadtxt(fpath, delimiter='\t', skiprows=5, dtype=dtype,
                                usecols=usecols)
@@ -105,9 +107,9 @@ class TRCFile(object):
         n_rows = self.time.shape[0]
         if n_rows != self.num_frames:
             warnings.warn('%s: Header entry NumFrames, %i, does not '
-                    'match actual number of frames, %i, Changing '
-                    'NumFrames to match actual number.' % (fpath,
-                        self.num_frames, n_rows))
+                          'match actual number of frames, %i, Changing '
+                          'NumFrames to match actual number.' % (fpath,
+                                                                 self.num_frames, n_rows))
             self.num_frames = n_rows
 
     def __getitem__(self, key):
@@ -115,14 +117,14 @@ class TRCFile(object):
 
         """
         return self.marker(key)
-    
+
     def units(self):
         return self.units
-    
+
     def time(self):
         this_dat = np.empty((self.num_frames, 1))
         this_dat[:, 0] = self.time
-        return this_dat        
+        return this_dat
 
     def marker(self, name):
         """The trajectory of marker `name`, given as a `self.num_frames` x 3
@@ -150,18 +152,18 @@ class TRCFile(object):
         if (len(x) != self.num_frames or len(y) != self.num_frames or len(z) !=
                 self.num_frames):
             raise Exception('Length of data (%i, %i, %i) is not '
-                    'NumFrames (%i).', len(x), len(y), len(z), self.num_frames)
+                            'NumFrames (%i).', len(x), len(y), len(z), self.num_frames)
         self.marker_names += [name]
         self.num_markers += 1
         if not hasattr(self, 'data'):
             self.data = np.array(x, dtype=[('%s_tx' % name, 'float64')])
             self.data = append_fields(self.data,
-                    ['%s_t%s' % (name, s) for s in 'yz'],
-                    [y, z], usemask=False)
+                                      ['%s_t%s' % (name, s) for s in 'yz'],
+                                      [y, z], usemask=False)
         else:
             self.data = append_fields(self.data,
-                    ['%s_t%s' % (name, s) for s in 'xyz'],
-                    [x, y, z], usemask=False)
+                                      ['%s_t%s' % (name, s) for s in 'xyz'],
+                                      [x, y, z], usemask=False)
 
     def marker_at(self, name, time):
         x = np.interp(time, self.time, self.data[name + '_tx'])
@@ -244,43 +246,43 @@ class TRCFile(object):
                 noise = np.random.normal(0, noise_width, self.num_frames)
                 # add noise to each component of marker data.
                 self.data[self.marker_names[imarker] + components[iComponent]] += noise
-                
+
     def rotate(self, axis, value):
         """ rotate the data.
 
             axis : rotation axis
             value : angle in degree
         """
-        for imarker in range(self.num_markers):   
-            
+        for imarker in range(self.num_markers):
             temp = np.zeros((self.num_frames, 3))
-            temp[:,0] = self.data[self.marker_names[imarker] + '_tx']
-            temp[:,1] = self.data[self.marker_names[imarker] + '_ty']
-            temp[:,2] = self.data[self.marker_names[imarker] + '_tz']          
-            
-            r = R.from_euler(axis, value, degrees=True)            
+            temp[:, 0] = self.data[self.marker_names[imarker] + '_tx']
+            temp[:, 1] = self.data[self.marker_names[imarker] + '_ty']
+            temp[:, 2] = self.data[self.marker_names[imarker] + '_tz']
+
+            r = R.from_euler(axis, value, degrees=True)
             temp_rot = r.apply(temp)
-            
-            self.data[self.marker_names[imarker] + '_tx'] = temp_rot[:,0]
-            self.data[self.marker_names[imarker] + '_ty'] = temp_rot[:,1]
-            self.data[self.marker_names[imarker] + '_tz'] = temp_rot[:,2]
-            
+
+            self.data[self.marker_names[imarker] + '_tx'] = temp_rot[:, 0]
+            self.data[self.marker_names[imarker] + '_ty'] = temp_rot[:, 1]
+            self.data[self.marker_names[imarker] + '_tz'] = temp_rot[:, 2]
+
     def offset(self, axis, value):
         """ offset the data.
 
             axis : rotation axis
             value : offset in m
         """
-        for imarker in range(self.num_markers):            
+        for imarker in range(self.num_markers):
             if axis.lower() == 'x':
                 self.data[self.marker_names[imarker] + '_tx'] += value
             elif axis.lower() == 'y':
-                self.data[self.marker_names[imarker] + '_ty'] += value       
+                self.data[self.marker_names[imarker] + '_ty'] += value
             elif axis.lower() == 'z':
-                self.data[self.marker_names[imarker] + '_tz'] += value          
+                self.data[self.marker_names[imarker] + '_tz'] += value
             else:
                 raise ValueError("Axis not recognized")
-                
+
+
 def trc_2_dict(pathFile, rotation=None):
     # rotation is a dict, eg. {'y':90} with axis, angle for rotation
     trc_dict = {}
@@ -288,11 +290,11 @@ def trc_2_dict(pathFile, rotation=None):
     trc_dict['time'] = trc_file.time
     trc_dict['marker_names'] = trc_file.marker_names
     trc_dict['markers'] = {}
-        
+
     if rotation != None:
-        for axis,angle in rotation.items():
-            trc_file.rotate(axis,angle)
+        for axis, angle in rotation.items():
+            trc_file.rotate(axis, angle)
     for count, marker in enumerate(trc_dict['marker_names']):
         trc_dict['markers'][marker] = trc_file.marker(marker)
-    
+
     return trc_dict

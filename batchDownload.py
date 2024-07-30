@@ -26,7 +26,6 @@ import os
 sessionList = ['7272a71a-e70a-4794-a253-39e11cb7542c',
                'abe79267-646f-436b-a19e-a9e1d8f32807']
 
-
 # # alternatively, read list of session IDs from CSV column
 # from pathlib import Path
 # import pandas as pd
@@ -34,10 +33,10 @@ sessionList = ['7272a71a-e70a-4794-a253-39e11cb7542c',
 # df = pd.read_csv(fpath)
 # sessionList = df['sid'].dropna().unique()
 
-             
+
 # base directory for downloads. Specify None if you want to go to os.path.join(os.getcwd(),'Data')
-downloadPath = os.path.join(os.getcwd(),'Data')
+downloadPath = os.path.join(os.getcwd(), 'Data')
 
 for session_id in sessionList:
     # If only interested in marker and OpenSim data, downladVideos=False will be faster
-    download_session(session_id,sessionBasePath=downloadPath,downloadVideos=True)
+    download_session(session_id, sessionBasePath=downloadPath, downloadVideos=True)

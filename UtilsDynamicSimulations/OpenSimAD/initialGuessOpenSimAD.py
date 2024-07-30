@@ -19,18 +19,19 @@
 import pandas as pd
 import scipy.interpolate as interpolate
 
+
 # %% Data-driven initial guess.
-class dataDrivenGuess_tracking:    
-    def __init__(self, Qs, N, d, joints, muscles):        
-        
+class dataDrivenGuess_tracking:
+    def __init__(self, Qs, N, d, joints, muscles):
+
         self.Qs = Qs
         self.N = N
         self.d = d
         self.joints = joints
         self.muscles = muscles
-            
+
     def splineQs(self):
-        
+
         self.Qs_spline = self.Qs.copy()
         self.Qdots_spline = self.Qs.copy()
         self.Qdotdots_spline = self.Qs.copy()
@@ -42,181 +43,183 @@ class dataDrivenGuess_tracking:
             splineD1 = spline.derivative(n=1)
             self.Qdots_spline[joint] = splineD1(self.Qs['time'])
             splineD2 = spline.derivative(n=2)
-            self.Qdotdots_spline[joint] = splineD2(self.Qs['time'])     
-    
-    # Mesh points
+            self.Qdotdots_spline[joint] = splineD2(self.Qs['time'])
+
+            # Mesh points
+
     def getGuessPosition(self, scaling):
         self.splineQs()
-        self.guessPosition = pd.DataFrame()  
+        self.guessPosition = pd.DataFrame()
         g = [0] * (self.N)
-        for count, joint in enumerate(self.joints):  
+        for count, joint in enumerate(self.joints):
             if joint == 'mtp_angle_l' or joint == 'mtp_angle_r':
-                self.guessPosition.insert(count, joint, g) 
-            
+                self.guessPosition.insert(count, joint, g)
+
             else:
-                self.guessPosition.insert(count, joint, 
-                                          self.Qs_spline[joint] / 
-                                          scaling.iloc[0][joint]) 
-        
+                self.guessPosition.insert(count, joint,
+                                          self.Qs_spline[joint] /
+                                          scaling.iloc[0][joint])
+
         return self.guessPosition
-    
+
     def getGuessVelocity(self, scaling):
         self.splineQs()
-        self.guessVelocity = pd.DataFrame()  
+        self.guessVelocity = pd.DataFrame()
         g = [0] * (self.N)
-        for count, joint in enumerate(self.joints): 
+        for count, joint in enumerate(self.joints):
             if joint == 'mtp_angle_l' or joint == 'mtp_angle_r':
-                self.guessVelocity.insert(count, joint, g)             
+                self.guessVelocity.insert(count, joint, g)
             else:
-                self.guessVelocity.insert(count, joint, 
-                                          self.Qdots_spline[joint] / 
-                                          scaling.iloc[0][joint])       
+                self.guessVelocity.insert(count, joint,
+                                          self.Qdots_spline[joint] /
+                                          scaling.iloc[0][joint])
         return self.guessVelocity
-    
+
     def getGuessAcceleration(self, scaling, zeroAcceleration=False):
         self.splineQs()
-        self.guessAcceleration = pd.DataFrame()  
+        self.guessAcceleration = pd.DataFrame()
         g = [0] * self.N
         g1 = [0] * (self.N)
-        for count, joint in enumerate(self.joints):   
+        for count, joint in enumerate(self.joints):
             if zeroAcceleration:
                 self.guessAcceleration.insert(
-                    count, joint, g / scaling.iloc[0][joint]) 
+                    count, joint, g / scaling.iloc[0][joint])
             else:
                 if joint == 'mtp_angle_l' or joint == 'mtp_angle_r':
-                    self.guessAcceleration.insert(count, joint, g1) 
-                else:                
+                    self.guessAcceleration.insert(count, joint, g1)
+                else:
                     self.guessAcceleration.insert(
                         count, joint, self.Qdotdots_spline[joint] /
-                        scaling.iloc[0][joint])                               
-                    
+                                      scaling.iloc[0][joint])
+
         return self.guessAcceleration
-    
+
     def getGuessActivation(self, scaling):
         g = [0.1] * (self.N + 1)
-        self.guessActivation = pd.DataFrame()  
+        self.guessActivation = pd.DataFrame()
         for count, muscle in enumerate(self.muscles):
-            self.guessActivation.insert(count, muscle, 
+            self.guessActivation.insert(count, muscle,
                                         g / scaling.iloc[0][muscle])
-            
+
         return self.guessActivation
-    
+
     def getGuessActivationDerivative(self, scaling):
         g = [0.01] * self.N
-        guessActivationDerivative = pd.DataFrame()  
+        guessActivationDerivative = pd.DataFrame()
         for count, muscle in enumerate(self.muscles):
-            guessActivationDerivative.insert(count, muscle, 
+            guessActivationDerivative.insert(count, muscle,
                                              g / scaling.iloc[0][muscle])
-            
+
         return guessActivationDerivative
-    
+
     def getGuessForce(self, scaling):
         g = [0.1] * (self.N + 1)
-        self.guessForce = pd.DataFrame()  
+        self.guessForce = pd.DataFrame()
         for count, muscle in enumerate(self.muscles):
             self.guessForce.insert(count, muscle, g / scaling.iloc[0][muscle])
-            
+
         return self.guessForce
-    
+
     def getGuessForceDerivative(self, scaling):
         g = [0.01] * self.N
-        self.guessForceDerivative = pd.DataFrame()  
+        self.guessForceDerivative = pd.DataFrame()
         for count, muscle in enumerate(self.muscles):
-            self.guessForceDerivative.insert(count, muscle, 
-                                        g / scaling.iloc[0][muscle])
-            
+            self.guessForceDerivative.insert(count, muscle,
+                                             g / scaling.iloc[0][muscle])
+
         return self.guessForceDerivative
-    
+
     def getGuessTorqueActuatorActivation(self, torqueActuatorJoints):
         g = [0.1] * (self.N + 1)
-        self.guessTorqueActuatorActivation = pd.DataFrame()  
+        self.guessTorqueActuatorActivation = pd.DataFrame()
         for count, torqueActuatorJoint in enumerate(torqueActuatorJoints):
             self.guessTorqueActuatorActivation.insert(
-                    count, torqueActuatorJoint, g)
-            
+                count, torqueActuatorJoint, g)
+
         return self.guessTorqueActuatorActivation
-    
+
     def getGuessTorqueActuatorExcitation(self, torqueActuatorJoints):
         g = [0.1] * self.N
-        guessTorqueActuatorExcitation = pd.DataFrame()  
+        guessTorqueActuatorExcitation = pd.DataFrame()
         for count, torqueActuatorJoint in enumerate(torqueActuatorJoints):
             guessTorqueActuatorExcitation.insert(count, torqueActuatorJoint, g)
-            
-        return guessTorqueActuatorExcitation 
-    
+
+        return guessTorqueActuatorExcitation
+
     def getGuessReserveActuators(self, joint):
         g = [0] * self.N
-        guessReserveActuators = pd.DataFrame(g, columns=[joint])  
-            
-        return guessReserveActuators 
-    
-    # Collocation points   
-    def getGuessActivationCol(self):            
+        guessReserveActuators = pd.DataFrame(g, columns=[joint])
+
+        return guessReserveActuators
+
+        # Collocation points
+
+    def getGuessActivationCol(self):
         temp = []
         for k in range(self.N):
             for c in range(self.d):
                 temp.append(self.guessActivation.iloc[k])
         guessActivationCol = pd.DataFrame.from_records(temp)
-            
+
         return guessActivationCol
-    
+
     def getGuessForceCol(self):
         temp = []
         for k in range(self.N):
-            for c in range(self.d):          
+            for c in range(self.d):
                 temp.append(self.guessForce.iloc[k])
         guessForceCol = pd.DataFrame.from_records(temp)
-            
+
         return guessForceCol
-    
+
     def getGuessForceDerivativeCol(self):
-        temp = []         
+        temp = []
         for k in range(self.N):
             for c in range(self.d):
                 temp.append(self.guessForceDerivative.iloc[k])
         guessForceDerivativeCol = pd.DataFrame.from_records(temp)
-            
+
         return guessForceDerivativeCol
-    
+
     def getGuessTorqueActuatorActivationCol(self, torqueActuatorJoints):
         temp = []
         for k in range(self.N):
             for c in range(self.d):
                 temp.append(self.guessTorqueActuatorActivation.iloc[k])
         guessTorqueActuatorActivationCol = pd.DataFrame.from_records(temp)
-            
-        return guessTorqueActuatorActivationCol        
-    
+
+        return guessTorqueActuatorActivationCol
+
     def getGuessPositionCol(self):
         temp = []
         for k in range(self.N):
             for c in range(self.d):
                 temp.append(self.guessPosition.iloc[k])
         guessPositionCol = pd.DataFrame.from_records(temp)
-        
+
         return guessPositionCol
-    
+
     def getGuessVelocityCol(self):
-        temp = []      
+        temp = []
         for k in range(self.N):
             for c in range(self.d):
                 temp.append(self.guessVelocity.iloc[k])
         guessVelocityCol = pd.DataFrame.from_records(temp)
-        
+
         return guessVelocityCol
-    
+
     def getGuessAccelerationCol(self):
         temp = []
-        guessAccelerationCol = pd.DataFrame(columns=self.joints)  
+        guessAccelerationCol = pd.DataFrame(columns=self.joints)
         for k in range(self.N):
             for c in range(self.d):
                 temp.append(self.guessAcceleration.iloc[k])
         guessAccelerationCol = pd.DataFrame.from_records(temp)
-                
+
         return guessAccelerationCol
-    
+
     def getGuessOffset(self, scaling):
-        
+
         guessOffset = 0.2 / scaling
-        
+
         return guessOffset

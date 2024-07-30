@@ -24,9 +24,9 @@
     be tuned and are not exposed here.
 '''
 
-def get_setup(motion_type):
 
-    setups = {}   
+def get_setup(motion_type):
+    setups = {}
     setups['other'] = {
         'ipopt_tolerance': 3,
         'weights': {
@@ -38,14 +38,14 @@ def get_setup(motion_type):
             'lumbarExcitationTerm': 0.001,
             'jointAccelerationTerm': 0.001,
             'activationDtTerm': 0.001,
-            'forceDtTerm': 0.001},            
+            'forceDtTerm': 0.001},
         'coordinates_toTrack': {
             'pelvis_tilt': {"weight": 10},
             'pelvis_list': {"weight": 10},
             'pelvis_rotation': {"weight": 10},
             'pelvis_tx': {"weight": 10},
             'pelvis_ty': {"weight": 10},
-            'pelvis_tz': {"weight": 10}, 
+            'pelvis_tz': {"weight": 10},
             'hip_flexion_l': {"weight": 20},
             'hip_adduction_l': {"weight": 10},
             'hip_rotation_l': {"weight": 1},
@@ -83,7 +83,7 @@ def get_setup(motion_type):
         'splineQds': True,
         'meshDensity': 100,
         'yCalcnToes': True}
-    
+
     setups['running'] = {
         'ipopt_tolerance': 3,
         'weights': {
@@ -95,14 +95,14 @@ def get_setup(motion_type):
             'lumbarExcitationTerm': 0.001,
             'jointAccelerationTerm': 0.001,
             'activationDtTerm': 0.001,
-            'forceDtTerm': 0.001},            
+            'forceDtTerm': 0.001},
         'coordinates_toTrack': {
             'pelvis_tilt': {"weight": 10},
             'pelvis_list': {"weight": 10},
             'pelvis_rotation': {"weight": 10},
             'pelvis_tx': {"weight": 10},
             'pelvis_ty': {"weight": 10},
-            'pelvis_tz': {"weight": 10}, 
+            'pelvis_tz': {"weight": 10},
             'hip_flexion_l': {"weight": 20},
             'hip_adduction_l': {"weight": 10},
             'hip_rotation_l': {"weight": 1},
@@ -140,7 +140,7 @@ def get_setup(motion_type):
         'splineQds': True,
         'meshDensity': 100,
         'yCalcnToes': True}
-    
+
     setups['running_torque_driven'] = {
         'ipopt_tolerance': 3,
         'weights': {
@@ -150,14 +150,14 @@ def get_setup(motion_type):
             'armExcitationTerm': 0.001,
             'lumbarExcitationTerm': 0.001,
             'jointAccelerationTerm': 0.001,
-            'coordinateExcitationTerm': 10},            
+            'coordinateExcitationTerm': 10},
         'coordinates_toTrack': {
             'pelvis_tilt': {"weight": 10},
             'pelvis_list': {"weight": 10},
             'pelvis_rotation': {"weight": 10},
             'pelvis_tx': {"weight": 10},
             'pelvis_ty': {"weight": 10},
-            'pelvis_tz': {"weight": 10}, 
+            'pelvis_tz': {"weight": 10},
             'hip_flexion_l': {"weight": 20},
             'hip_adduction_l': {"weight": 10},
             'hip_rotation_l': {"weight": 1},
@@ -199,7 +199,7 @@ def get_setup(motion_type):
         'coordinate_optimal_forces': {
             'hip_flexion_r': 400,
             'hip_flexion_l': 400}}
-    
+
     setups['walking'] = {
         'ipopt_tolerance': 3,
         'weights': {
@@ -211,14 +211,14 @@ def get_setup(motion_type):
             'lumbarExcitationTerm': 0.001,
             'jointAccelerationTerm': 0.001,
             'activationDtTerm': 0.001,
-            'forceDtTerm': 0.001},            
+            'forceDtTerm': 0.001},
         'coordinates_toTrack': {
             'pelvis_tilt': {"weight": 10},
             'pelvis_list': {"weight": 1},
             'pelvis_rotation': {"weight": 1},
             'pelvis_tx': {"weight": 1},
             'pelvis_ty': {"weight": 1},
-            'pelvis_tz': {"weight": 1}, 
+            'pelvis_tz': {"weight": 1},
             'hip_flexion_l': {"weight": 10},
             'hip_adduction_l': {"weight": 1},
             'hip_rotation_l': {"weight": 1},
@@ -243,7 +243,7 @@ def get_setup(motion_type):
             'elbow_flex_l': {"weight": 1},
             'elbow_flex_r': {"weight": 1},
             'pro_sup_l': {"weight": 1},
-            'pro_sup_r': {"weight": 1}},            
+            'pro_sup_r': {"weight": 1}},
         'coordinate_constraints': {
             'pelvis_ty': {"env_bound": 0.1},
             'pelvis_tx': {"env_bound": 0.1}},
@@ -251,68 +251,68 @@ def get_setup(motion_type):
         'filter_Qs_toTrack': True,
         'cutoff_freq_Qs': 6,
         'meshDensity': 100}
-    
+
     # This is a non-periodic walking formulation. It helps to start .5s before
     # and end .3 seconds after
     setups['walking_formulation1'] = {
-    'ipopt_tolerance': 3,
-    'weights': {
-        'positionTrackingTerm': 10,
-        'velocityTrackingTerm': 1,
-        'accelerationTrackingTerm': 100,
-        'activationTerm': 10,
-        'armExcitationTerm': 0.001,
-        'lumbarExcitationTerm': 0.001,
-        'jointAccelerationTerm': 0.001,
-        'activationDtTerm': 0.001,
-        'forceDtTerm': 0.001},            
-    'coordinates_toTrack': {
-        'pelvis_tilt': {"weight": 50},
-        'pelvis_list': {"weight": 10},
-        'pelvis_rotation': {"weight": 10},
-        'pelvis_tx': {"weight": 50},
-        'pelvis_ty': {"weight": 5},
-        'pelvis_tz': {"weight": 50}, 
-        'hip_flexion_l': {"weight": 100},
-        'hip_adduction_l': {"weight": 50},
-        'hip_rotation_l': {"weight": 10},
-        'hip_flexion_r': {"weight": 100},
-        'hip_adduction_r': {"weight": 50},
-        'hip_rotation_r': {"weight": 10},
-        'knee_angle_l': {"weight": 100},
-        'knee_angle_r': {"weight": 100},
-        'ankle_angle_l': {"weight": 100},
-        'ankle_angle_r': {"weight": 100},
-        'subtalar_angle_l': {"weight": 5},
-        'subtalar_angle_r': {"weight": 5},
-        'lumbar_extension': {"weight": 50},
-        'lumbar_bending': {"weight": 10},
-        'lumbar_rotation': {"weight": 10},
-        'arm_flex_l': {"weight": 10},
-        'arm_add_l': {"weight": 10},
-        'arm_rot_l': {"weight": 10},
-        'arm_flex_r': {"weight": 10},
-        'arm_add_r': {"weight": 10},
-        'arm_rot_r': {"weight": 10},
-        'elbow_flex_l': {"weight": 10},
-        'elbow_flex_r': {"weight": 10},
-        'pro_sup_l': {"weight": 10},
-        'pro_sup_r': {"weight": 10}},            
-    'coordinate_constraints': {
-        'pelvis_ty': {"env_bound": 0.1},
-        'pelvis_tx': {"env_bound": 0.1}},
-    'enableLimitTorques': True,
-    'filter_Qs_toTrack': True,
-    'cutoff_freq_Qs': 6,
-    'filter_Qds_toTrack': True,
-    'cutoff_freq_Qds': 6,
-    'filter_Qdds_toTrack': True,
-    'cutoff_freq_Qdds': 6,
-    'splineQds': True,
-    'use_same_weight_individual_coordinate_value_acceleration': False,
-    'use_same_weight_individual_coordinate_value_speed': False,
-    'meshDensity': 100}
-    
+        'ipopt_tolerance': 3,
+        'weights': {
+            'positionTrackingTerm': 10,
+            'velocityTrackingTerm': 1,
+            'accelerationTrackingTerm': 100,
+            'activationTerm': 10,
+            'armExcitationTerm': 0.001,
+            'lumbarExcitationTerm': 0.001,
+            'jointAccelerationTerm': 0.001,
+            'activationDtTerm': 0.001,
+            'forceDtTerm': 0.001},
+        'coordinates_toTrack': {
+            'pelvis_tilt': {"weight": 50},
+            'pelvis_list': {"weight": 10},
+            'pelvis_rotation': {"weight": 10},
+            'pelvis_tx': {"weight": 50},
+            'pelvis_ty': {"weight": 5},
+            'pelvis_tz': {"weight": 50},
+            'hip_flexion_l': {"weight": 100},
+            'hip_adduction_l': {"weight": 50},
+            'hip_rotation_l': {"weight": 10},
+            'hip_flexion_r': {"weight": 100},
+            'hip_adduction_r': {"weight": 50},
+            'hip_rotation_r': {"weight": 10},
+            'knee_angle_l': {"weight": 100},
+            'knee_angle_r': {"weight": 100},
+            'ankle_angle_l': {"weight": 100},
+            'ankle_angle_r': {"weight": 100},
+            'subtalar_angle_l': {"weight": 5},
+            'subtalar_angle_r': {"weight": 5},
+            'lumbar_extension': {"weight": 50},
+            'lumbar_bending': {"weight": 10},
+            'lumbar_rotation': {"weight": 10},
+            'arm_flex_l': {"weight": 10},
+            'arm_add_l': {"weight": 10},
+            'arm_rot_l': {"weight": 10},
+            'arm_flex_r': {"weight": 10},
+            'arm_add_r': {"weight": 10},
+            'arm_rot_r': {"weight": 10},
+            'elbow_flex_l': {"weight": 10},
+            'elbow_flex_r': {"weight": 10},
+            'pro_sup_l': {"weight": 10},
+            'pro_sup_r': {"weight": 10}},
+        'coordinate_constraints': {
+            'pelvis_ty': {"env_bound": 0.1},
+            'pelvis_tx': {"env_bound": 0.1}},
+        'enableLimitTorques': True,
+        'filter_Qs_toTrack': True,
+        'cutoff_freq_Qs': 6,
+        'filter_Qds_toTrack': True,
+        'cutoff_freq_Qds': 6,
+        'filter_Qdds_toTrack': True,
+        'cutoff_freq_Qdds': 6,
+        'splineQds': True,
+        'use_same_weight_individual_coordinate_value_acceleration': False,
+        'use_same_weight_individual_coordinate_value_speed': False,
+        'meshDensity': 100}
+
     setups['drop_jump'] = {
         'weights': {
             'positionTrackingTerm': 50,
@@ -323,14 +323,14 @@ def get_setup(motion_type):
             'lumbarExcitationTerm': 0.001,
             'jointAccelerationTerm': 0.001,
             'activationDtTerm': 0.001,
-            'forceDtTerm': 0.001},            
+            'forceDtTerm': 0.001},
         'coordinates_toTrack': {
             'pelvis_tilt': {"weight": 10},
             'pelvis_list': {"weight": 1},
             'pelvis_rotation': {"weight": 1},
             'pelvis_tx': {"weight": 1},
             'pelvis_ty': {"weight": 10},
-            'pelvis_tz': {"weight": 1}, 
+            'pelvis_tz': {"weight": 1},
             'hip_flexion_l': {"weight": 10},
             'hip_adduction_l': {"weight": 1},
             'hip_rotation_l': {"weight": 1},
@@ -355,7 +355,7 @@ def get_setup(motion_type):
             'elbow_flex_l': {"weight": 50},
             'elbow_flex_r': {"weight": 50},
             'pro_sup_l': {"weight": 50},
-            'pro_sup_r': {"weight": 50}},            
+            'pro_sup_r': {"weight": 50}},
         'coordinate_constraints': {
             'pelvis_ty': {"env_bound": 0.02},
             'pelvis_tx': {"env_bound": 0.02},
@@ -369,7 +369,7 @@ def get_setup(motion_type):
         'cutoff_freq_Qdds': 30,
         'splineQds': True,
         'meshDensity': 100}
-    
+
     setups['sit_to_stand'] = {
         'ipopt_tolerance': 3,
         'weights': {
@@ -383,14 +383,14 @@ def get_setup(motion_type):
             'activationDtTerm': 0.001,
             'forceDtTerm': 0.001,
             'reserveActuatorTerm': 0.001,
-            },            
+        },
         'coordinates_toTrack': {
             'pelvis_tilt': {"weight": 100},
             'pelvis_list': {"weight": 10},
             'pelvis_rotation': {"weight": 1},
             'pelvis_tx': {"weight": 100},
             'pelvis_ty': {"weight": 10},
-            'pelvis_tz': {"weight": 100}, 
+            'pelvis_tz': {"weight": 100},
             'hip_flexion_l': {"weight": 100},
             'hip_adduction_l': {"weight": 20},
             'hip_rotation_l': {"weight": 1},
@@ -415,10 +415,10 @@ def get_setup(motion_type):
             'elbow_flex_l': {"weight": 10},
             'elbow_flex_r': {"weight": 10},
             'pro_sup_l': {"weight": 10},
-            'pro_sup_r': {"weight": 10}},            
+            'pro_sup_r': {"weight": 10}},
         'coordinate_constraints': {
             'pelvis_ty': {"env_bound": 0.1},
-            'pelvis_tx': {"env_bound": 0.1}},       
+            'pelvis_tx': {"env_bound": 0.1}},
         'withReserveActuators': True,
         'reserveActuatorCoordinates': {
             'hip_rotation_l': 30, 'hip_rotation_r': 30},
@@ -432,7 +432,7 @@ def get_setup(motion_type):
         'cutoff_freq_Qdds': 4,
         'splineQds': True,
         'meshDensity': 50}
-    
+
     setups['squats'] = {
         'ipopt_tolerance': 3,
         'weights': {
@@ -445,14 +445,14 @@ def get_setup(motion_type):
             'jointAccelerationTerm': 0.001,
             'activationDtTerm': 0.001,
             'forceDtTerm': 0.001,
-            'reserveActuatorTerm': 0.001},            
+            'reserveActuatorTerm': 0.001},
         'coordinates_toTrack': {
             'pelvis_tilt': {"weight": 100},
             'pelvis_list': {"weight": 10},
             'pelvis_rotation': {"weight": 1},
             'pelvis_tx': {"weight": 100},
             'pelvis_ty': {"weight": 10},
-            'pelvis_tz': {"weight": 100}, 
+            'pelvis_tz': {"weight": 100},
             'hip_flexion_l': {"weight": 100},
             'hip_adduction_l': {"weight": 20},
             'hip_rotation_l': {"weight": 1},
@@ -477,7 +477,7 @@ def get_setup(motion_type):
             'elbow_flex_l': {"weight": 10},
             'elbow_flex_r': {"weight": 10},
             'pro_sup_l': {"weight": 10},
-            'pro_sup_r': {"weight": 10}},            
+            'pro_sup_r': {"weight": 10}},
         'coordinate_constraints': {
             'pelvis_ty': {"env_bound": 0.1},
             'pelvis_tx': {"env_bound": 0.1}},
@@ -496,7 +496,7 @@ def get_setup(motion_type):
         'splineQds': True,
         'heel_vGRF_threshold': 5,
         'meshDensity': 50}
-        
+
     setups['jumping'] = {
         'weights': {
             'positionTrackingTerm': 100,
@@ -507,14 +507,14 @@ def get_setup(motion_type):
             'lumbarExcitationTerm': 0.001,
             'jointAccelerationTerm': 0.001,
             'activationDtTerm': 0.001,
-            'forceDtTerm': 0.001},            
+            'forceDtTerm': 0.001},
         'coordinates_toTrack': {
             'pelvis_tilt': {"weight": 10},
             'pelvis_list': {"weight": 10},
             'pelvis_rotation': {"weight": 10},
             'pelvis_tx': {"weight": 10},
             'pelvis_ty': {"weight": 100},
-            'pelvis_tz': {"weight": 10}, 
+            'pelvis_tz': {"weight": 10},
             'hip_flexion_l': {"weight": 20},
             'hip_adduction_l': {"weight": 10},
             'hip_rotation_l': {"weight": 10},
@@ -553,8 +553,8 @@ def get_setup(motion_type):
         'splineQds': True,
         'meshDensity': 50,
         'yCalcnToes': True,
-        }
-    
+    }
+
     setups['my_periodic_running'] = {
         'ipopt_tolerance': 3,
         'weights': {
@@ -566,14 +566,14 @@ def get_setup(motion_type):
             'lumbarExcitationTerm': 0.001,
             'jointAccelerationTerm': 0.001,
             'activationDtTerm': 0.001,
-            'forceDtTerm': 0.001},            
+            'forceDtTerm': 0.001},
         'coordinates_toTrack': {
             'pelvis_tilt': {"weight": 10},
             'pelvis_list': {"weight": 10},
             'pelvis_rotation': {"weight": 10},
             'pelvis_tx': {"weight": 10},
             'pelvis_ty': {"weight": 10},
-            'pelvis_tz': {"weight": 10}, 
+            'pelvis_tz': {"weight": 10},
             'hip_flexion_l': {"weight": 20},
             'hip_adduction_l': {"weight": 10},
             'hip_rotation_l': {"weight": 1},
@@ -603,14 +603,14 @@ def get_setup(motion_type):
             'pelvis_tx': {"env_bound": 0.1}},
         'periodicConstraints': {
             # All lower limb coordinates but pelvis_tx.
-            'coordinateValues': ['pelvis_tilt', 'pelvis_list', 'pelvis_rotation', 
-                   'pelvis_ty', 'pelvis_tz', 'hip_flexion_l', 
-                   'hip_adduction_l', 'hip_rotation_l', 'hip_flexion_r',
-                   'hip_adduction_r', 'hip_rotation_r', 'knee_angle_l',
-                   'knee_angle_r', 'ankle_angle_l', 'ankle_angle_r', 
-                   'subtalar_angle_l', 'subtalar_angle_r', 'mtp_angle_l',
-                   'mtp_angle_r', 'lumbar_extension', 'lumbar_bending',
-                   'lumbar_rotation'],
+            'coordinateValues': ['pelvis_tilt', 'pelvis_list', 'pelvis_rotation',
+                                 'pelvis_ty', 'pelvis_tz', 'hip_flexion_l',
+                                 'hip_adduction_l', 'hip_rotation_l', 'hip_flexion_r',
+                                 'hip_adduction_r', 'hip_rotation_r', 'knee_angle_l',
+                                 'knee_angle_r', 'ankle_angle_l', 'ankle_angle_r',
+                                 'subtalar_angle_l', 'subtalar_angle_r', 'mtp_angle_l',
+                                 'mtp_angle_r', 'lumbar_extension', 'lumbar_bending',
+                                 'lumbar_rotation'],
             'coordinateSpeeds': ['lowerLimbJoints'],
             'muscleActivationsForces': ['all'],
             'lumbarJointActivations': ['all']},

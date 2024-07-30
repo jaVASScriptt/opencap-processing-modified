@@ -48,7 +48,7 @@ def segment_gait(session_id, trial_name, data_folder, gait_cycles_from_end=0):
     
     gait = gait_analysis(os.path.join(data_folder,session_id), trial_name,
                          n_gait_cycles=-1)
-    heelstrikeTimes = gait.gaitEvents['ipsilateralTime'][gait_cycles_from_end,(0,2)].tolist()
+    heelstrikeTimes = gait.gait_events['ipsilateralTime'][gait_cycles_from_end,(0, 2)].tolist()
     
     return heelstrikeTimes, gait
 
