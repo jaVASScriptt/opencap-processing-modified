@@ -1,4 +1,4 @@
-# OpenCap Processing
+# OpenCap Processing modified
 This code is a copy of OpenCap Processing, with some additional features and a better user experience. The original code can be found [here](https://github.com/stanfordnmbl/opencap-processing).
 
 ## Install requirements
