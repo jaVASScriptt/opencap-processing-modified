@@ -1,6 +1,6 @@
 '''
     ---------------------------------------------------------------------------
-    OpenCap processing: main.py
+    OpenCap processing: example_kinetics.py
     ---------------------------------------------------------------------------
     Copyright 2022 Stanford University and the Authors
     
@@ -34,20 +34,13 @@
 import os
 import sys
 
-from InquirerPy import inquirer
-
-from Adapt_to_usage.DataController import DataController
-from UtilsDynamicSimulations.OpenSimAD.mainOpenSimAD import run_tracking
-from UtilsDynamicSimulations.OpenSimAD.utilsOpenSimAD import processInputsOpenSimAD, plotResultsOpenSimAD
-from utils import *
-
 baseDir = os.getcwd()
 opensimADDir = os.path.join(baseDir, 'UtilsDynamicSimulations', 'OpenSimAD')
 sys.path.append(baseDir)
 sys.path.append(opensimADDir)
 
-# from utilsOpenSimAD import processInputsOpenSimAD, plotResultsOpenSimAD
-# from mainOpenSimAD import run_tracking
+from utilsOpenSimAD import processInputsOpenSimAD, plotResultsOpenSimAD
+from mainOpenSimAD import run_tracking
 
 # %% User inputs.
 '''
@@ -112,45 +105,72 @@ simulations converged to kinematic solutions that were visually reasonable.
 Please contact us for any questions: https://www.opencap.ai/#contact
 '''
 
-
-def menu():
-    print()
-    res = inquirer.select(message="What do you want to do?",
-                          choices=["Setup datas", "Disconnect from Opencap", "exit"]).execute()
-    print()
-
-    if res == "Disconnect from Opencap":
-        if os.path.exists(".env"):
-            os.remove(".env")
-            print("You have been disconnected from OpenCap. Please restart the program to reconnect.")
+# We provide a few examples for overground and treadmill activities.
+# Select which example you would like to run.
+session_type = 'overground' # Options are 'overground' and 'treadmill'.
+session_id = "4d5c3eb1-1a59-4ea1-9178-d3634610561c"
+case = '0' # Change this to compare across settings.
+# Options are 'squat', 'STS', and 'jump'.
+if session_type == 'overground': 
+    trial_name = 'STS'
+    if trial_name == 'squat': # Squat
+        motion_type = 'squats'
+        repetition = 1
+    elif trial_name == 'STS': # Sit-to-stand        
+        motion_type = 'sit_to_stand'
+        repetition = 1
+    elif trial_name == 'jump': # Jump  
+        motion_type = 'jumping'
+        time_window = [1.3, 2.2]
+# Options are 'walk_1_25ms', 'run_2_5ms', and 'run_4ms'.
+elif session_type == 'treadmill': 
+    trial_name = 'walk_1_25ms'
+    torque_driven_model = False # Example with torque-driven model.
+    if trial_name == 'walk_1_25ms': # Walking, 1.25 m/s
+        motion_type = 'walking'
+        time_window = [1.0, 2.5]
+        treadmill_speed = 1.25
+    elif trial_name == 'run_2_5ms': # Running, 2.5 m/s
+        if torque_driven_model:
+            motion_type = 'running_torque_driven'
         else:
-            print("No active session found to disconnect.")
-        sys.exit()
-    elif res == "exit":
-        sys.exit()
-    else:
-        dc.setup()
-
-
-dc = DataController()
-menu()
-
+            motion_type = 'running'
+        time_window = [1.4, 2.6]
+        treadmill_speed = 2.5
+    elif trial_name == 'run_4ms': # Running with periodic constraints, 4.0 m/s
+        motion_type = 'my_periodic_running'
+        time_window = [3.1833333, 3.85]
+        treadmill_speed = 4.0
+    
+# Set to True to solve the optimal control problem.
 solveProblem = True
+# Set to True to analyze the results of the optimal control problem. If you
+# solved the problem already, and only want to analyze/process the results, you
+# can set solveProblem to False and run this script with analyzeResults set to
+# True. This is useful if you do additional post-processing but do not want to
+# re-run the problem.
 analyzeResults = True
 
+# Path to where you want the data to be downloaded.
 dataFolder = os.path.join(baseDir, 'Data')
 
+# %% Setup. 
+if not 'time_window' in locals():
+    time_window = None
+if not 'repetition' in locals():
+    repetition = None
+if not 'treadmill_speed' in locals():
+    treadmill_speed = 0
 if not 'contact_side' in locals():
     contact_side = 'all'
-
-settings = processInputsOpenSimAD(baseDir, dataFolder, dc.session_id, dc.trial_name,
-                                  dc.motion_type, time_window=dc.time_window, repetition=dc.repetition,
-                                  treadmill_speed=dc.treadmill_speed, contact_side=contact_side)
+settings = processInputsOpenSimAD(baseDir, dataFolder, session_id, trial_name, 
+                                  motion_type, time_window, repetition,
+                                  treadmill_speed, contact_side)
 
 # %% Simulation.
-run_tracking(baseDir, dataFolder, dc.session_id, settings, case=dc.case,
-             solveProblem=solveProblem, analyzeResults=analyzeResults)
+run_tracking(baseDir, dataFolder, session_id, settings, case=case, 
+              solveProblem=solveProblem, analyzeResults=analyzeResults)
 
 # %% Plots.
 # To compare different cases, add to the cases list, eg cases=['0','1'].
-plotResultsOpenSimAD(dataFolder, dc.session_id, dc.trial_name, settings, cases=[dc.case])
+plotResultsOpenSimAD(dataFolder, session_id, trial_name, settings, cases=[case])

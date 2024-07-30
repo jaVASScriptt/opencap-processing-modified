@@ -41,7 +41,7 @@
     demonstrate how to run dynamic simualtions and are not meant to be 
     biomechanically valid. We only made sure the simulations converged to
     solutions that were visually reasonable. You can find more examples of
-    dynamic simulations using OpenSimAD in main.py.
+    dynamic simulations using OpenSimAD in example_kinetics.py.
 '''
 
 # %% Select the example you want to run.

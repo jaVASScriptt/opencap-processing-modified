@@ -893,7 +893,7 @@ def run_tracking(baseDir, dataDir, subject, settings, case='0',
         # not work anymore. Results will not change.
         raise ValueError("""We recently updated our code, please delete the folder 
         ExternalFunction under Data/<session_ID>/OpenSimData/Model/ 
-        and rerun the main.py.""")
+        and rerun the example_kinetics.py.""")
         
     nContactSpheres = F_map['GRFs']['nContactSpheres']
     contactSpheres = {}

@@ -22,7 +22,7 @@
 # DO NOT CHANGE THE FILE NAME OF THE .env FILE, or your credentials will get 
 # pushed to github with a commit, and anyone could get access to your data.
 # We recommend only saving this .env file on your own encrypted machine
-# and not while  on google collab.
+# and not while running on google collab.
 
 from utilsAuthentication import get_token
 import os
