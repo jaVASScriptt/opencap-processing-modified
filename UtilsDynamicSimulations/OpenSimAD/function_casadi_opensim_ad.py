@@ -1,6 +1,6 @@
 '''
     ---------------------------------------------------------------------------
-    OpenCap processing: functionCasADiOpenSimAD.py
+    OpenCap processing: function_casadi_opensim_ad.py
     ---------------------------------------------------------------------------
     Copyright 2022 Stanford University and the Authors
     
@@ -27,7 +27,7 @@ import numpy as np
 # and moment arms based on polynomial approximations of joint positions and
 # velocities.
 def polynomialApproximation(musclesPolynomials, polynomialData, NPolynomial):
-    from polynomialsOpenSimAD import polynomials
+    from polynomials_opensim_ad import polynomials
 
     # Function variables.
     qin = ca.SX.sym('qin', 1, NPolynomial)
@@ -79,7 +79,7 @@ def hillEquilibrium(mtParameters, tendonCompliance, tendonShift,
     activeFiberForcePen = ca.SX(NMuscles, 1)
     passiveFiberForcePen = ca.SX(NMuscles, 1)
 
-    from muscleModelOpenSimAD import DeGrooteFregly2016MuscleModel
+    from muscle_model_opensim_ad import DeGrooteFregly2016MuscleModel
     for m in range(NMuscles):
         muscle = DeGrooteFregly2016MuscleModel(
             mtParameters[:, m], activation[m], mtLength[m],

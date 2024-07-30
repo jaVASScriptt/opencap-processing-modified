@@ -1,11 +1,11 @@
 '''
     ---------------------------------------------------------------------------
-    OpenCap processing: polynomialsOpenSimAD.py
+    OpenCap processing: polynomials_opensim_ad.py
     ---------------------------------------------------------------------------
     Copyright 2022 Stanford University and the Authors
-    
+
     Author(s): Antoine Falisse, Scott Uhlrich
-    
+
     Licensed under the Apache License, Version 2.0 (the "License"); you may not
     use this file except in compliance with the License. You may obtain a copy
     of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -14,7 +14,7 @@
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     See the License for the specific language governing permissions and
     limitations under the License.
-    
+
     This script contains classes and functions to support the approximation of
     muscle-tendon lengths, velocities, and moment arms using polynomial
     approximations of joint positions and velocities.
@@ -24,7 +24,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-class polynomials:
+class Polynomials:
 
     def __init__(self, coefficients, dimension, order):
 
@@ -174,7 +174,7 @@ class polynomials:
         return value
 
 
-class polynomial_estimation:
+class PolynomialEstimation:
 
     def __init__(self, dimension, order):
 
@@ -417,7 +417,7 @@ def getPolynomialCoefficients(data4PolynomialFitting, joints,
         order = order_min
         while not is_fullfilled:
 
-            polynomial = polynomial_estimation(muscle_dimension, order)
+            polynomial = PolynomialEstimation(muscle_dimension, order)
             mat = polynomial.getVariables(jointCoordinates[:, spanningInfo[i, :] == 1])
 
             diff_mat = np.zeros((jointCoordinates.shape[0], mat.shape[1], muscle_dimension))

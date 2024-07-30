@@ -1,6 +1,6 @@
 '''
     ---------------------------------------------------------------------------
-    OpenCap processing: utilsKineticsOpenSimAD.py
+    OpenCap processing: utils_kinetics_opensim_ad.py
     ---------------------------------------------------------------------------
 
     Copyright 2023 Stanford University and the Authors
@@ -25,7 +25,7 @@ from Utils import utils
 import opensim
 
 
-class kineticsOpenSimAD:
+class KineticsOpenSimAD:
 
     def __init__(self, data_dir, session_id, trial_name, case=None,
                  repetition=None, modelName=None):

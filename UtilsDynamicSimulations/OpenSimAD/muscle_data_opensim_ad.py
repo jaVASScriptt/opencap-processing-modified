@@ -1,6 +1,6 @@
 '''
     ---------------------------------------------------------------------------
-    OpenCap processing: muscleDataOpenSimAD.py
+    OpenCap processing: muscle_data_opensim_ad.py
     ---------------------------------------------------------------------------
     Copyright 2022 Stanford University and the Authors
     
@@ -261,7 +261,7 @@ def getPolynomialData(loadPolynomialData, pathModelFolder, modelName='',
                                              allow_pickle=True).item()
         # Fit polynomial coefficients.
         print('Fit polynomials.')
-        from polynomialsOpenSimAD import getPolynomialCoefficients
+        from polynomials_opensim_ad import getPolynomialCoefficients
         polynomialData = getPolynomialCoefficients(
             data4PolynomialFitting, joints, muscles, side=side)
         if pathModelFolder != 0:

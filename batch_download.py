@@ -1,6 +1,6 @@
 '''
     ---------------------------------------------------------------------------
-    OpenCap processing: batchDownload.py
+    OpenCap processing: batch_download.py
     ---------------------------------------------------------------------------
 
     Copyright 2022 Stanford University and the Authors

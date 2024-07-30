@@ -1,6 +1,6 @@
 '''
     ---------------------------------------------------------------------------
-    OpenCap processing: utilsPlotting.py
+    OpenCap processing: utils_plotting.py
     ---------------------------------------------------------------------------
 
     Copyright 2022 Stanford University and the Authors

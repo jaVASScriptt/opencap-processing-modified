@@ -1,6 +1,6 @@
 '''
     ---------------------------------------------------------------------------
-    OpenCap processing: utilsKinematics.py
+    OpenCap processing: utils_kinematics.py
     ---------------------------------------------------------------------------
 
     Copyright 2022 Stanford University and the Authors
@@ -25,8 +25,8 @@ from Utils import utils
 import pandas as pd
 import scipy.interpolate as interpolate
 
-from Utils.utilsProcessing import lowPassFilter
-from Utils.utilsTRC import trc_2_dict
+from Utils.utils_processing import lowPassFilter
+from Utils.utils_trc import trc_2_dict
 import numpy as np
 from scipy.spatial.transform import Rotation
 

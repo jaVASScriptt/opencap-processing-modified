@@ -1,6 +1,6 @@
 '''
     ---------------------------------------------------------------------------
-    OpenCap processing: initialGuessOpenSimAD.py
+    OpenCap processing: initial_guess_opensim_ad.py
     ---------------------------------------------------------------------------
     Copyright 2022 Stanford University and the Authors
     
@@ -21,7 +21,7 @@ import scipy.interpolate as interpolate
 
 
 # %% Data-driven initial guess.
-class dataDrivenGuess_tracking:
+class DataDrivenGuessTracking:
     def __init__(self, Qs, N, d, joints, muscles):
 
         self.Qs = Qs

@@ -1,6 +1,6 @@
 '''
     ---------------------------------------------------------------------------
-    OpenCap processing: utilsAuthentication.py
+    OpenCap processing: utils_authentication.py
     ---------------------------------------------------------------------------
 
     Copyright 2022 Stanford University and the Authors
@@ -23,7 +23,7 @@ from decouple import config
 import getpass
 import os
 import maskpass
-from Utils.utilsAPI import get_api_url
+from Utils.utils_api import get_api_url
 
 API_URL = get_api_url()
 
@@ -47,7 +47,7 @@ def get_token(saveEnvPath=None):
                     pw = maskpass.advpass(prompt="Enter Password:\n", ide=True)
                 elif isPycharm:
                     print(
-                        'Warning, you are in Pycharm, so the password will show up in the console.\n To avoid this, run createAuthenticationEnvFile.py from the terminal,\nthen re-open PyCharm.')
+                        'Warning, you are in Pycharm, so the password will show up in the console.\n To avoid this, run create_authentication_env_file.py from the terminal,\nthen re-open PyCharm.')
                     un = input("Enter Username:")
                     pw = input("Enter Password (will be shown in console):")
                 else:

@@ -1,6 +1,6 @@
 '''
     ---------------------------------------------------------------------------
-    OpenCap processing: muscleModelOpenSimAD.py
+    OpenCap processing: muscle_model_opensim_ad.py
     ---------------------------------------------------------------------------
     Copyright 2022 Stanford University and the Authors
     

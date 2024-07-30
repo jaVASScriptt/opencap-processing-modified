@@ -4,31 +4,31 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="878c8489-bd1d-4a43-8dc4-70878a59f97c" name="Changes" comment="Rangement éléments et suppression des exemples">
-      <change afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+    <list default="true" id="878c8489-bd1d-4a43-8dc4-70878a59f97c" name="Changes" comment="Reformat + rename classes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ActivityAnalyses/gait_analysis.py" beforeDir="false" afterPath="$PROJECT_DIR$/ActivityAnalyses/GaitAnalysis.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CHANGELOG.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/LICENSE.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ActivityAnalyses/GaitAnalysis.py" beforeDir="false" afterPath="$PROJECT_DIR$/ActivityAnalyses/gait_analysis.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OpenSimPipeline/JointReaction/computeJointLoading.py" beforeDir="false" afterPath="$PROJECT_DIR$/OpenSimPipeline/JointReaction/compute_joint_loading.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Utils/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/Utils/utils.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Utils/utilsAPI.py" beforeDir="false" afterPath="$PROJECT_DIR$/Utils/utilsAPI.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Utils/utilsAuthentication.py" beforeDir="false" afterPath="$PROJECT_DIR$/Utils/utilsAuthentication.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Utils/utilsKinematics.py" beforeDir="false" afterPath="$PROJECT_DIR$/Utils/utilsKinematics.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Utils/utilsPlotting.py" beforeDir="false" afterPath="$PROJECT_DIR$/Utils/utilsPlotting.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Utils/utilsProcessing.py" beforeDir="false" afterPath="$PROJECT_DIR$/Utils/utilsProcessing.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Utils/utilsTRC.py" beforeDir="false" afterPath="$PROJECT_DIR$/Utils/utilsTRC.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UtilsDynamicSimulations/OpenSimAD/boundsOpenSimAD.py" beforeDir="false" afterPath="$PROJECT_DIR$/UtilsDynamicSimulations/OpenSimAD/boundsOpenSimAD.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UtilsDynamicSimulations/OpenSimAD/functionCasADiOpenSimAD.py" beforeDir="false" afterPath="$PROJECT_DIR$/UtilsDynamicSimulations/OpenSimAD/functionCasADiOpenSimAD.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UtilsDynamicSimulations/OpenSimAD/initialGuessOpenSimAD.py" beforeDir="false" afterPath="$PROJECT_DIR$/UtilsDynamicSimulations/OpenSimAD/initialGuessOpenSimAD.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UtilsDynamicSimulations/OpenSimAD/mainOpenSimAD.py" beforeDir="false" afterPath="$PROJECT_DIR$/UtilsDynamicSimulations/OpenSimAD/mainOpenSimAD.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UtilsDynamicSimulations/OpenSimAD/muscleDataOpenSimAD.py" beforeDir="false" afterPath="$PROJECT_DIR$/UtilsDynamicSimulations/OpenSimAD/muscleDataOpenSimAD.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UtilsDynamicSimulations/OpenSimAD/muscleModelOpenSimAD.py" beforeDir="false" afterPath="$PROJECT_DIR$/UtilsDynamicSimulations/OpenSimAD/muscleModelOpenSimAD.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UtilsDynamicSimulations/OpenSimAD/plotsOpenSimAD.py" beforeDir="false" afterPath="$PROJECT_DIR$/UtilsDynamicSimulations/OpenSimAD/plotsOpenSimAD.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UtilsDynamicSimulations/OpenSimAD/polynomialsOpenSimAD.py" beforeDir="false" afterPath="$PROJECT_DIR$/UtilsDynamicSimulations/OpenSimAD/polynomialsOpenSimAD.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UtilsDynamicSimulations/OpenSimAD/settingsOpenSimAD.py" beforeDir="false" afterPath="$PROJECT_DIR$/UtilsDynamicSimulations/OpenSimAD/settingsOpenSimAD.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UtilsDynamicSimulations/OpenSimAD/utilsKineticsOpenSimAD.py" beforeDir="false" afterPath="$PROJECT_DIR$/UtilsDynamicSimulations/OpenSimAD/utilsKineticsOpenSimAD.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UtilsDynamicSimulations/OpenSimAD/utilsOpenSimAD.py" beforeDir="false" afterPath="$PROJECT_DIR$/UtilsDynamicSimulations/OpenSimAD/utilsOpenSimAD.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/batchDownload.py" beforeDir="false" afterPath="$PROJECT_DIR$/batchDownload.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Utils/utilsAPI.py" beforeDir="false" afterPath="$PROJECT_DIR$/Utils/utils_api.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Utils/utilsAuthentication.py" beforeDir="false" afterPath="$PROJECT_DIR$/Utils/utils_authentication.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Utils/utilsKinematics.py" beforeDir="false" afterPath="$PROJECT_DIR$/Utils/utils_kinematics.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Utils/utilsPlotting.py" beforeDir="false" afterPath="$PROJECT_DIR$/Utils/utils_plotting.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Utils/utilsProcessing.py" beforeDir="false" afterPath="$PROJECT_DIR$/Utils/utils_processing.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Utils/utilsTRC.py" beforeDir="false" afterPath="$PROJECT_DIR$/Utils/utils_trc.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UtilsDynamicSimulations/OpenSimAD/boundsOpenSimAD.py" beforeDir="false" afterPath="$PROJECT_DIR$/UtilsDynamicSimulations/OpenSimAD/bounds_opensim_ad.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UtilsDynamicSimulations/OpenSimAD/functionCasADiOpenSimAD.py" beforeDir="false" afterPath="$PROJECT_DIR$/UtilsDynamicSimulations/OpenSimAD/function_casadi_opensim_ad.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UtilsDynamicSimulations/OpenSimAD/initialGuessOpenSimAD.py" beforeDir="false" afterPath="$PROJECT_DIR$/UtilsDynamicSimulations/OpenSimAD/initial_guess_opensim_ad.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UtilsDynamicSimulations/OpenSimAD/mainOpenSimAD.py" beforeDir="false" afterPath="$PROJECT_DIR$/UtilsDynamicSimulations/OpenSimAD/main_opensim_ad.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UtilsDynamicSimulations/OpenSimAD/muscleDataOpenSimAD.py" beforeDir="false" afterPath="$PROJECT_DIR$/UtilsDynamicSimulations/OpenSimAD/muscle_data_opensim_ad.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UtilsDynamicSimulations/OpenSimAD/muscleModelOpenSimAD.py" beforeDir="false" afterPath="$PROJECT_DIR$/UtilsDynamicSimulations/OpenSimAD/muscle_model_opensim_ad.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UtilsDynamicSimulations/OpenSimAD/plotsOpenSimAD.py" beforeDir="false" afterPath="$PROJECT_DIR$/UtilsDynamicSimulations/OpenSimAD/plots_opensim_ad.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UtilsDynamicSimulations/OpenSimAD/polynomialsOpenSimAD.py" beforeDir="false" afterPath="$PROJECT_DIR$/UtilsDynamicSimulations/OpenSimAD/polynomials_opensim_ad.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UtilsDynamicSimulations/OpenSimAD/settingsOpenSimAD.py" beforeDir="false" afterPath="$PROJECT_DIR$/UtilsDynamicSimulations/OpenSimAD/settings_opensim_ad.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UtilsDynamicSimulations/OpenSimAD/utilsKineticsOpenSimAD.py" beforeDir="false" afterPath="$PROJECT_DIR$/UtilsDynamicSimulations/OpenSimAD/utils_kinetics_opensim_ad.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UtilsDynamicSimulations/OpenSimAD/utilsOpenSimAD.py" beforeDir="false" afterPath="$PROJECT_DIR$/UtilsDynamicSimulations/OpenSimAD/utils_opensim_ad.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/batchDownload.py" beforeDir="false" afterPath="$PROJECT_DIR$/batch_download.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/createAuthenticationEnvFile.py" beforeDir="false" afterPath="$PROJECT_DIR$/create_authentication_env_file.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -67,19 +67,19 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/NNL_L/OneDrive/Documents/opencap-processing-modified&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "C:/Users/NNL_L/OneDrive/Documents/opencap-processing",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\NNL_L\OneDrive\Documents\opencap-processing-modified" />
@@ -104,7 +104,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1722345303090</updated>
-      <workItem from="1722345304133" duration="8230000" />
+      <workItem from="1722345304133" duration="13448000" />
     </task>
     <task id="LOCAL-00001" summary="README.md">
       <option name="closed" value="true" />
@@ -146,7 +146,15 @@
       <option name="project" value="LOCAL" />
       <updated>1722347824456</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Reformat + rename classes">
+      <option name="closed" value="true" />
+      <created>1722354301114</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1722354301114</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -157,6 +165,7 @@
     <MESSAGE value="refresh" />
     <MESSAGE value="del jupiter Notebook" />
     <MESSAGE value="Rangement éléments et suppression des exemples" />
-    <option name="LAST_COMMIT_MESSAGE" value="Rangement éléments et suppression des exemples" />
+    <MESSAGE value="Reformat + rename classes" />
+    <option name="LAST_COMMIT_MESSAGE" value="Reformat + rename classes" />
   </component>
 </project>

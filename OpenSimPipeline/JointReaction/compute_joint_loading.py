@@ -1,6 +1,6 @@
 '''
     ---------------------------------------------------------------------------
-    OpenCap processing: computeJointLoading.py
+    OpenCap processing: compute_joint_loading.py
     ---------------------------------------------------------------------------
     Copyright 2022 Stanford University and the Authors
     

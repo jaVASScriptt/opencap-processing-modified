@@ -1,6 +1,6 @@
 '''
     ---------------------------------------------------------------------------
-    OpenCap processing: mainOpenSimAD.py
+    OpenCap processing: main_opensim_ad.py
     ---------------------------------------------------------------------------
     Copyright 2022 Stanford University and the Authors
     
@@ -394,7 +394,7 @@ def run_tracking(baseDir, dataDir, subject, settings, case='0',
     nSideMuscles = len(rightSideMuscles)
 
     # Extract muscle-tendon parameters (if not done already).
-    from muscleDataOpenSimAD import getMTParameters
+    from muscle_data_opensim_ad import getMTParameters
     loadMTParameters_l = True
     loadMTParameters_r = True
     if not os.path.exists(os.path.join(
@@ -414,11 +414,11 @@ def run_tracking(baseDir, dataDir, subject, settings, case='0',
     mtParameters[0, :] = mtParameters[0, :] * scaleIsometricMuscleForce
 
     # Tendon compliance.
-    from muscleDataOpenSimAD import tendonCompliance
+    from muscle_data_opensim_ad import tendonCompliance
     sideTendonCompliance = tendonCompliance(nSideMuscles)
     tendonCompliance = np.concatenate((sideTendonCompliance,
                                        sideTendonCompliance), axis=1)
-    from muscleDataOpenSimAD import tendonShift
+    from muscle_data_opensim_ad import tendonShift
     sideTendonShift = tendonShift(nSideMuscles)
     tendonShift = np.concatenate((sideTendonShift, sideTendonShift), axis=1)
 
@@ -431,7 +431,7 @@ def run_tracking(baseDir, dataDir, subject, settings, case='0',
     # with "normalized tendon force as a state and the scaled time derivative
     # of the normalized tendon force as a new control simplifying the
     # contraction dynamic equations".
-    from functionCasADiOpenSimAD import hillEquilibrium
+    from function_casadi_opensim_ad import hillEquilibrium
     f_hillEquilibrium = hillEquilibrium(
         mtParameters, tendonCompliance, tendonShift, specificTension,
         ignorePassiveFiberForce=ignorePassiveFiberForce)
@@ -459,7 +459,7 @@ def run_tracking(baseDir, dataDir, subject, settings, case='0',
     s_muscleVolume = np.reshape(s_muscleVolume, (nMuscles, 1))
 
     # Coordinate actuator optimal forces.
-    from muscleDataOpenSimAD import get_coordinate_actuator_optimal_forces
+    from muscle_data_opensim_ad import get_coordinate_actuator_optimal_forces
     coordinate_optimal_forces = get_coordinate_actuator_optimal_forces()
     # Adjust based on settings.
     if 'coordinate_optimal_forces' in settings:
@@ -470,7 +470,7 @@ def run_tracking(baseDir, dataDir, subject, settings, case='0',
     # %% Coordinates.
     # This section specifies the coordinates of the model. This is
     # specific to the Rajagopal musculoskeletal model.
-    from utilsOpenSimAD import getIndices
+    from utils_opensim_ad import getIndices
     joints = ['pelvis_tilt', 'pelvis_list', 'pelvis_rotation', 'pelvis_tx',
               'pelvis_ty', 'pelvis_tz', 'hip_flexion_l', 'hip_adduction_l',
               'hip_rotation_l', 'hip_flexion_r', 'hip_adduction_r',
@@ -585,7 +585,7 @@ def run_tracking(baseDir, dataDir, subject, settings, case='0',
 
     # %% Coordinate actuator activation dynamics.
     if withArms or withLumbarCoordinateActuators:
-        from functionCasADiOpenSimAD import coordinateActuatorDynamics
+        from function_casadi_opensim_ad import coordinateActuatorDynamics
         if withArms:
             f_armDynamics = coordinateActuatorDynamics(nArmJoints)
         if withLumbarCoordinateActuators:
@@ -594,8 +594,8 @@ def run_tracking(baseDir, dataDir, subject, settings, case='0',
             f_coordinateDynamics = coordinateActuatorDynamics(nMuscleDrivenJoints)
 
     # %% Passive/limit torques.
-    from functionCasADiOpenSimAD import limitPassiveTorque, linarPassiveTorque
-    from muscleDataOpenSimAD import passiveJointTorqueData
+    from function_casadi_opensim_ad import limitPassiveTorque, linarPassiveTorque
+    from muscle_data_opensim_ad import passiveJointTorqueData
     damping = 0.1
     f_passiveTorque = {}
     for joint in passiveTorqueJoints:
@@ -612,8 +612,8 @@ def run_tracking(baseDir, dataDir, subject, settings, case='0',
         f_linearPassiveArmTorque = linarPassiveTorque(stiffnessArm, dampingArm)
 
     # %% Kinematic data to track.
-    from utilsOpenSimAD import getIK, filterDataFrame
-    from utilsOpenSimAD import interpolateDataFrame, selectDataFrame
+    from utils_opensim_ad import getIK, filterDataFrame
+    from utils_opensim_ad import interpolateDataFrame, selectDataFrame
     pathIK = os.path.join(pathIKFolder, trialName + '.mot')
     Qs_fromIK = getIK(pathIK, joints)
     # Filtering.
@@ -640,13 +640,13 @@ def run_tracking(baseDir, dataDir, subject, settings, case='0',
             w_dataToTrack[count, 0] = coordinates_toTrack[coord]['weight']
     idx_coordinates_toTrack = getIndices(joints, coordinates_toTrack_l)
 
-    from utilsOpenSimAD import scaleDataFrame, selectFromDataFrame
+    from utils_opensim_ad import scaleDataFrame, selectFromDataFrame
     dataToTrack_Qs_nsc = selectFromDataFrame(
         Qs_toTrack, coordinates_toTrack_l).to_numpy()[:, 1::].T
 
     # If Force/EMG/IK/ID data is available, we load it for comparison.
     # Force (GRF and GRM)
-    from utilsOpenSimAD import getGRFAll, getEMG, getID
+    from utils_opensim_ad import getGRFAll, getEMG, getID
     pathGRFFile = os.path.join(pathForceFolder, trialName + '.mot')
     experimental_force_data_available = False
     if os.path.exists(pathGRFFile):
@@ -743,7 +743,7 @@ def run_tracking(baseDir, dataDir, subject, settings, case='0',
         'mtp_angle_r': {'max': 30, 'min': -45}}
     # Check if the Qs (coordinate values) to track are within the bounds
     # used to define the polynomials. If not, adjust the polynomial bounds.
-    from utilsOpenSimAD import checkQsWithinPolynomialBounds
+    from utils_opensim_ad import checkQsWithinPolynomialBounds
     updated_bounds = checkQsWithinPolynomialBounds(
         dataToTrack_Qs_nsc, polynomial_bounds, model_bounds, coordinates_toTrack_l)
     type_bounds_polynomials = 'default'
@@ -751,13 +751,13 @@ def run_tracking(baseDir, dataDir, subject, settings, case='0',
         # Modify the values of polynomial_bounds based on the values in
         # updated_bounds.  Also, create a dummy motion file specific to the
         # trial being processed.
-        from utilsOpenSimAD import adjustBoundsAndDummyMotion
+        from utils_opensim_ad import adjustBoundsAndDummyMotion
         polynomial_bounds, pathDummyMotion = adjustBoundsAndDummyMotion(
             polynomial_bounds, updated_bounds, pathDummyMotion,
             pathModelFolder, trialName, overwriteDummyMotion=False)
         type_bounds_polynomials = trialName
 
-    from functionCasADiOpenSimAD import polynomialApproximation
+    from function_casadi_opensim_ad import polynomialApproximation
     leftPolynomialJoints = [
         'hip_flexion_l', 'hip_adduction_l', 'hip_rotation_l', 'knee_angle_l',
         'ankle_angle_l', 'subtalar_angle_l', 'mtp_angle_l']
@@ -776,7 +776,7 @@ def run_tracking(baseDir, dataDir, subject, settings, case='0',
                 or not os.path.exists(os.path.join(
                     pathModelFolder, model_full_name + '_polynomial_l_{}.npy'.format(type_bounds_polynomials)))):
             loadPolynomialData = False
-        from muscleDataOpenSimAD import getPolynomialData
+        from muscle_data_opensim_ad import getPolynomialData
         polynomialData = {}
         polynomialData['r'] = getPolynomialData(
             loadPolynomialData, pathModelFolder, model_full_name, pathDummyMotion,
@@ -817,7 +817,7 @@ def run_tracking(baseDir, dataDir, subject, settings, case='0',
                 list(range(nSideMuscles)) +
                 list(range(nSideMuscles, nSideMuscles)))
         rightPolynomialMuscleIndices = list(range(nSideMuscles))
-        from utilsOpenSimAD import getMomentArmIndices
+        from utils_opensim_ad import getMomentArmIndices
         momentArmIndices = getMomentArmIndices(
             rightSideMuscles, leftPolynomialJoints, rightPolynomialJoints,
             polynomialData['r'])
@@ -825,7 +825,7 @@ def run_tracking(baseDir, dataDir, subject, settings, case='0',
         # Plot polynomial approximations (when possible) for sanity check.
         plotPolynomials = False
         if plotPolynomials:
-            from polynomialsOpenSimAD import testPolynomials
+            from polynomials_opensim_ad import testPolynomials
             path_data4PolynomialFitting = os.path.join(
                 pathModelFolder,
                 'data4PolynomialFitting_{}_{}.npy'.format(
@@ -862,7 +862,7 @@ def run_tracking(baseDir, dataDir, subject, settings, case='0',
     if contact_side != 'all':
         F_name += '_{}'.format(contact_side)
     if useExpressionGraphFunction:
-        from utilsOpenSimAD import getF_expressingGraph
+        from utils_opensim_ad import getF_expressingGraph
         # Import function for expression graph.    
         sys.path.append(pathExternalFunctionFolder)
         os.chdir(pathExternalFunctionFolder)
@@ -935,10 +935,10 @@ def run_tracking(baseDir, dataDir, subject, settings, case='0',
                    for joint in list(F_map['residuals'].keys())]
 
     # %% Helper CasADi functions
-    from functionCasADiOpenSimAD import normSumSqr
-    from functionCasADiOpenSimAD import normSumWeightedPow
-    from functionCasADiOpenSimAD import diffTorques
-    from functionCasADiOpenSimAD import normSumWeightedSqrDiff
+    from function_casadi_opensim_ad import normSumSqr
+    from function_casadi_opensim_ad import normSumWeightedPow
+    from function_casadi_opensim_ad import diffTorques
+    from function_casadi_opensim_ad import normSumWeightedSqrDiff
     f_NMusclesSum2 = normSumSqr(nMuscles)
     f_NMusclesSumWeightedPow = normSumWeightedPow(nMuscles, powActivations)
     f_nJointsSum2 = normSumSqr(nJoints)
@@ -964,7 +964,7 @@ def run_tracking(baseDir, dataDir, subject, settings, case='0',
         B = [0, 0.75, 0.25]
 
     # %% Bounds of the optimal control problem.
-    from boundsOpenSimAD import bounds_tracking
+    from bounds_opensim_ad import BoundsTracking
     # Pre-allocations.
     uw, lw, scaling = {}, {}, {}
     bounds = bounds_tracking(Qs_toTrack, joints, rightSideMuscles)
@@ -1069,10 +1069,10 @@ def run_tracking(baseDir, dataDir, subject, settings, case='0',
         lw['Offsetk'] = lw['Offset'].to_numpy()
 
     # %% Initial guess of the optimal control problem.
-    from initialGuessOpenSimAD import dataDrivenGuess_tracking
+    from initial_guess_opensim_ad import DataDrivenGuessTracking
     # Pre-allocations.
     w0 = {}
-    guess = dataDrivenGuess_tracking(
+    guess = DataDrivenGuessTracking(
         Qs_toTrack, N, d, joints, bothSidesMuscles)
     # States.
     if torque_driven_model:
@@ -1483,7 +1483,7 @@ def run_tracking(baseDir, dataDir, subject, settings, case='0',
         # %% Plots initial guess vs bounds.
         plotGuessVsBounds = False
         if plotGuessVsBounds:
-            from plotsOpenSimAD import plotGuessVSBounds
+            from plots_opensim_ad import plotGuessVSBounds
             plotGuessVSBounds(lw, uw, w0, nJoints, N, d, guessQsEnd,
                               guessQdsEnd, withArms=withArms,
                               withLumbarCoordinateActuators=
@@ -1911,7 +1911,7 @@ def run_tracking(baseDir, dataDir, subject, settings, case='0',
         # When using the default opti, bounds are replaced by constraints,
         # which is not what we want. This functions allows using bounds and not
         # constraints.
-        from utilsOpenSimAD import solve_with_bounds
+        from utils_opensim_ad import solve_with_bounds
         w_opt, stats = solve_with_bounds(opti, ipopt_tolerance,
                                          useExpressionGraphFunction)
         np.save(os.path.join(pathResults, 'w_opt_{}.npy'.format(case)), w_opt)
@@ -2021,7 +2021,7 @@ def run_tracking(baseDir, dataDir, subject, settings, case='0',
         # %% Visualize results against bounds.
         visualizeResultsBounds = False
         if visualizeResultsBounds:
-            from plotsOpenSimAD import plotOptimalSolutionVSBounds
+            from plots_opensim_ad import plotOptimalSolutionVSBounds
             c_wopt = {'Qs_opt': Qs_opt, 'Qs_col_opt': Qs_col_opt,
                       'Qds_opt': Qds_opt, 'Qds_col_opt': Qds_col_opt,
                       'Qdds_opt': Qdds_opt}
@@ -2098,7 +2098,7 @@ def run_tracking(baseDir, dataDir, subject, settings, case='0',
                 idxGR['GRF'][sphere][side] = list(F_map['GRFs'][sphere])
                 idxGR['COP'][sphere][side] = list(F_map['COPs'][sphere])
 
-        from utilsOpenSimAD import getCOP
+        from utils_opensim_ad import getCOP
         QsQds_opt_nsc = np.zeros((nJoints * 2, N + 1))
         QsQds_opt_nsc[::2, :] = Qs_opt_nsc[idxJoints4F, :]
         QsQds_opt_nsc[1::2, :] = Qds_opt_nsc[idxJoints4F, :]

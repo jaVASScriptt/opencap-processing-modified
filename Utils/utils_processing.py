@@ -1,6 +1,6 @@
 '''
     ---------------------------------------------------------------------------
-    OpenCap processing: utilsProcessing.py
+    OpenCap processing: utils_processing.py
     ---------------------------------------------------------------------------
 
     Copyright 2022 Stanford University and the Authors

@@ -31,8 +31,8 @@ import zipfile
 import platform
 import opensim
 
-from Utils.utilsAPI import get_api_url
-from Utils.utilsAuthentication import get_token
+from Utils.utils_api import get_api_url
+from Utils.utils_authentication import get_token
 import matplotlib.pyplot as plt
 from scipy.signal import gaussian
 

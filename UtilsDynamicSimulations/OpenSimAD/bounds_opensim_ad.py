@@ -1,6 +1,6 @@
 '''
     ---------------------------------------------------------------------------
-    OpenCap processing: boundsOpenSimAD.py
+    OpenCap processing: bounds_opensim_ad.py
     ---------------------------------------------------------------------------
     Copyright 2022 Stanford University and the Authors
     
@@ -21,7 +21,7 @@ import pandas as pd
 import numpy as np
 
 
-class bounds_tracking:
+class BoundsTracking:
 
     def __init__(self, Qs, joints, muscles):
 

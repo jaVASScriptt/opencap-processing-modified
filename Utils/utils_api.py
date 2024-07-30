@@ -1,6 +1,6 @@
 '''
     ---------------------------------------------------------------------------
-    OpenCap processing: createAuthenticationEnvFile.py
+    OpenCap processing: utils_api.py
     ---------------------------------------------------------------------------
 
     Copyright 2022 Stanford University and the Authors
@@ -18,13 +18,17 @@
     limitations under the License.
 '''
 
-# Run this script to save authentication token into a .env file. 
-# DO NOT CHANGE THE FILE NAME OF THE .env FILE, or your credentials will get 
-# pushed to github with a commit, and anyone could get access to your data.
-# We recommend only saving this .env file on your own encrypted machine
-# and not while running on google collab.
+from decouple import config
 
-from Utils.utilsAuthentication import get_token
-import os
 
-get_token(saveEnvPath=os.getcwd())
+def get_api_url():
+    if 'API_URL' not in globals():
+        global API_URL
+        try:  # look in environment file
+            API_URL = config("API_URL")
+        except:  # default
+            API_URL = "https://api.opencap.ai/"
+    if API_URL[-1] != '/':
+        API_URL = API_URL + '/'
+
+    return API_URL

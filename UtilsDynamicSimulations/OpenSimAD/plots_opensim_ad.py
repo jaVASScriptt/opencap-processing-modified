@@ -1,6 +1,6 @@
 '''
     ---------------------------------------------------------------------------
-    OpenCap processing: plotsOpenSimAD.py
+    OpenCap processing: plots_opensim_ad.py
     ---------------------------------------------------------------------------
     Copyright 2022 Stanford University and the Authors
     
@@ -21,8 +21,8 @@
 
 import numpy as np
 
-from utilsOpenSimAD import plotVSBounds
-from utilsOpenSimAD import plotVSvaryingBounds
+from utils_opensim_ad import plotVSBounds
+from utils_opensim_ad import plotVSvaryingBounds
 
 
 def plotGuessVSBounds(lw, uw, w0, nJoints, N, d, guessQsEnd,
