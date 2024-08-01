@@ -41,7 +41,7 @@ from Utils.utils import (storage_to_numpy, storage_to_dataframe,
                          download_kinematics, import_metadata, numpy_to_storage)
 from Utils.utils_processing import (segment_squats, segment_STS, adjust_muscle_wrapping,
                                     generate_model_with_contacts)
-from settings_opensim_ad import get_setup
+from UtilsDynamicSimulations.OpenSimAD.settings_opensim_ad import get_setup
 
 
 # %% Filter numpy array.

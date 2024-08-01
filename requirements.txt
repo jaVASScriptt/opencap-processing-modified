@@ -1,12 +1,15 @@
 scipy==1.10.0
 pandas
-matplotlib
+matplotlib~=3.9.0
 ipython
 python-decouple
 maskpass==0.3.6
-requests
+requests~=2.32.3
 casadi
 pyyaml
 joblib
 cmake
 seaborn
+numpy~=1.26.4
+utils~=1.0.2
+inquirerpy~=0.3.4

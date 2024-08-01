@@ -17,8 +17,10 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 '''
-
+import json
 import os
+from datetime import datetime
+
 import requests
 import urllib.request
 import shutil
@@ -30,6 +32,7 @@ import glob
 import zipfile
 import platform
 import opensim
+from InquirerPy import inquirer
 
 from Utils.utils_api import get_api_url
 from Utils.utils_authentication import get_token
@@ -66,6 +69,31 @@ def get_session_json(session_id):
     return sessionJson
 
 
+def retrieves_and_sorts_sessions():
+    print()
+    print("Downloading data from opencap...")
+    print()
+
+    sessions = requests.get(
+        API_URL + "sessions/",
+        headers={"Authorization": "Token {}".format(API_TOKEN)})
+
+    sessions_json = sessions.json()
+    filtered_sessions = [session for session in sessions_json if session['trials_count'] > 1]
+
+    for session in filtered_sessions:
+        session['trials'] = [trial for trial in session['trials']
+                             if trial['status'] == 'done'
+                             and trial['name'] not in ['calibration', 'neutral']]
+
+    filtered_sessions_json = json.dumps(filtered_sessions, indent=4)
+
+    with open('sessions_info.json', 'w') as f:
+        f.write(filtered_sessions_json)
+
+    return filtered_sessions
+
+
 # Returns a list of all sessions of the user.
 def get_user_sessions():
     sessions = requests.get(
@@ -73,6 +101,39 @@ def get_user_sessions():
         headers={"Authorization": "Token {}".format(API_TOKEN)}).json()
 
     return sessions
+
+
+def get_sessions(is_public=None):
+    with open('sessions_info.json') as f:
+        sessions_json = json.load(f)
+
+    return [
+        ((s['meta']['sessionName'] if 'sessionName' in s['meta'] and s['meta']['sessionName'] else "Unnamed") + " (" +
+         s['id'] + ")" + " / subject:" +
+         s['name'] + " - " +
+         datetime.fromisoformat(s['created_at'].rstrip("Z")).strftime("%Y-%m-%d"))
+        for s in sessions_json if is_public is None or s['public'] == is_public
+    ]
+
+
+def get_trials_names_from_session(session_id):
+    with open('sessions_info.json') as f:
+        sessions_json = json.load(f)
+
+    trials = []
+
+    for session in sessions_json:
+        if session['id'] == session_id:
+            trials = [trial['name'] for trial in session['trials']]
+
+    return trials
+
+
+def get_user_selection(message, choices):
+    print()
+    res = inquirer.select(message=message, choices=choices).execute()
+    print()
+    return res
 
 
 # Returns a list of all sessions of the user.
