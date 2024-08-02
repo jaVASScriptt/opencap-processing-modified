@@ -10,7 +10,7 @@ class GaitAnalysisController:
 
     def __init__(self):
 
-        self.analysis_folder = None
+        self.analysis_folder = r"C:\Users\NNL_L\OneDrive\Documents\Tests"
         sys.path.append("../")
         sys.path.append("../ActivityAnalyses")
 
@@ -38,10 +38,15 @@ class GaitAnalysisController:
     def start_analysis(self):
 
         question = "Here are all the settings you've configured:\n" \
-                   f"\n" \
-                   f"Sessions and trials: {self.sessions_trials}\n" \
-                   f"\n" \
-                   "Do you want to proceed with these settings?"
+                   "\n" \
+                   "Sessions and trials:\n" \
+                   + "\n".join(
+            [f"Session {i + 1}: {self.sessions_trials[i]['session_id']} - {self.sessions_trials[i]['trial_name']}"
+             for i in range(len(self.sessions_trials))]) + "\n" \
+                                                           "\n" \
+                                                           f"Results folder: {self.analysis_folder}\n" \
+                                                           "\n" \
+                                                           "Do you want to proceed with these settings?"
 
         if get_user_selection(question, ["Yes", "No"]) == "No":
             return
@@ -53,7 +58,7 @@ class GaitAnalysisController:
             validate=lambda x: len(x) > 0
         ).execute()
 
-        self.analysis_folder = os.path.join(self.dataFolder, analysis_name)
+        self.analysis_folder = os.path.join(self.analysis_folder, analysis_name)
         os.makedirs(self.analysis_folder, exist_ok=True)
 
         for session_trial in self.sessions_trials:
@@ -95,6 +100,15 @@ class GaitAnalysisController:
 
             save_gait_metrics_to_excel(gaitResults, os.path.join(self.analysis_folder, f"{session_id}-{trial_name}",
                                                                  f'gait_metrics.xlsx'))
+
+            plot_dataframe_with_shading(
+                {f"{session_id}_{trial_name}": gaitResults},
+                os.path.join(self.analysis_folder, f"{session_id}-{trial_name}"),
+                leg=['r', 'l'],
+                xlabel='% gait cycle',
+                title='kinematics (m or deg)',
+                legend_entries=['right', 'left']
+            )
 
             self.AllGaitResults[f"{session_id}_{trial_name}"] = gaitResults
         self.plot_and_save_results()

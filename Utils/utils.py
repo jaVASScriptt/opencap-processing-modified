@@ -71,7 +71,7 @@ def get_session_json(session_id):
 
 def retrieves_and_sorts_sessions():
     print()
-    print("Downloading data from opencap...")
+    print("Downloading data from opencap (Estimated waiting time between 2 and 5 minutes) ...")
     print()
 
     sessions = requests.get(
@@ -88,7 +88,10 @@ def retrieves_and_sorts_sessions():
 
     filtered_sessions_json = json.dumps(filtered_sessions, indent=4)
 
-    with open('sessions_info.json', 'w') as f:
+    # Ensure the Data directory exists
+    os.makedirs('Data', exist_ok=True)
+
+    with open('Data/sessions_info.json', 'w') as f:
         f.write(filtered_sessions_json)
 
     return filtered_sessions
@@ -104,7 +107,7 @@ def get_user_sessions():
 
 
 def get_sessions(is_public=None):
-    with open('sessions_info.json') as f:
+    with open('Data/sessions_info.json') as f:
         sessions_json = json.load(f)
 
     return [
@@ -117,7 +120,7 @@ def get_sessions(is_public=None):
 
 
 def get_trials_names_from_session(session_id):
-    with open('sessions_info.json') as f:
+    with open('Data/sessions_info.json') as f:
         sessions_json = json.load(f)
 
     trials = []
