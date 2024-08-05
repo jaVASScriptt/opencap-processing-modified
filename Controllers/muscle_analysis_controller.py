@@ -3,6 +3,7 @@ import sys
 from InquirerPy import inquirer
 
 from Controllers.analysis_utils import menu_analysis
+from Controllers.data_controller import DataController
 from Utils.utils import *
 import os
 
@@ -12,14 +13,16 @@ from UtilsDynamicSimulations.OpenSimAD.main_opensim_ad import run_tracking
 
 class MuscleAnalysisController:
     def __init__(self):
-        self.session_id = None
-        self.trial_name = None
-        self.motion_type = None
-        self.time_window = None
-        self.repetition = None
-        self.case = None
-        self.treadmill_speed = 0
-        self.contact_side = 'all'
+        self.DataController = DataController("muscles_analysis")
+
+        self.session_id = self.DataController.get('session_id')
+        self.trial_name = self.DataController.get('trial_name')
+        self.motion_type = self.DataController.get('motion_type')
+        self.time_window = self.DataController.get('time_window')
+        self.repetition = self.DataController.get('repetition')
+        self.case = self.DataController.get('case')
+        self.treadmill_speed = self.DataController.get('treadmill_speed')
+        self.contact_side = self.DataController.get('contact_side')
 
         self.motion_types = [
             'squats',
@@ -164,21 +167,9 @@ class MuscleAnalysisController:
         self.time_window = [start_time, end_time]
 
     def start_analysis(self):
+        self.DataController.display()
 
-        question = "Here are all the settings you've configured:\n" \
-                   f"\n" \
-                   f"Session id: {self.session_id}\n" \
-                   f"Trial name: {self.trial_name}\n" \
-                   f"Motion type: {self.motion_type}\n" \
-                   f"Time window: {self.time_window}\n" \
-                   f"Repetition: {self.repetition}\n" \
-                   f"Treadmill speed: {self.treadmill_speed}\n" \
-                   f"Contact side: {self.contact_side}\n" \
-                   f"Case: {self.case}\n" \
-                   f"\n" \
-                   "Do you want to proceed with these settings?"
-
-        if get_user_selection(question, ["Yes", "No"]) == "No":
+        if get_user_selection("Do you want to proceed with these settings?", ["Yes", "No"]) == "No":
             return
 
         baseDir = os.getcwd()

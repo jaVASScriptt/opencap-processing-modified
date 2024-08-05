@@ -4,14 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="878c8489-bd1d-4a43-8dc4-70878a59f97c" name="Changes" comment="Reformat + rename classes">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    <list default="true" id="878c8489-bd1d-4a43-8dc4-70878a59f97c" name="Changes" comment="ajout des fonctionnalités d'enregistrement gait_analysis">
+      <change afterPath="$PROJECT_DIR$/Controllers/data_controller.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Controllers/analysis_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/analysis_utils.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Controllers/gait_analysis_controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/gait_analysis_controller.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Utils/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/Utils/utils.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Utils/utils_plotting.py" beforeDir="false" afterPath="$PROJECT_DIR$/Utils/utils_plotting.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Controllers/muscle_analysis_controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/muscle_analysis_controller.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/program_launcher.py" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/program_controller.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,20 +49,20 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_MARK_IGNORED_FILES_AS_EXCLUDED": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
-    "last_opened_file_path": "C:/Users/NNL_L/OneDrive/Documents/opencap-processing",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_MARK_IGNORED_FILES_AS_EXCLUDED&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/NNL_L/OneDrive/Documents/opencap-processing&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\NNL_L\OneDrive\Documents\opencap-processing-modified" />
@@ -92,7 +91,8 @@
       <workItem from="1722345304133" duration="13448000" />
       <workItem from="1722447351709" duration="596000" />
       <workItem from="1722516201200" duration="1215000" />
-      <workItem from="1722604227291" duration="14633000" />
+      <workItem from="1722604227291" duration="15794000" />
+      <workItem from="1722863924742" duration="5225000" />
     </task>
     <task id="LOCAL-00001" summary="README.md">
       <option name="closed" value="true" />
@@ -142,7 +142,15 @@
       <option name="project" value="LOCAL" />
       <updated>1722354301114</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="ajout des fonctionnalités d'enregistrement gait_analysis">
+      <option name="closed" value="true" />
+      <created>1722626722121</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1722626722121</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -154,6 +162,7 @@
     <MESSAGE value="del jupiter Notebook" />
     <MESSAGE value="Rangement éléments et suppression des exemples" />
     <MESSAGE value="Reformat + rename classes" />
-    <option name="LAST_COMMIT_MESSAGE" value="Reformat + rename classes" />
+    <MESSAGE value="ajout des fonctionnalités d'enregistrement gait_analysis" />
+    <option name="LAST_COMMIT_MESSAGE" value="ajout des fonctionnalités d'enregistrement gait_analysis" />
   </component>
 </project>

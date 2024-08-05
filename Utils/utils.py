@@ -33,6 +33,7 @@ import zipfile
 import platform
 import opensim
 from InquirerPy import inquirer
+from InquirerPy.prompts import ListPrompt, CheckboxPrompt
 
 from Utils.utils_api import get_api_url
 from Utils.utils_authentication import get_token
@@ -132,11 +133,30 @@ def get_trials_names_from_session(session_id):
     return trials
 
 
-def get_user_selection(message, choices):
+def get_user_selection(message, choices, multiple=False):
+    """
+    Permet à l'utilisateur de faire une sélection dans une liste d'options.
+
+    Args:
+        message (str): Le message à afficher pour la sélection.
+        choices (list): La liste des options parmi lesquelles l'utilisateur peut choisir.
+        multiple (bool): Si True, permet la sélection de plusieurs options. Sinon, la sélection est unique.
+
+    Returns:
+        str ou list: La sélection de l'utilisateur. Une chaîne si multiple est False, sinon une liste.
+    """
     print()
-    res = inquirer.select(message=message, choices=choices).execute()
+    if multiple:
+        # Utilisation de CheckboxPrompt pour permettre la sélection multiple
+        result = inquirer.checkbox(
+            message=message,
+            choices=choices
+        ).execute()
+    else:
+        result = inquirer.select(message=message, choices=choices).execute()
+
     print()
-    return res
+    return result
 
 
 # Returns a list of all sessions of the user.

@@ -1,0 +1,25 @@
+{
+    "gait_analysis": {
+        "sessions_trials": [
+            {
+                "session_id": "614b4c07-073c-4a43-9e69-67e724e193dd",
+                "trial_name": "marche2"
+            },
+            {
+                "session_id": "c7259b77-5783-4bba-9369-6e9a276bbe32",
+                "trial_name": "marche2"
+            }
+        ],
+        "analysis_folder": "C:/Users/NNL_L/OneDrive/Images"
+    },
+    "muscles_analysis": {
+        "session_id": null,
+        "trial_name": null,
+        "motion_type": null,
+        "time_window": null,
+        "repetition": null,
+        "case": null,
+        "treadmill_speed": 0,
+        "contact_side": "all"
+    }
+}

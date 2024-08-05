@@ -1,4 +1,6 @@
 from Utils.utils import *
+import tkinter as tk
+from tkinter import filedialog
 
 
 def menu_analysis(self):
@@ -11,8 +13,20 @@ def menu_analysis(self):
             if data_choice == "Full setup":
                 self.setup()
             elif data_choice == "Select an element to change":
-                print("Select an element to change")
+                self.modify_parameters()
         elif choice == "Start an analysis":
             self.start_analysis()
         elif choice == "Home":
             break
+
+
+def modify_output_folder():
+    """Ouvre un explorateur de fichiers pour sélectionner un dossier."""
+    root = tk.Tk()
+    root.withdraw()  # Cache la fenêtre principale
+    folder_selected = filedialog.askdirectory(title="Sélectionnez un dossier pour sauvegarder les résultats")
+    if folder_selected:
+        print(f"Dossier sélectionné : {folder_selected}")
+        return folder_selected
+    else:
+        print("Aucun dossier sélectionné.")
