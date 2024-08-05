@@ -44,9 +44,9 @@ def lowPassFilter(time, data, lowpass_cutoff_frequency, order=4):
 def segment_gait(session_id, trial_name, data_folder, gait_cycles_from_end=0):
     
     # Segmentation is done in the gait_analysis class
-    from gait_analysis import gait_analysis  
+    from ActivityAnalyses.gait_analysis import GaitAnalysis
     
-    gait = gait_analysis(os.path.join(data_folder,session_id), trial_name,
+    gait = GaitAnalysis(os.path.join(data_folder,session_id), trial_name,
                          n_gait_cycles=-1)
     heelstrikeTimes = gait.gait_events['ipsilateralTime'][gait_cycles_from_end,(0, 2)].tolist()
     
@@ -64,7 +64,7 @@ def segment_squats(ikFilePath, pelvis_ty=None, timeVec=None, visualize=False,
         ikResults = storage_to_dataframe(ikFilePath,headers={'pelvis_ty'})
         timeVec = ikResults['time']
         if filter_pelvis_ty:
-            from utilsOpenSimAD import filterNumpyArray
+            from UtilsDynamicSimulations.OpenSimAD.utils_opensim_ad import filterNumpyArray
             pelvis_ty = filterNumpyArray(
                 ikResults['pelvis_ty'].to_numpy(), timeVec.to_numpy(), 
                 cutoff_frequency=cutoff_frequency)
