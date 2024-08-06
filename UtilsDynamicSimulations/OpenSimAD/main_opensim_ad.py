@@ -2554,7 +2554,7 @@ def run_tracking(baseDir, dataDir, subject, settings, case='0',
         if computeKAM:
             sys.path.append(os.path.join(baseDir, 'OpenSimPipeline',
                                          'JointReaction'))
-            from computeJointLoading import computeKAM
+            from OpenSimPipeline.JointReaction.compute_joint_loading import computeKAM
             KAM_labels = ['knee_adduction_r', 'knee_adduction_l']
             IDPath = os.path.join(
                 pathResults, 'kinetics_{}_{}.mot'.format(trialName, case))
@@ -2655,7 +2655,7 @@ def run_tracking(baseDir, dataDir, subject, settings, case='0',
             if not computeKAM:
                 sys.path.append(os.path.join(baseDir, 'OpenSimPipeline',
                                              'JointReaction'))
-            from computeJointLoading import computeMCF
+            from OpenSimPipeline.JointReaction.compute_joint_loading import computeMCF
             MCF_labels = ['medial_knee_contact_force_r',
                           'medial_knee_contact_force_l']
             forcePath = os.path.join(pathResults,

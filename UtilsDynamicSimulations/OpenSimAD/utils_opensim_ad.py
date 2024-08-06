@@ -2547,7 +2547,9 @@ def plotResultsOpenSimAD(dataDir, subject, motion_filename, settings,
 def processInputsOpenSimAD(baseDir, dataFolder, session_id, trial_name,
                            motion_type, time_window=[], repetition=None,
                            treadmill_speed=0, contact_side='all',
-                           overwrite=False, useExpressionGraphFunction=True):
+                           mesh_density=100, ipopt_tolerance=4,
+                           overwrite=False, useExpressionGraphFunction=True,
+                           ):
     # Path session folder.
     sessionFolder = os.path.join(dataFolder, session_id)
 
@@ -2623,6 +2625,10 @@ def processInputsOpenSimAD(baseDir, dataFolder, session_id, trial_name,
 
     # Treadmill speed.
     settings['treadmill_speed'] = treadmill_speed
+
+    settings['meshDensity'] = mesh_density
+
+    settings['ipopt_tolerance'] = ipopt_tolerance
 
     # Trial name
     settings['trial_name'] = trial_name

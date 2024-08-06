@@ -134,7 +134,7 @@ def get_trials_names_from_session(session_id):
     return trials
 
 
-def get_user_selection(message, choices, multiple=False, display=None):
+def get_user_selection(message, choices=None, type=None, display=None, validate=None):
     """
     Permet à l'utilisateur de faire une sélection dans une liste d'options.
 
@@ -149,11 +149,23 @@ def get_user_selection(message, choices, multiple=False, display=None):
     if display:
         display_message(display)
 
-    if multiple:
+    if type == "multi":
         # Utilisation de CheckboxPrompt pour permettre la sélection multiple
         result = inquirer.checkbox(
             message=message,
             choices=choices
+        ).execute()
+    elif type == "confirm":
+        # Utilisation de ConfirmPrompt pour permettre la sélection unique
+        result = inquirer.confirm(
+            message=message,
+            default=True
+        ).execute()
+    elif type == "input":
+        # Utilisation de TextPrompt pour permettre la saisie d'une valeur
+        result = inquirer.text(
+            message=message,
+            validate=validate
         ).execute()
     else:
         result = inquirer.select(message=message, choices=choices).execute()

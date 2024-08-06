@@ -40,10 +40,9 @@ class DataController:
         """Récupère la valeur d'un paramètre par sa clé."""
         return self.parameters.get(key, None)
 
-    def set(self, key, update_function):
+    def set(self, key, new_value):
         """Met à jour la valeur d'un paramètre par une fonction de mise à jour."""
         if key in self.parameters:
-            new_value = update_function()
             self.parameters[key] = new_value
             self.save_parameters()
 

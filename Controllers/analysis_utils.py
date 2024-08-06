@@ -45,4 +45,5 @@ def modify_output_folder():
     else:
         print("No folders selected.")
         print()
+        return None
 

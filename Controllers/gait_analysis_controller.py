@@ -91,7 +91,8 @@ class GaitAnalysisController:
                     print(f"{key}: {rounded_value} {value['units']}")
 
                 save_gait_metrics_to_excel(gaitResults,
-                                           os.path.join(self.analysis_folder, f"{session_id}-{trial_name}", f'gait_metrics.xlsx'))
+                                           os.path.join(self.analysis_folder, f"{session_id}-{trial_name}",
+                                                        f'gait_metrics.xlsx'))
 
                 plot_dataframe_with_shading(
                     {f"{session_id}_{trial_name}": gaitResults},
@@ -125,21 +126,19 @@ class GaitAnalysisController:
         save_plots_to_excel(plot_data, self.analysis_folder)
 
     def setup(self):
-        self.DataController.set('analysis_folder', modify_output_folder)
-        self.DataController.set('sessions_trials', self.modify_sessions_trials)
-        self.analysis_folder = self.DataController.get('analysis_folder')
-        self.sessions_trials = self.DataController.get('sessions_trials')
+        self.analysis_folder = modify_output_folder()
+        self.DataController.set('analysis_folder', self.analysis_folder)
+        self.modify_sessions_trials()
 
     def modify_parameters(self):
         answer = self.get_user_selection("What do you want to modify?", ["Output folder", "Sessions Trials"])
 
         match answer:
             case "Output folder":
-                self.DataController.set('analysis_folder', modify_output_folder)
-                self.analysis_folder = self.DataController.get('analysis_folder')
+                self.analysis_folder = modify_output_folder()
+                self.DataController.set('analysis_folder', self.analysis_folder)
             case "Sessions Trials":
-                self.DataController.set('sessions_trials', self.modify_sessions_trials)
-                self.sessions_trials = self.DataController.get('sessions_trials')
+                self.modify_sessions_trials()
 
     def modify_sessions_trials(self):
         ask_sessions = self.get_user_selection(
@@ -169,7 +168,7 @@ class GaitAnalysisController:
             print()
 
             question = self.get_user_selection("What do you want to do?",
-                                          ["Add another trial", "Remove a trial", "Continue"])
+                                               ["Add another trial", "Remove a trial", "Continue"])
 
             if question == "Remove a trial":
                 li = [f"{trial['trial_name']} from session {trial['session_id']}" for trial in trials]
@@ -188,7 +187,8 @@ class GaitAnalysisController:
                 print()
                 break
 
-        return trials
+        self.sessions_trials = trials
+        self.DataController.set('sessions_trials', self.sessions_trials)
 
     def handle_trial_selection(self, selection):
         if selection == "Manual input":
@@ -199,7 +199,7 @@ class GaitAnalysisController:
             session_id = selected_session.split(" (")[1].split(")")[0]
 
         selected_trial = self.get_user_selection(message="Select a trial:",
-                                            choices=get_trials_names_from_session(session_id))
+                                                 choices=get_trials_names_from_session(session_id))
         print(f"Selected trial: {selected_trial} from session {session_id}")
         print("\n")
 
