@@ -19,7 +19,7 @@ class MuscleAnalysisController:
         self.trial_name = self.DataController.get('trial_name')
         self.motion_type = self.DataController.get('motion_type')
         self.time_window = self.DataController.get('time_window')
-        self.repetition = int(self.DataController.get('repetition'))
+        self.repetition = str(self.DataController.get('repetition'))
         self.case = self.DataController.get('case')
         self.treadmill_speed = self.DataController.get('treadmill_speed')
         self.contact_side = self.DataController.get('contact_side')
@@ -42,8 +42,12 @@ class MuscleAnalysisController:
     def menu(self):
         menu_analysis(self)
 
+    @staticmethod
+    def get_user_selection(message, choices):
+        return get_user_selection(message, choices, display="Muscle Analysis")
+
     def initialize_contact_side(self):
-        self.contact_side = get_user_selection(
+        self.contact_side = self.get_user_selection(
             message="Select the contact side:",
             choices=["all", "right", "left"]
         )
@@ -80,19 +84,19 @@ class MuscleAnalysisController:
         return self.repetition
 
     def initialize_motion_type(self):
-        self.motion_type = get_user_selection(
+        self.motion_type = self.get_user_selection(
             message="Select a motion type:",
             choices=self.motion_types)
         return self.motion_type
 
     def initialize_trial_selection(self):
-        self.trial_name = get_user_selection(
+        self.trial_name = self.get_user_selection(
             message="Select a trial:",
             choices=get_trials_names_from_session(self.session_id))
         return self.trial_name
 
     def initialize_session_selection(self):
-        ask_sessions = get_user_selection(
+        ask_sessions = self.get_user_selection(
             message="Do you want to see your sessions or public sessions?",
             choices=["My sessions", "Public sessions", "All sessions", "Manual input"])
         self.handle_session_selection(ask_sessions)
@@ -104,7 +108,7 @@ class MuscleAnalysisController:
         else:
             self.sessions = get_sessions(is_public=self.get_public_status(selection))
             self.session_id = self.extract_session_id(
-                get_user_selection(message="Select a session:", choices=self.sessions))
+                self.get_user_selection(message="Select a session:", choices=self.sessions))
 
     @staticmethod
     def get_public_status(selection):
@@ -186,7 +190,7 @@ class MuscleAnalysisController:
     def start_analysis(self):
         self.DataController.display()
 
-        if get_user_selection("Do you want to proceed with these settings?", ["Yes", "No"]) == "No":
+        if self.get_user_selection("Do you want to proceed with these settings?", ["Yes", "No"]) == "No":
             return
 
         baseDir = os.getcwd()
@@ -227,7 +231,7 @@ class MuscleAnalysisController:
         self.contact_side = self.DataController.get("contact_side")
 
     def modify_parameters(self):
-        answer = get_user_selection("What do you want to modify?",
+        answer = self.get_user_selection("What do you want to modify?",
                                     ["Session", "Trial", "Motion type", "Time window",
                                      "Repetition", "Case", "Treadmill speed", "Contact side"])
 

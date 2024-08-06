@@ -35,6 +35,7 @@ import opensim
 from InquirerPy import inquirer
 from InquirerPy.prompts import ListPrompt, CheckboxPrompt
 
+from Controllers.analysis_utils import clear_terminal, display_message
 from Utils.utils_api import get_api_url
 from Utils.utils_authentication import get_token
 import matplotlib.pyplot as plt
@@ -133,7 +134,7 @@ def get_trials_names_from_session(session_id):
     return trials
 
 
-def get_user_selection(message, choices, multiple=False):
+def get_user_selection(message, choices, multiple=False, display=None):
     """
     Permet à l'utilisateur de faire une sélection dans une liste d'options.
 
@@ -145,7 +146,9 @@ def get_user_selection(message, choices, multiple=False):
     Returns:
         str ou list: La sélection de l'utilisateur. Une chaîne si multiple est False, sinon une liste.
     """
-    print()
+    if display:
+        display_message(display)
+
     if multiple:
         # Utilisation de CheckboxPrompt pour permettre la sélection multiple
         result = inquirer.checkbox(
@@ -155,7 +158,7 @@ def get_user_selection(message, choices, multiple=False):
     else:
         result = inquirer.select(message=message, choices=choices).execute()
 
-    print()
+    clear_terminal()
     return result
 
 

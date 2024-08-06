@@ -261,7 +261,7 @@ def getPolynomialData(loadPolynomialData, pathModelFolder, modelName='',
                                              allow_pickle=True).item()
         # Fit polynomial coefficients.
         print('Fit polynomials.')
-        from polynomials_opensim_ad import getPolynomialCoefficients
+        from UtilsDynamicSimulations.OpenSimAD.polynomials_opensim_ad import getPolynomialCoefficients
         polynomialData = getPolynomialCoefficients(
             data4PolynomialFitting, joints, muscles, side=side)
         if pathModelFolder != 0:

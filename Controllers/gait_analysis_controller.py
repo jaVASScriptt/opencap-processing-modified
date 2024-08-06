@@ -33,11 +33,15 @@ class GaitAnalysisController:
     def menu(self):
         menu_analysis(self)
 
+    @staticmethod
+    def get_user_selection(message, choices):
+        return get_user_selection(message, choices, display="Gait Analysis")
+
     def start_analysis(self):
 
         self.DataController.display()
 
-        if get_user_selection("Do you want to proceed with these settings?", ["Yes", "No"]) == "No":
+        if self.get_user_selection("Do you want to proceed with these settings?", ["Yes", "No"]) == "No":
             return
 
         analysis_name = inquirer.text(
@@ -127,7 +131,7 @@ class GaitAnalysisController:
         self.sessions_trials = self.DataController.get('sessions_trials')
 
     def modify_parameters(self):
-        answer = get_user_selection("What do you want to modify?", ["Output folder", "Sessions Trials"])
+        answer = self.get_user_selection("What do you want to modify?", ["Output folder", "Sessions Trials"])
 
         match answer:
             case "Output folder":
@@ -138,7 +142,7 @@ class GaitAnalysisController:
                 self.sessions_trials = self.DataController.get('sessions_trials')
 
     def modify_sessions_trials(self):
-        ask_sessions = get_user_selection(
+        ask_sessions = self.get_user_selection(
             message="Do you want to see your sessions or public sessions?",
             choices=["My sessions", "Public sessions", "All sessions", "Manual input"]
         )
@@ -162,13 +166,14 @@ class GaitAnalysisController:
             print("Current sessions and trials:")
             for trial in trials:
                 print(f"{trial['trial_name']} from session {trial['session_id']}")
+            print()
 
-            question = get_user_selection("What do you want to do?",
+            question = self.get_user_selection("What do you want to do?",
                                           ["Add another trial", "Remove a trial", "Continue"])
 
             if question == "Remove a trial":
                 li = [f"{trial['trial_name']} from session {trial['session_id']}" for trial in trials]
-                trial_to_remove = get_user_selection("Select a trial to remove:", choices=li)
+                trial_to_remove = self.get_user_selection("Select a trial to remove:", choices=li)
                 session_id, trial_name = self.extract_session_info(trial_to_remove)
                 trials = [trial for trial in trials
                           if trial['session_id'] != session_id
@@ -190,10 +195,10 @@ class GaitAnalysisController:
             session_id = input("Enter the session id: ")
         else:
             sessions = get_sessions(is_public=self.get_public_status(selection))
-            selected_session = get_user_selection(message="Select a session:", choices=sessions)
+            selected_session = self.get_user_selection(message="Select a session:", choices=sessions)
             session_id = selected_session.split(" (")[1].split(")")[0]
 
-        selected_trial = get_user_selection(message="Select a trial:",
+        selected_trial = self.get_user_selection(message="Select a trial:",
                                             choices=get_trials_names_from_session(session_id))
         print(f"Selected trial: {selected_trial} from session {session_id}")
         print("\n")

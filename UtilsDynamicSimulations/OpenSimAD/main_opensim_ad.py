@@ -825,7 +825,7 @@ def run_tracking(baseDir, dataDir, subject, settings, case='0',
         # Plot polynomial approximations (when possible) for sanity check.
         plotPolynomials = False
         if plotPolynomials:
-            from polynomials_opensim_ad import testPolynomials
+            from UtilsDynamicSimulations.OpenSimAD.polynomials_opensim_ad import testPolynomials
             path_data4PolynomialFitting = os.path.join(
                 pathModelFolder,
                 'data4PolynomialFitting_{}_{}.npy'.format(
@@ -967,7 +967,7 @@ def run_tracking(baseDir, dataDir, subject, settings, case='0',
     from bounds_opensim_ad import BoundsTracking
     # Pre-allocations.
     uw, lw, scaling = {}, {}, {}
-    bounds = bounds_tracking(Qs_toTrack, joints, rightSideMuscles)
+    bounds = BoundsTracking(Qs_toTrack, joints, rightSideMuscles)
     # States.
     if torque_driven_model:
         # Coordinate activations.

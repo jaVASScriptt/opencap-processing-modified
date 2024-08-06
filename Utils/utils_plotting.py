@@ -232,7 +232,7 @@ def plot_dataframe_with_shading(AllGaitResults, analysis_folder, leg=None, xlabe
     plt.savefig(os.path.join(analysis_folder, f"plot.png"), dpi=300)
 
     print("")
-    print(f"Plot saved in {analysis_folder}.")
+    print(f"Plot graph saved to {analysis_folder}")
 
     # Show the plot
     plt.show()
@@ -241,10 +241,6 @@ def plot_dataframe_with_shading(AllGaitResults, analysis_folder, leg=None, xlabe
 
 
 def save_plots_to_excel(plot_data, analysis_folder):
-    # Crée le dossier principal 'results_excels' s'il n'existe pas
-    if not os.path.exists('results_excels'):
-        os.makedirs('results_excels')
-
     for trial_key, data_list in plot_data.items():
         session_id, trial_name = trial_key.split('_', 1)
         trial_dir = os.path.join(analysis_folder, f"{session_id}-{trial_name}")
@@ -275,7 +271,7 @@ def save_plots_to_excel(plot_data, analysis_folder):
                 df.to_excel(writer, sheet_name='Sheet1', index=False)
 
     print("")
-    print(f"Excel files saved in 'results_excels' folder.")
+    print(f"Plots points saved to {analysis_folder}")
     print("")
 
 
