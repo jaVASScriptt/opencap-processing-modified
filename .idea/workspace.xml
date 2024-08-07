@@ -5,12 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="878c8489-bd1d-4a43-8dc4-70878a59f97c" name="Changes" comment="ajout des fonctionnalités d'enregistrement gait_analysis">
-      <change afterPath="$PROJECT_DIR$/Controllers/data_controller.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Controllers/analysis_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/analysis_utils.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Controllers/gait_analysis_controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/gait_analysis_controller.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Controllers/muscle_analysis_controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/muscle_analysis_controller.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UtilsDynamicSimulations/OpenSimAD/utils_opensim_ad.py" beforeDir="false" afterPath="$PROJECT_DIR$/UtilsDynamicSimulations/OpenSimAD/utils_opensim_ad.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -93,6 +90,7 @@
       <workItem from="1722516201200" duration="1215000" />
       <workItem from="1722604227291" duration="15794000" />
       <workItem from="1722863924742" duration="5225000" />
+      <workItem from="1723051066841" duration="3313000" />
     </task>
     <task id="LOCAL-00001" summary="README.md">
       <option name="closed" value="true" />

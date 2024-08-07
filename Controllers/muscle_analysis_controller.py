@@ -228,7 +228,8 @@ class MuscleAnalysisController:
         run_tracking(self.baseDir, self.output_folder, self.session_id, settings, case=self.case,
                      solveProblem=solveProblem, analyzeResults=analyzeResults)
 
-        plotResultsOpenSimAD(self.output_folder, self.session_id, self.trial_name, settings, cases=[self.case])
+        plotResultsOpenSimAD(self.output_folder, self.session_id, self.trial_name, settings,
+                             cases=[self.case], output_dir=self.output_folder)
 
     def setup(self):
         self.initialize_session_selection()
