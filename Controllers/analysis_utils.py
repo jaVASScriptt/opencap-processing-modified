@@ -8,6 +8,7 @@ def clear_terminal():
 
 
 def display_message(message):
+    print()
     border = '*' * (len(message) + 4)
     print(border)
     print(f"* {message} *")

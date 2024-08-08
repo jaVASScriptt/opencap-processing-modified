@@ -34,8 +34,8 @@ class GaitAnalysisController:
         menu_analysis(self)
 
     @staticmethod
-    def get_user_selection(message, choices):
-        return get_user_selection(message, choices, display="Gait Analysis")
+    def get_user_selection(message, choices=None, type=None, validate=None):
+        return get_user_selection(message, choices, type, "Gait Analysis", validate)
 
     def start_analysis(self):
 
@@ -44,10 +44,8 @@ class GaitAnalysisController:
         if self.get_user_selection("Do you want to proceed with these settings?", ["Yes", "No"]) == "No":
             return
 
-        analysis_name = inquirer.text(
-            message="Please enter a name for the analysis : ",
-            validate=lambda x: len(x) > 0
-        ).execute()
+        analysis_name = self.get_user_selection("Please enter a name for the analysis : ", type="input",
+                                                validate=lambda x: len(x) > 0)
 
         self.analysis_folder = os.path.join(self.analysis_folder, analysis_name)
         os.makedirs(self.analysis_folder, exist_ok=True)

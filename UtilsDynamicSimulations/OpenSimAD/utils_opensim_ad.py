@@ -2212,6 +2212,7 @@ def plotResultsOpenSimAD(dataDir, subject, motion_filename, settings, output_dir
         axs.flatten()[i].set_xticklabels([])
 
     plt.savefig(os.path.join(output_dir, subject, f"plot.png"), dpi=300)
+    print(f"Saved plot to {os.path.join(output_dir, subject, f'plot.png')}")
 
     # %% Joint speeds.
     if not mainPlots:
@@ -2273,6 +2274,7 @@ def plotResultsOpenSimAD(dataDir, subject, motion_filename, settings, output_dir
         for i in range(0, mm):
             axs.flatten()[i].set_xticklabels([])
         plt.savefig(os.path.join(output_dir, subject, f"graphique_joint_speeds.png"))
+        print(f"Saved plot to {os.path.join(output_dir, subject, f'graphique_joint_speeds.png')}")
 
     # %% Joint accelerations.
     if not mainPlots:
@@ -2334,6 +2336,7 @@ def plotResultsOpenSimAD(dataDir, subject, motion_filename, settings, output_dir
         for i in range(0, mm):
             axs.flatten()[i].set_xticklabels([])
         plt.savefig(os.path.join(output_dir, subject, f"graphique_joint_accelerations.png"))
+        print(f"Saved plot to {os.path.join(output_dir, subject, f'graphique_joint_accelerations.png')}")
 
     # %% Joint torques.
     fig, axs = plt.subplots(int(ny), int(ny))
@@ -2382,6 +2385,7 @@ def plotResultsOpenSimAD(dataDir, subject, motion_filename, settings, output_dir
     for i in range(0, mm):
         axs.flatten()[i].set_xticklabels([])
     plt.savefig(os.path.join(output_dir, subject, f"graphique_joint_torques.png"))
+    print(f"Saved plot to {os.path.join(output_dir, subject, f'graphique_joint_torques.png')}")
 
     # %% GRFs.
     GRF_labels = optimaltrajectories[cases[0]]['GRF_labels']
@@ -2419,6 +2423,7 @@ def plotResultsOpenSimAD(dataDir, subject, motion_filename, settings, output_dir
     # Change subplot spacing.
     fig.subplots_adjust(hspace=0.4, wspace=0.4)
     plt.savefig(os.path.join(output_dir, subject, f"graphique_GRFs.png"))
+    print(f"Saved plot to {os.path.join(output_dir, subject, f'graphique_GRFs.png')}")
 
     # %% GRMs.
     if not mainPlots:
@@ -2457,6 +2462,7 @@ def plotResultsOpenSimAD(dataDir, subject, motion_filename, settings, output_dir
         # Change subplot spacing.
         fig.subplots_adjust(hspace=0.4, wspace=0.4)
         plt.savefig(os.path.join(output_dir, subject, f"graphique_GRMs.png"))
+        print(f"Saved plot to {os.path.join(output_dir, subject, f'graphique_GRMs.png')}")
 
     # %% Muscle activations.
     plotMuscleActivations = False
@@ -2516,6 +2522,7 @@ def plotResultsOpenSimAD(dataDir, subject, motion_filename, settings, output_dir
     for i in range(0, mm):
         axs.flatten()[i].set_xticklabels([])
     plt.savefig(os.path.join(output_dir, subject, f"graphique_muscle_activations.png"))
+    print(f"Saved plot to {os.path.join(output_dir, subject, f'graphique_muscle_activations.png')}")
 
     # # %% Joint torques: breakdown.  
     # if not mainPlots:

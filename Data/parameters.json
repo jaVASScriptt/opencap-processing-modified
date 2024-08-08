@@ -2,34 +2,30 @@
     "gait_analysis": {
         "sessions_trials": [
             {
-                "session_id": "2080cf1a-c7f9-4b1d-8d17-0304e2f513cd",
-                "trial_name": "testmarche"
+                "session_id": "b68b4507-edd3-44b3-9d1e-206dd784379a",
+                "trial_name": "6M"
             },
             {
                 "session_id": "614b4c07-073c-4a43-9e69-67e724e193dd",
-                "trial_name": "marche"
-            },
-            {
-                "session_id": "7c4e27c4-78fe-4529-b2c3-e7ac5f062fc4",
-                "trial_name": "testmarche"
+                "trial_name": "marche2"
             }
         ],
-        "analysis_folder": "C:/Users/NNL_L/OneDrive/Documents/Go"
+        "analysis_folder": "C:/Users/NNL_L/OneDrive/Documents/Go/two_or_three_cams/gait_analysis"
     },
     "muscles_analysis": {
-        "session_id": "77c05395-9454-472e-bb7b-d511dfdac515",
-        "trial_name": "marche",
+        "session_id": "b68b4507-edd3-44b3-9d1e-206dd784379a",
+        "trial_name": "6M",
         "motion_type": "walking",
         "time_window": [
-            2.4,
-            3.6
+            5.2,
+            6.3
         ],
         "repetition": null,
         "case": "0",
         "treadmill_speed": 0,
         "contact_side": "all",
-        "ipopt_tolerance": 1,
-        "mesh_density": 10,
-        "output_folder": "C:/Users/NNL_L/OneDrive/Documents/Go"
+        "ipopt_tolerance": 2,
+        "mesh_density": 40,
+        "output_folder": "C:/Users/NNL_L/OneDrive/Documents/Go/two_or_three_cams"
     }
 }

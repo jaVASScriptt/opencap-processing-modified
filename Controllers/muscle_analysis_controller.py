@@ -213,6 +213,11 @@ class MuscleAnalysisController:
         if self.get_user_selection("Do you want to proceed with these settings?", ["Yes", "No"]) == "No":
             return
 
+        analysis_name = self.get_user_selection("Please enter a name for the analysis : ", type="input",
+                                                validate=lambda x: len(x) > 0)
+
+        output_folder = os.path.join(self.output_folder, analysis_name)
+
         opensimADDir = os.path.join(self.baseDir, 'UtilsDynamicSimulations', 'OpenSimAD')
         sys.path.append(self.baseDir)
         sys.path.append(opensimADDir)
@@ -220,16 +225,16 @@ class MuscleAnalysisController:
         solveProblem = True
         analyzeResults = True
 
-        settings = processInputsOpenSimAD(self.baseDir, self.output_folder, self.session_id, self.trial_name,
+        settings = processInputsOpenSimAD(self.baseDir, output_folder, self.session_id, self.trial_name,
                                           self.motion_type, self.time_window, self.repetition,
                                           self.treadmill_speed, self.contact_side, self.mesh_density,
                                           self.ipopt_tolerance)
 
-        run_tracking(self.baseDir, self.output_folder, self.session_id, settings, case=self.case,
+        run_tracking(self.baseDir, output_folder, self.session_id, settings, case=self.case,
                      solveProblem=solveProblem, analyzeResults=analyzeResults)
 
-        plotResultsOpenSimAD(self.output_folder, self.session_id, self.trial_name, settings,
-                             cases=[self.case], output_dir=self.output_folder)
+        plotResultsOpenSimAD(output_folder, self.session_id, self.trial_name, settings,
+                             cases=[self.case], output_dir=output_folder)
 
     def setup(self):
         self.initialize_session_selection()
