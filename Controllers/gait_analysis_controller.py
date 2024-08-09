@@ -109,6 +109,7 @@ class GaitAnalysisController:
                 continue
 
         self.plot_and_save_results()
+        self.DataController.write_parameters_in_excel(self.analysis_folder)
 
     def plot_and_save_results(self):
 
@@ -127,6 +128,7 @@ class GaitAnalysisController:
         self.analysis_folder = modify_output_folder()
         self.DataController.set('analysis_folder', self.analysis_folder)
         self.modify_sessions_trials()
+        self.DataController.set('sessions_trials', self.sessions_trials)
 
     def modify_parameters(self):
         answer = self.get_user_selection("What do you want to modify?", ["Output folder", "Sessions Trials"])
@@ -137,6 +139,7 @@ class GaitAnalysisController:
                 self.DataController.set('analysis_folder', self.analysis_folder)
             case "Sessions Trials":
                 self.modify_sessions_trials()
+                self.DataController.set('sessions_trials', self.sessions_trials)
 
     def modify_sessions_trials(self):
         ask_sessions = self.get_user_selection(

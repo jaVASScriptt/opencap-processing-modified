@@ -19,7 +19,7 @@ class MuscleAnalysisController:
         self.trial_name = self.DataController.get('trial_name')
         self.motion_type = self.DataController.get('motion_type')
         self.time_window = self.DataController.get('time_window')
-        self.repetition = str(self.DataController.get('repetition')) if self.DataController.get('repetition') else None
+        self.repetition = int(self.DataController.get('repetition'))
         self.case = self.DataController.get('case')
         self.treadmill_speed = self.DataController.get('treadmill_speed')
         self.contact_side = self.DataController.get('contact_side')
@@ -177,11 +177,15 @@ class MuscleAnalysisController:
                     self.time_window = []
                 else:
                     self.repetition = self.get_user_selection(
-                        "Do you want to choose a specific repetition?", type="input",
+                        "Enter a specific repetition", type="input",
                         validate=lambda x: x.isdigit()
                     )
 
+                    self.repetition = int(self.repetition)
+
                     self.DataController.set("repetition", self.repetition)
+                    self.time_window = []
+                    self.DataController.set("time_window", self.time_window)
                     return
             else:
                 self.time_window = []
@@ -235,6 +239,8 @@ class MuscleAnalysisController:
 
         plotResultsOpenSimAD(output_folder, self.session_id, self.trial_name, settings,
                              cases=[self.case], output_dir=output_folder)
+
+        self.DataController.write_parameters_in_excel(output_folder)
 
     def setup(self):
         self.initialize_session_selection()

@@ -2,30 +2,23 @@
     "gait_analysis": {
         "sessions_trials": [
             {
-                "session_id": "b68b4507-edd3-44b3-9d1e-206dd784379a",
-                "trial_name": "6M"
-            },
-            {
-                "session_id": "614b4c07-073c-4a43-9e69-67e724e193dd",
+                "session_id": "77c05395-9454-472e-bb7b-d511dfdac515",
                 "trial_name": "marche2"
             }
         ],
-        "analysis_folder": "C:/Users/NNL_L/OneDrive/Documents/Go/two_or_three_cams/gait_analysis"
+        "analysis_folder": "C:/Users/NNL_L/OneDrive/Documents/Go"
     },
     "muscles_analysis": {
-        "session_id": "b68b4507-edd3-44b3-9d1e-206dd784379a",
-        "trial_name": "6M",
-        "motion_type": "walking",
-        "time_window": [
-            5.2,
-            6.3
-        ],
-        "repetition": null,
+        "session_id": "71e37d11-ff19-422b-8a24-e1680fb539ae",
+        "trial_name": "STS",
+        "motion_type": "sit_to_stand",
+        "time_window": [],
+        "repetition": "0",
         "case": "0",
         "treadmill_speed": 0,
         "contact_side": "all",
-        "ipopt_tolerance": 2,
-        "mesh_density": 40,
-        "output_folder": "C:/Users/NNL_L/OneDrive/Documents/Go/two_or_three_cams"
+        "ipopt_tolerance": 1,
+        "mesh_density": 20,
+        "output_folder": "C:/Users/NNL_L/OneDrive/Documents/Go"
     }
 }

@@ -1,5 +1,7 @@
 import json
+import os
 
+import pandas as pd
 
 class DataController:
     def __init__(self, analysis_type):
@@ -17,15 +19,18 @@ class DataController:
         print(f"Voici vos paramètres pour {self.analysis_type} :\n")
         for key, value in self.parameters.items():
             if isinstance(value, list):
-                print(f"{key}:")
-                for item in value:
-                    if isinstance(item, dict):
-                        print("  - {")
-                        for sub_key, sub_value in item.items():
-                            print(f"    {sub_key}: {sub_value}")
-                        print("    }")
-                    else:
-                        print(f"  - {item}")
+                if not value:
+                    print(f"{key}: []")
+                else:
+                    print(f"{key}:")
+                    for item in value:
+                        if isinstance(item, dict):
+                            print("  - {")
+                            for sub_key, sub_value in item.items():
+                                print(f"    {sub_key}: {sub_value}")
+                            print("    }")
+                        else:
+                            print(f"  - {item}")
                 print()
             elif isinstance(value, dict):
                 print(f"{key}: {{")
@@ -54,3 +59,15 @@ class DataController:
             file.seek(0)
             json.dump(data, file, indent=4)
             file.truncate()
+
+    def write_parameters_in_excel(self, output_file_path):
+        """Écrit les paramètres d'un type d'analyse dans un fichier Excel."""
+        df = pd.DataFrame(self.parameters.items(), columns=['Paramètre', 'Valeur'])
+        df.to_excel(os.path.join(output_file_path, 'analysis_parameters.xlsx'), index=False)
+
+
+
+
+
+
+
