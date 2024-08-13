@@ -119,7 +119,8 @@ def plot_dataframe(dataframes, x=None, y=[], xlabel=None, ylabel=None,
     plt.show()
 
 
-def plot_dataframe_with_shading(AllGaitResults, analysis_folder, leg=None, xlabel=None, title=None, legend_entries=None):
+def plot_dataframe_with_shading(AllGaitResults, analysis_folder, leg=None, xlabel=None, title=None, legend_entries=None,
+                                selected_columns=None, no_show=False):
     # Initialiser le dictionnaire pour les données de tracé
     plot_data = {}
 
@@ -127,7 +128,8 @@ def plot_dataframe_with_shading(AllGaitResults, analysis_folder, leg=None, xlabe
     legs = leg or ['r', 'l']
 
     # Couleurs distinctes pour chaque essai
-    colors = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf']
+    colors = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22',
+              '#17becf']
 
     combined_data_right = {}
     combined_data_left = {}
@@ -156,6 +158,10 @@ def plot_dataframe_with_shading(AllGaitResults, analysis_folder, leg=None, xlabe
         elif legs[0] == 'l':
             columns = [col for col in columns if not col.endswith('_r')]
 
+        # Filtrer les colonnes en fonction de selected_columns
+        if selected_columns:
+            columns = [col for col in columns if col in selected_columns]
+
         # Accumuler les données pour chaque colonne
         for column in columns:
             if column not in combined_data_right:
@@ -163,7 +169,8 @@ def plot_dataframe_with_shading(AllGaitResults, analysis_folder, leg=None, xlabe
                 combined_data_left[column] = []
 
             for j, (mean_df, sd_df) in enumerate(zip(mean_dataframe, sd_dataframe)):
-                col = column[:-2] + '_' + legs[j] if (legs and (column.endswith('_r') or column.endswith('_l'))) else column
+                col = column[:-2] + '_' + legs[j] if (
+                            legs and (column.endswith('_r') or column.endswith('_l'))) else column
                 if col not in mean_df.columns:
                     continue
 
@@ -175,10 +182,12 @@ def plot_dataframe_with_shading(AllGaitResults, analysis_folder, leg=None, xlabe
                 mean_values = mean_df[col]
 
                 if legs[j] == 'r':
-                    combined_data_right[column].append((mean_df['time'], time_percentage, mean_values, trial_name, colors[trial_idx]))
+                    combined_data_right[column].append(
+                        (mean_df['time'], time_percentage, mean_values, trial_name, colors[trial_idx]))
                     plot_data_right[column] = (mean_df['time'], time_percentage, mean_values)
                 else:
-                    combined_data_left[column].append((mean_df['time'], time_percentage, mean_values, trial_name, colors[trial_idx]))
+                    combined_data_left[column].append(
+                        (mean_df['time'], time_percentage, mean_values, trial_name, colors[trial_idx]))
                     plot_data_left[column] = (mean_df['time'], time_percentage, mean_values)
 
         # Ajouter les données au dictionnaire de résultats
@@ -228,14 +237,16 @@ def plot_dataframe_with_shading(AllGaitResults, analysis_folder, leg=None, xlabe
 
     plt.tight_layout()
 
-    # Save the plot before showing it
-    plt.savefig(os.path.join(analysis_folder, f"plot.png"), dpi=300)
+    if not no_show:
 
-    print("")
-    print(f"Plot graph saved to {analysis_folder}")
+        # Save the plot before showing it
+        plt.savefig(os.path.join(analysis_folder, f"plot.png"), dpi=300)
 
-    # Show the plot
-    plt.show()
+        print("")
+        print(f"Plot graph saved to {analysis_folder}")
+
+        # Show the plot
+        plt.show()
 
     return plot_data
 

@@ -6,11 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="878c8489-bd1d-4a43-8dc4-70878a59f97c" name="Changes" comment="quelques améliorations">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Controllers/data_controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/data_controller.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Controllers/gait_analysis_controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/gait_analysis_controller.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Controllers/muscle_analysis_controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/muscle_analysis_controller.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Data/parameters.json" beforeDir="false" afterPath="$PROJECT_DIR$/Data/parameters.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Utils/utils_processing.py" beforeDir="false" afterPath="$PROJECT_DIR$/Utils/utils_processing.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Utils/utils_plotting.py" beforeDir="false" afterPath="$PROJECT_DIR$/Utils/utils_plotting.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -95,7 +93,8 @@
       <workItem from="1722863924742" duration="5225000" />
       <workItem from="1723051066841" duration="3647000" />
       <workItem from="1723121456174" duration="4736000" />
-      <workItem from="1723207698733" duration="10259000" />
+      <workItem from="1723207698733" duration="12460000" />
+      <workItem from="1723554430087" duration="10048000" />
     </task>
     <task id="LOCAL-00001" summary="README.md">
       <option name="closed" value="true" />
@@ -169,7 +168,15 @@
       <option name="project" value="LOCAL" />
       <updated>1723139914952</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="quelques améliorations">
+      <option name="closed" value="true" />
+      <created>1723234021008</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1723234021008</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

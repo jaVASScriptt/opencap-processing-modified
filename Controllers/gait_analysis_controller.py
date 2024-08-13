@@ -30,6 +30,13 @@ class GaitAnalysisController:
         self.filter_frequency = 6
         self.AllGaitResults = {}
 
+        self.articular = ["pelvis_tilt", "pelvis_list", "pelvis_rotation", "pelvis_tx", "pelvis_ty", "pelvis_tz",
+                          "hip_flexion_r", "hip_adduction_r", "hip_rotation_r", "knee_angle_r", "ankle_angle_r",
+                          "subtalar_angle_r", "mtp_angle_r", "lumbar_extension", "lumbar_bending", "lumbar_rotation",
+                          "arm_flex_r", "arm_add_r", "arm_rot_r", "elbow_flex_r", "pro_sup_r"]
+
+        self.selected_columns = self.DataController.get('selected_columns')
+
     def menu(self):
         menu_analysis(self)
 
@@ -98,7 +105,8 @@ class GaitAnalysisController:
                     leg=['r', 'l'],
                     xlabel='% gait cycle',
                     title='kinematics (m or deg)',
-                    legend_entries=['right', 'left']
+                    legend_entries=['right', 'left'],
+                    selected_columns=self.selected_columns
                 )
 
                 self.AllGaitResults[f"{session_id}_{trial_name}"] = gaitResults
@@ -112,15 +120,27 @@ class GaitAnalysisController:
         self.DataController.write_parameters_in_excel(self.analysis_folder)
 
     def plot_and_save_results(self):
-
-        plot_data = plot_dataframe_with_shading(
-            self.AllGaitResults,
-            self.analysis_folder,
-            leg=['r', 'l'],
-            xlabel='% gait cycle',
-            title='kinematics (m or deg)',
-            legend_entries=['right', 'left']
-        )
+        if len(self.sessions_trials) > 1:
+            plot_data = plot_dataframe_with_shading(
+                self.AllGaitResults,
+                self.analysis_folder,
+                leg=['r', 'l'],
+                xlabel='% gait cycle',
+                title='kinematics (m or deg)',
+                legend_entries=['right', 'left'],
+                selected_columns=self.selected_columns
+            )
+        else:
+            plot_data = plot_dataframe_with_shading(
+                self.AllGaitResults,
+                self.analysis_folder,
+                leg=['r', 'l'],
+                xlabel='% gait cycle',
+                title='kinematics (m or deg)',
+                legend_entries=['right', 'left'],
+                selected_columns=self.selected_columns,
+                no_show=True
+            )
 
         save_plots_to_excel(plot_data, self.analysis_folder)
 
@@ -131,7 +151,8 @@ class GaitAnalysisController:
         self.DataController.set('sessions_trials', self.sessions_trials)
 
     def modify_parameters(self):
-        answer = self.get_user_selection("What do you want to modify?", ["Output folder", "Sessions Trials"])
+        answer = self.get_user_selection("What do you want to modify?",
+                                         ["Output folder", "Sessions Trials", "articular"])
 
         match answer:
             case "Output folder":
@@ -140,6 +161,10 @@ class GaitAnalysisController:
             case "Sessions Trials":
                 self.modify_sessions_trials()
                 self.DataController.set('sessions_trials', self.sessions_trials)
+            case "articular":
+                self.selected_columns = self.get_user_selection("Select the columns you want to display:",
+                                                                choices=self.articular, type="multi")
+                self.DataController.set('selected_columns', self.selected_columns)
 
     def modify_sessions_trials(self):
         ask_sessions = self.get_user_selection(

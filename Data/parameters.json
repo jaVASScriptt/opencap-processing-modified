@@ -4,7 +4,17 @@
             {
                 "session_id": "77c05395-9454-472e-bb7b-d511dfdac515",
                 "trial_name": "marche2"
+            },
+            {
+                "session_id": "77c05395-9454-472e-bb7b-d511dfdac515",
+                "trial_name": "marche"
             }
+        ],
+        "selected_columns": [
+            "pelvis_tilt",
+            "pelvis_tz",
+            "knee_angle_r",
+            "pro_sup_r"
         ],
         "analysis_folder": "C:/Users/NNL_L/OneDrive/Documents/Go"
     },
@@ -18,7 +28,7 @@
         "treadmill_speed": 0,
         "contact_side": "all",
         "ipopt_tolerance": 1,
-        "mesh_density": 20,
+        "mesh_density": 10,
         "output_folder": "C:/Users/NNL_L/OneDrive/Documents/Go"
     }
 }
