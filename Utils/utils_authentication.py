@@ -17,6 +17,7 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 '''
+import sys
 
 import requests
 from decouple import config
@@ -28,7 +29,9 @@ from Utils.utils_api import get_api_url
 API_URL = get_api_url()
 
 
-def get_token(saveEnvPath=None):
+def get_token():
+    saveEnvPath = os.getcwd()
+
     if 'API_TOKEN' not in globals():
 
         try:  # look in environment file

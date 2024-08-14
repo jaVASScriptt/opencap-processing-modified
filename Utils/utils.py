@@ -33,7 +33,6 @@ import zipfile
 import platform
 import opensim
 from InquirerPy import inquirer
-from InquirerPy.prompts import ListPrompt, CheckboxPrompt
 
 from Controllers.analysis_utils import clear_terminal, display_message
 from Utils.utils_api import get_api_url

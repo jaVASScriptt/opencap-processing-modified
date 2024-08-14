@@ -4,11 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="878c8489-bd1d-4a43-8dc4-70878a59f97c" name="Changes" comment="Ajout du choix des courbes pour le gait_analysis + correction comparaison inutile en cas de courbe seule">
+    <list default="true" id="878c8489-bd1d-4a43-8dc4-70878a59f97c" name="Changes" comment="ajout detection  de cycle automatique">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Controllers/analysis_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/analysis_utils.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Controllers/muscle_analysis_controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/muscle_analysis_controller.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data/parameters.json" beforeDir="false" afterPath="$PROJECT_DIR$/Data/parameters.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Controllers/program_controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/program_controller.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Utils/utils_authentication.py" beforeDir="false" afterPath="$PROJECT_DIR$/Utils/utils_authentication.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/create_authentication_env_file.py" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -106,7 +106,7 @@
       <workItem from="1723121456174" duration="4736000" />
       <workItem from="1723207698733" duration="12460000" />
       <workItem from="1723554430087" duration="20479000" />
-      <workItem from="1723644197969" duration="7808000" />
+      <workItem from="1723644197969" duration="10046000" />
     </task>
     <task id="LOCAL-00001" summary="README.md">
       <option name="closed" value="true" />
@@ -196,7 +196,15 @@
       <option name="project" value="LOCAL" />
       <updated>1723570943730</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="ajout detection  de cycle automatique">
+      <option name="closed" value="true" />
+      <created>1723658904833</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1723658904833</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -212,7 +220,8 @@
     <MESSAGE value="quelques modifications" />
     <MESSAGE value="quelques améliorations" />
     <MESSAGE value="Ajout du choix des courbes pour le gait_analysis + correction comparaison inutile en cas de courbe seule" />
-    <option name="LAST_COMMIT_MESSAGE" value="Ajout du choix des courbes pour le gait_analysis + correction comparaison inutile en cas de courbe seule" />
+    <MESSAGE value="ajout detection  de cycle automatique" />
+    <option name="LAST_COMMIT_MESSAGE" value="ajout detection  de cycle automatique" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
