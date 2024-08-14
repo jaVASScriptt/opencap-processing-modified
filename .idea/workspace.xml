@@ -4,11 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="878c8489-bd1d-4a43-8dc4-70878a59f97c" name="Changes" comment="quelques améliorations">
+    <list default="true" id="878c8489-bd1d-4a43-8dc4-70878a59f97c" name="Changes" comment="Ajout du choix des courbes pour le gait_analysis + correction comparaison inutile en cas de courbe seule">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Controllers/gait_analysis_controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/gait_analysis_controller.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Controllers/analysis_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/analysis_utils.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Controllers/muscle_analysis_controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/muscle_analysis_controller.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Data/parameters.json" beforeDir="false" afterPath="$PROJECT_DIR$/Data/parameters.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Utils/utils_plotting.py" beforeDir="false" afterPath="$PROJECT_DIR$/Utils/utils_plotting.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -20,6 +20,17 @@
       <list>
         <option value="Python Script" />
       </list>
+    </option>
+  </component>
+  <component name="FlaskConsoleOptions" custom-start-script="import sys&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;from flask.cli import ScriptInfo&#10;locals().update(ScriptInfo(create_app=None).load_app().make_shell_context())&#10;print(&quot;Python %s on %s\nApp: %s [%s]\nInstance: %s&quot; % (sys.version, sys.platform, app.import_name, app.env, app.instance_path))">
+    <envs>
+      <env key="FLASK_APP" value="app" />
+    </envs>
+    <option name="myCustomStartScript" value="import sys&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;from flask.cli import ScriptInfo&#10;locals().update(ScriptInfo(create_app=None).load_app().make_shell_context())&#10;print(&quot;Python %s on %s\nApp: %s [%s]\nInstance: %s&quot; % (sys.version, sys.platform, app.import_name, app.env, app.instance_path))" />
+    <option name="myEnvs">
+      <map>
+        <entry key="FLASK_APP" value="app" />
+      </map>
     </option>
   </component>
   <component name="Git.Settings">
@@ -94,7 +105,8 @@
       <workItem from="1723051066841" duration="3647000" />
       <workItem from="1723121456174" duration="4736000" />
       <workItem from="1723207698733" duration="12460000" />
-      <workItem from="1723554430087" duration="10048000" />
+      <workItem from="1723554430087" duration="20479000" />
+      <workItem from="1723644197969" duration="7808000" />
     </task>
     <task id="LOCAL-00001" summary="README.md">
       <option name="closed" value="true" />
@@ -176,7 +188,15 @@
       <option name="project" value="LOCAL" />
       <updated>1723234021008</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Ajout du choix des courbes pour le gait_analysis + correction comparaison inutile en cas de courbe seule">
+      <option name="closed" value="true" />
+      <created>1723570943730</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1723570943730</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -191,6 +211,18 @@
     <MESSAGE value="ajout des fonctionnalités d'enregistrement gait_analysis" />
     <MESSAGE value="quelques modifications" />
     <MESSAGE value="quelques améliorations" />
-    <option name="LAST_COMMIT_MESSAGE" value="quelques améliorations" />
+    <MESSAGE value="Ajout du choix des courbes pour le gait_analysis + correction comparaison inutile en cas de courbe seule" />
+    <option name="LAST_COMMIT_MESSAGE" value="Ajout du choix des courbes pour le gait_analysis + correction comparaison inutile en cas de courbe seule" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/main.py</url>
+          <line>4</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

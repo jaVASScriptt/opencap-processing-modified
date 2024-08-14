@@ -2,7 +2,7 @@ import sys
 
 from InquirerPy import inquirer
 
-from Controllers.analysis_utils import menu_analysis, modify_output_folder
+from Controllers.analysis_utils import menu_analysis, modify_output_folder, get_periode_walk_run
 from Controllers.data_controller import DataController
 from Utils.utils import *
 import os
@@ -163,49 +163,61 @@ class MuscleAnalysisController:
             return False
 
     def initialize_time_settings(self):
-        want_time_window = self.get_user_selection("Do you want to enter a time window? (recommended) ", type="confirm")
 
-        if not want_time_window:
-            if self.motion_type in ['sit_to_stand', 'squats']:
+        list_choices = ["Enter a time window", "all the trial (not recommended)"]
 
-                want_repetition = self.get_user_selection(
-                    "Your choice of type of motion allows us to automatically split repetitions, "
-                    "do you want to choose one?", type="confirm"
-                )
+        if self.motion_type in ['sit_to_stand', 'squats']:
+            list_choices.append("Automatic repetition Detection (Beta)")
+        elif self.motion_type in ['walking', 'running', 'my_periodic_running', 'running_torque_driven',
+                                  'walking_formulation1']:
+            list_choices.append("Automatic Time Window Detection (Beta)")
 
-                if not want_repetition:
-                    self.time_window = []
-                else:
-                    self.repetition = self.get_user_selection(
-                        "Enter a specific repetition", type="input",
-                        validate=lambda x: x.isdigit()
-                    )
-
-                    self.repetition = int(self.repetition)
-
-                    self.DataController.set("repetition", self.repetition)
-                    self.time_window = []
-                    self.DataController.set("time_window", self.time_window)
-                    return
-            else:
-                self.time_window = []
-
-        start_time_input = self.get_user_selection(
-            message="Enter the start time of the time window (ex: 0.1) : ",
-            type="input",
-            validate=lambda x: self.validate_time_input(x, 0.0)
+        choice = self.get_user_selection(
+            message="What do you want to do?",
+            choices=list_choices
         )
-        start_time = float(start_time_input)
 
-        end_time_input = self.get_user_selection(
-            message="Enter the end time of the time window (ex: 0.1), which must be greater than the start time : ",
-            type="input",
-            validate=lambda x: self.validate_time_input(x, start_time)
-        )
-        end_time = float(end_time_input)
+        if choice == "all the trial (not recommended)":
+            self.time_window = []
+            self.DataController.set("time_window", self.time_window)
+            return
+        elif choice == "Choose a repetition":
+            self.repetition = self.get_user_selection(
+                "Enter a specific repetition", type="input",
+                validate=lambda x: x.isdigit()
+            )
 
-        self.time_window = [start_time, end_time]
-        self.DataController.set("time_window", self.time_window)
+            self.repetition = int(self.repetition)
+
+            self.DataController.set("repetition", self.repetition)
+            self.time_window = []
+            self.DataController.set("time_window", self.time_window)
+            return
+        elif choice == "Automatic Time Window Detection (Beta)":
+            self.time_window = get_periode_walk_run(self.session_id, self.trial_name)
+            self.DataController.set("time_window", self.time_window)
+
+            print()
+            print(f"Time window detected : {self.time_window}")
+            print()
+            return
+        else:
+            start_time_input = self.get_user_selection(
+                message="Enter the start time of the time window (ex: 0.1) : ",
+                type="input",
+                validate=lambda x: self.validate_time_input(x, 0.0)
+            )
+            start_time = float(start_time_input)
+
+            end_time_input = self.get_user_selection(
+                message="Enter the end time of the time window (ex: 0.1), which must be greater than the start time : ",
+                type="input",
+                validate=lambda x: self.validate_time_input(x, start_time)
+            )
+            end_time = float(end_time_input)
+
+            self.time_window = [start_time, end_time]
+            self.DataController.set("time_window", self.time_window)
 
     def initialize_output_folder(self):
         self.output_folder = modify_output_folder()
