@@ -12,6 +12,10 @@ class ProgramLauncher:
         self.gac = GaitAnalysisController()
 
     def menu(self):
+
+        if not os.path.exists("Data/sessions_info.json"):
+            retrieves_and_sorts_sessions()
+
         choices = ["Muscle Analysis", "Gait Analysis", "Opencap Data Recovery", "Disconnection", "Exit"]
         while True:
             clear_terminal()

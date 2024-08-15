@@ -4,11 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="878c8489-bd1d-4a43-8dc4-70878a59f97c" name="Changes" comment="ajout detection  de cycle automatique">
+    <list default="true" id="878c8489-bd1d-4a43-8dc4-70878a59f97c" name="Changes" comment="connect disconnect api upgrade">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Controllers/program_controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/program_controller.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Utils/utils_authentication.py" beforeDir="false" afterPath="$PROJECT_DIR$/Utils/utils_authentication.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/create_authentication_env_file.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/parameters.json" beforeDir="false" afterPath="$PROJECT_DIR$/Data/parameters.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Utils/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/Utils/utils.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -106,7 +106,8 @@
       <workItem from="1723121456174" duration="4736000" />
       <workItem from="1723207698733" duration="12460000" />
       <workItem from="1723554430087" duration="20479000" />
-      <workItem from="1723644197969" duration="10046000" />
+      <workItem from="1723644197969" duration="10345000" />
+      <workItem from="1723727063688" duration="5693000" />
     </task>
     <task id="LOCAL-00001" summary="README.md">
       <option name="closed" value="true" />
@@ -204,7 +205,15 @@
       <option name="project" value="LOCAL" />
       <updated>1723658904833</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="connect disconnect api upgrade">
+      <option name="closed" value="true" />
+      <created>1723664380047</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1723664380047</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -221,7 +230,8 @@
     <MESSAGE value="quelques améliorations" />
     <MESSAGE value="Ajout du choix des courbes pour le gait_analysis + correction comparaison inutile en cas de courbe seule" />
     <MESSAGE value="ajout detection  de cycle automatique" />
-    <option name="LAST_COMMIT_MESSAGE" value="ajout detection  de cycle automatique" />
+    <MESSAGE value="connect disconnect api upgrade" />
+    <option name="LAST_COMMIT_MESSAGE" value="connect disconnect api upgrade" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

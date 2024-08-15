@@ -116,7 +116,7 @@ def get_sessions(is_public=None):
          s['id'] + ")" + " / subject:" +
          s['name'] + " - " +
          datetime.fromisoformat(s['created_at'].rstrip("Z")).strftime("%Y-%m-%d"))
-        for s in sessions_json if is_public is None or s['public'] == is_public
+        for s in sessions_json if (is_public is None or s['public'] == is_public) and s['trials'] and not s.get('trashed', False)
     ]
 
 
