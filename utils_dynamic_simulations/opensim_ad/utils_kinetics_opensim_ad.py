@@ -21,7 +21,7 @@
 import os
 import numpy as np
 import pandas as pd
-from Utils import utils
+from utils import utils
 import opensim
 
 
@@ -45,7 +45,7 @@ class KineticsOpenSimAD:
             simulation (ignore if default).
 
         This class is designed to extract data from a dynamic simulation 
-        conducted using OpenSimAD.
+        conducted using opensim_ad.
         """
 
         # Load optimal results.

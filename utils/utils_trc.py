@@ -220,7 +220,7 @@ class TRCFile(object):
         # Line 6.
         f.write('\n')
 
-        # Data.
+        # data.
         for iframe in range(self.num_frames):
             f.write('%i' % (iframe + 1))
             f.write('\t%.7f' % self.time[iframe])

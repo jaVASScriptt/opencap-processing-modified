@@ -27,7 +27,7 @@ import numpy as np
 # and moment arms based on polynomial approximations of joint positions and
 # velocities.
 def polynomialApproximation(musclesPolynomials, polynomialData, NPolynomial):
-    from UtilsDynamicSimulations.OpenSimAD.polynomials_opensim_ad import Polynomials
+    from utils_dynamic_simulations.opensim_ad.polynomials_opensim_ad import Polynomials
 
     # Function variables.
     qin = ca.SX.sym('qin', 1, NPolynomial)

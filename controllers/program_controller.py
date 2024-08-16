@@ -1,9 +1,9 @@
 import sys
 
-from Controllers.gait_analysis_controller import GaitAnalysisController
-from Controllers.muscle_analysis_controller import MuscleAnalysisController
+from controllers.gait_analysis_controller import GaitAnalysisController
+from controllers.muscle_analysis_controller import MuscleAnalysisController
 
-from Utils.utils import *
+from utils.utils import *
 
 
 class ProgramLauncher:
@@ -13,10 +13,10 @@ class ProgramLauncher:
 
     def menu(self):
 
-        if not os.path.exists("Data/sessions_info.json"):
+        if not os.path.exists("data/sessions_info.json"):
             retrieves_and_sorts_sessions()
 
-        choices = ["Muscle Analysis", "Gait Analysis", "Opencap Data Recovery", "Disconnection", "Exit"]
+        choices = ["Muscle Analysis", "Gait Analysis", "Opencap data Recovery", "Disconnection", "Exit"]
         while True:
             clear_terminal()
             choice = get_user_selection("What do you want to do?", choices)
@@ -24,7 +24,7 @@ class ProgramLauncher:
                 self.mac.menu()
             elif choice == "Gait Analysis":
                 self.gac.menu()
-            elif choice == "Opencap Data Recovery":
+            elif choice == "Opencap data Recovery":
                 retrieves_and_sorts_sessions()
             elif choice == "Disconnection":
                 env_file_path = '.env'

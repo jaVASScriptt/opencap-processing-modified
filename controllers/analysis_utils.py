@@ -1,4 +1,4 @@
-from Utils.utils import *
+from utils.utils import *
 import tkinter as tk
 from tkinter import filedialog
 
@@ -17,10 +17,10 @@ def display_message(message):
 
 
 def menu_analysis(self):
-    choices = ["Data change", "Start an analysis", "Home"]
+    choices = ["data change", "Start an analysis", "Home"]
     while True:
         choice = self.get_user_selection("What do you want to do?", choices)
-        if choice == "Data change":
+        if choice == "data change":
             data_choices = ["Full setup", "Select an element to change"]
             data_choice = self.get_user_selection("What do you want to do?", data_choices)
             if data_choice == "Full setup":
@@ -66,9 +66,9 @@ def download_trial(trial_id, folder, session_id=None):
 
 
 def get_periode_walk_run(session_id, trialName):
-    from ActivityAnalyses.gait_analysis import GaitAnalysis
+    from activity_analyses.gait_analysis import GaitAnalysis
     baseDir = os.path.join(os.getcwd(), '..')
-    dataFolder = os.path.join(baseDir, 'Data')
+    dataFolder = os.path.join(baseDir, 'data')
     n_gait_cycles = -1
     filter_frequency = 6
     sessionDir = os.path.join(dataFolder, session_id)

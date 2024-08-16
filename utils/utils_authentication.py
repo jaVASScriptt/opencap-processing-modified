@@ -24,7 +24,7 @@ from decouple import config
 import getpass
 import os
 import maskpass
-from Utils.utils_api import get_api_url
+from utils.utils_api import get_api_url
 
 API_URL = get_api_url()
 

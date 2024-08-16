@@ -37,11 +37,11 @@ import seaborn as sns
 import subprocess
 import re
 
-from Utils.utils import (storage_to_numpy, storage_to_dataframe,
+from utils.utils import (storage_to_numpy, storage_to_dataframe,
                          download_kinematics, import_metadata, numpy_to_storage)
-from Utils.utils_processing import (segment_squats, segment_STS, adjust_muscle_wrapping,
+from utils.utils_processing import (segment_squats, segment_STS, adjust_muscle_wrapping,
                                     generate_model_with_contacts)
-from UtilsDynamicSimulations.OpenSimAD.settings_opensim_ad import get_setup
+from utils_dynamic_simulations.opensim_ad.settings_opensim_ad import get_setup
 
 
 # %% Filter numpy array.
@@ -1766,7 +1766,7 @@ def generateExternalFunction(
 
     # %% Build external Function.
     if build_externalFunction:
-        pathDCAD = os.path.join(baseDir, 'UtilsDynamicSimulations', 'OpenSimAD')
+        pathDCAD = os.path.join(baseDir, 'utils_dynamic_simulations', 'opensim_ad')
         buildExternalFunction(
             externalFunctionName, pathDCAD, pathOutputExternalFunctionFolder,
             3 * nCoordinates, treadmill=treadmill,
@@ -1775,9 +1775,9 @@ def generateExternalFunction(
     # %% Verification.
     if verifyID:
         # Run ID with the .osim file
-        pathGenericTemplates = os.path.join(baseDir, "OpenSimPipeline")
+        pathGenericTemplates = os.path.join(baseDir, "opensim_pipeline")
         pathGenericIDFolder = os.path.join(pathGenericTemplates,
-                                           "InverseDynamics")
+                                           "inverse_dynamics")
         pathGenericIDSetupFile = os.path.join(pathGenericIDFolder,
                                               "Setup_InverseDynamics.xml")
         idTool = opensim.InverseDynamicsTool(pathGenericIDSetupFile)
@@ -1905,7 +1905,7 @@ def buildExternalFunction(filename, pathDCAD, CPP_DIR, nInputs,
                           treadmill=False, useExpressionGraphFunction=True):
     # %% Part 1: build expression graph (i.e., generate foo.py).
     pathMain = os.getcwd()
-    pathBuildExpressionGraph = os.path.join(pathDCAD, 'buildExpressionGraph')
+    pathBuildExpressionGraph = os.path.join(pathDCAD, 'build_expression_graph')
     pathBuild = os.path.join(pathDCAD, 'build-ExpressionGraph' + filename)
     os.makedirs(pathBuild, exist_ok=True)
     OpenSimAD_DIR = os.path.join(pathDCAD, 'opensimAD-install')
@@ -1930,10 +1930,10 @@ def buildExternalFunction(filename, pathDCAD, CPP_DIR, nInputs,
                     Problem when downloading third-party libraries. You can download them manually:
                         1. Download the zip file hosted here: {},
                         2. Extract the files, and
-                        3. Copy then under: <local_path>/opencap-processing/UtilsDynamicSimulations/OpenSimAD/opensimAD-install.
+                        3. Copy then under: <local_path>/opencap-processing/utils_dynamic_simulations/opensim_ad/opensimAD-install.
                     You should have:
-                        1. <local_path>/opencap-processing/UtilsDynamicSimulations/OpenSimAD/opensimAD-install/windows/bin and
-                        2. <local_path>/opencap-processing/UtilsDynamicSimulations/OpenSimAD/opensimAD-install/windows/sdk \n\n\n""".format(
+                        1. <local_path>/opencap-processing/utils_dynamic_simulations/opensim_ad/opensimAD-install/windows/bin and
+                        2. <local_path>/opencap-processing/utils_dynamic_simulations/opensim_ad/opensimAD-install/windows/sdk \n\n\n""".format(
                         url)
                     raise ValueError(error_msg)
             with zipfile.ZipFile('windows.zip', 'r') as zip_ref:
@@ -1969,10 +1969,10 @@ def buildExternalFunction(filename, pathDCAD, CPP_DIR, nInputs,
                     Problem when downloading third-party libraries. You can download them manually:
                         1. Download the tar file hosted here: {},
                         2. Extract the files, and
-                        3. Copy then under: <local_path>/opencap-processing/UtilsDynamicSimulations/OpenSimAD/opensimAD-install.
+                        3. Copy then under: <local_path>/opencap-processing/utils_dynamic_simulations/opensim_ad/opensimAD-install.
                     You should have:
-                        1. <local_path>/opencap-processing/UtilsDynamicSimulations/OpenSimAD/opensimAD-install/linux/lib and
-                        2. <local_path>/opencap-processing/UtilsDynamicSimulations/OpenSimAD/opensimAD-install/linux/include \n\n\n""".format(
+                        1. <local_path>/opencap-processing/utils_dynamic_simulations/opensim_ad/opensimAD-install/linux/lib and
+                        2. <local_path>/opencap-processing/utils_dynamic_simulations/opensim_ad/opensimAD-install/linux/include \n\n\n""".format(
                         url)
                     raise ValueError(error_msg)
             cmd_tar = 'tar -xf linux.tar.gz -C "{}"'.format(OpenSimAD_DIR)
@@ -1998,10 +1998,10 @@ def buildExternalFunction(filename, pathDCAD, CPP_DIR, nInputs,
                     Problem when downloading third-party libraries. You can download them manually:
                         1. Download the tar file hosted here: {},
                         2. Extract the files, and
-                        3. Copy then under: <local_path>/opencap-processing/UtilsDynamicSimulations/OpenSimAD/opensimAD-install.
+                        3. Copy then under: <local_path>/opencap-processing/utils_dynamic_simulations/opensim_ad/opensimAD-install.
                     You should have:
-                        1. <local_path>/opencap-processing/UtilsDynamicSimulations/OpenSimAD/opensimAD-install/macOS/lib and
-                        2. <local_path>/opencap-processing/UtilsDynamicSimulations/OpenSimAD/opensimAD-install/macOS/include \n\n\n""".format(
+                        1. <local_path>/opencap-processing/utils_dynamic_simulations/opensim_ad/opensimAD-install/macOS/lib and
+                        2. <local_path>/opencap-processing/utils_dynamic_simulations/opensim_ad/opensimAD-install/macOS/include \n\n\n""".format(
                         url)
                     raise ValueError(error_msg)
             cmd_tar = 'tar -xf macOS.tgz -C "{}"'.format(OpenSimAD_DIR)
@@ -2029,7 +2029,7 @@ def buildExternalFunction(filename, pathDCAD, CPP_DIR, nInputs,
 
     # %% Part 2: build external function (i.e., build .dll/.so/.dylib).
     else:
-        pathBuildExternalFunction = os.path.join(pathDCAD, 'buildExternalFunction')
+        pathBuildExternalFunction = os.path.join(pathDCAD, 'build_external_function')
         path_external_functions_filename_build = os.path.join(pathDCAD, 'build-ExternalFunction' + filename)
         path_external_functions_filename_install = os.path.join(pathDCAD, 'install-ExternalFunction' + filename)
         os.makedirs(path_external_functions_filename_build, exist_ok=True)

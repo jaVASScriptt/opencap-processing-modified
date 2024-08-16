@@ -21,12 +21,12 @@
 import os
 import opensim
 import copy
-from Utils import utils
+from utils import utils
 import pandas as pd
 import scipy.interpolate as interpolate
 
-from Utils.utils_processing import lowPassFilter
-from Utils.utils_trc import trc_2_dict
+from utils.utils_processing import lowPassFilter
+from utils.utils_trc import trc_2_dict
 import numpy as np
 from scipy.spatial.transform import Rotation
 

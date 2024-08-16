@@ -2,13 +2,13 @@ import sys
 
 from InquirerPy import inquirer
 
-from Controllers.analysis_utils import menu_analysis, modify_output_folder, get_periode_walk_run
-from Controllers.data_controller import DataController
-from Utils.utils import *
+from controllers.analysis_utils import menu_analysis, modify_output_folder, get_periode_walk_run
+from controllers.data_controller import DataController
+from utils.utils import *
 import os
 
-from UtilsDynamicSimulations.OpenSimAD.utils_opensim_ad import processInputsOpenSimAD, plotResultsOpenSimAD
-from UtilsDynamicSimulations.OpenSimAD.main_opensim_ad import run_tracking
+from utils_dynamic_simulations.opensim_ad.utils_opensim_ad import processInputsOpenSimAD, plotResultsOpenSimAD
+from utils_dynamic_simulations.opensim_ad.main_opensim_ad import run_tracking
 
 
 class MuscleAnalysisController:
@@ -29,7 +29,7 @@ class MuscleAnalysisController:
 
         self.output_folder = self.DataController.get('output_folder') \
             if self.DataController.get('output_folder') \
-            else os.path.join(self.baseDir, 'Data')
+            else os.path.join(self.baseDir, 'data')
         self.DataController.set('output_folder', self.output_folder)
 
         self.motion_types = [
@@ -234,7 +234,7 @@ class MuscleAnalysisController:
 
         output_folder = os.path.join(self.output_folder, analysis_name)
 
-        opensimADDir = os.path.join(self.baseDir, 'UtilsDynamicSimulations', 'OpenSimAD')
+        opensimADDir = os.path.join(self.baseDir, 'utils_dynamic_simulations', 'opensim_ad')
         sys.path.append(self.baseDir)
         sys.path.append(opensimADDir)
 

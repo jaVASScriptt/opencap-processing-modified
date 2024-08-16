@@ -6,7 +6,7 @@ import pandas as pd
 class DataController:
     def __init__(self, analysis_type):
         self.analysis_type = analysis_type
-        self.json_file_path = 'Data/parameters.json'  # Chemin fixe vers le fichier JSON
+        self.json_file_path = 'data/parameters.json'  # Chemin fixe vers le fichier JSON
         self.parameters = self.load_parameters()
 
     def load_parameters(self):

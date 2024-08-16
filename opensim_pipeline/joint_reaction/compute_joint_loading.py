@@ -28,7 +28,7 @@ def computeKAM(pathGenericTemplates, outputDir, modelPath, IDPath, IKPath,
                GRFPath, grfType, contactSides, contactSpheres={}, Qds=[]):
     print('Computing knee adduction moments.\n')
 
-    jointReactionXmlPath = os.path.join(pathGenericTemplates, 'JointReaction',
+    jointReactionXmlPath = os.path.join(pathGenericTemplates, 'joint_reaction',
                                         'Setup_JointReaction.xml')
     statesInDegrees = True  # Default input file. If not in header, uses this.
     removeSpheres = True  # Delete spheres as force elements
@@ -65,7 +65,7 @@ def computeKAM(pathGenericTemplates, outputDir, modelPath, IDPath, IKPath,
         newActuator.set_optimal_force(1)
         model.addForce(newActuator)
 
-        # Add Prescribed Controllers for Coordinate Actuators.
+        # Add Prescribed controllers for Coordinate Actuators.
         # (Needed for joint reaction analysis to work properly).
         # Construct constant function.
         constFxn = opensim.Constant(0)
@@ -302,7 +302,7 @@ def computeMCF(pathGenericTemplates, outputDir, modelPath, activationsPath,
 
     if pathJRAResults == None:  # If JRA is already computed, skip.
         jointReactionXmlPath = os.path.join(
-            pathGenericTemplates, 'JointReaction', 'Setup_JointReaction.xml')
+            pathGenericTemplates, 'joint_reaction', 'Setup_JointReaction.xml')
         if debugMode:
             print(
                 'You supplied muscle forces for computeMCF - these will override forces computed by OpenSim muscle model.')

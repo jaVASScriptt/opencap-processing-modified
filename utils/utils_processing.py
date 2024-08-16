@@ -23,14 +23,14 @@ import os
 pathFile = os.path.dirname(os.path.realpath(__file__))
 import sys
 
-sys.path.append(os.path.join(pathFile, 'ActivityAnalyses'))
+sys.path.append(os.path.join(pathFile, 'activity_analyses'))
 
 import logging
 import opensim
 import numpy as np
 from scipy import signal
 import matplotlib.pyplot as plt
-from Utils.utils import storage_to_dataframe
+from utils.utils import storage_to_dataframe
 
 
 def lowPassFilter(time, data, lowpass_cutoff_frequency, order=4):
@@ -45,7 +45,7 @@ def lowPassFilter(time, data, lowpass_cutoff_frequency, order=4):
 # %% Segment gait
 def segment_gait(session_id, trial_name, data_folder, gait_cycles_from_end=0):
     # Segmentation is done in the gait_analysis class
-    from ActivityAnalyses.gait_analysis import GaitAnalysis
+    from activity_analyses.gait_analysis import GaitAnalysis
 
     gait = GaitAnalysis(os.path.join(data_folder, session_id), trial_name,
                         n_gait_cycles=-1)
@@ -65,7 +65,7 @@ def segment_squats(ikFilePath, pelvis_ty=None, timeVec=None, visualize=False,
         ikResults = storage_to_dataframe(ikFilePath, headers={'pelvis_ty'})
         timeVec = ikResults['time']
         if filter_pelvis_ty:
-            from UtilsDynamicSimulations.OpenSimAD.utils_opensim_ad import filterNumpyArray
+            from utils_dynamic_simulations.opensim_ad.utils_opensim_ad import filterNumpyArray
             pelvis_ty = filterNumpyArray(
                 ikResults['pelvis_ty'].to_numpy(), timeVec.to_numpy(),
                 cutoff_frequency=cutoff_frequency)
@@ -132,7 +132,7 @@ def segment_STS(ikFilePath, pelvis_ty=None, timeVec=None, velSeated=0.3,
         ikResults = storage_to_dataframe(ikFilePath, headers={'pelvis_ty'})
         timeVec = ikResults['time']
         if filter_pelvis_ty:
-            from UtilsDynamicSimulations.OpenSimAD.utils_opensim_ad import filterNumpyArray
+            from utils_dynamic_simulations.opensim_ad.utils_opensim_ad import filterNumpyArray
             pelvis_ty = filterNumpyArray(
                 ikResults['pelvis_ty'].to_numpy(), timeVec.to_numpy(),
                 cutoff_frequency=cutoff_frequency)
@@ -246,7 +246,7 @@ def adjust_muscle_wrapping(
     else:
         unscaledModelName = OpenSimModel
 
-    pathUnscaledModel = os.path.join(baseDir, 'OpenSimPipeline', 'Models',
+    pathUnscaledModel = os.path.join(baseDir, 'opensim_pipeline', 'models',
                                      unscaledModelName + '.osim')
     pathScaledModel = os.path.join(pathModelFolder,
                                    OpenSimModel + '_scaled.osim')

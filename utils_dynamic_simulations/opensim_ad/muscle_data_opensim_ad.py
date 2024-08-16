@@ -62,7 +62,7 @@ def get_mtu_length_and_moment_arm(pathModel, data, coordinates_table,
     import opensim
 
     # Create temporary motion file.
-    from Utils.utils import numpy_to_storage
+    from utils.utils import numpy_to_storage
     labels = ['time'] + coordinates_table
     time = np.linspace(0, data.shape[0] / 100 - 0.01, data.shape[0])
     c_data = np.concatenate((np.expand_dims(time, axis=1), data), axis=1)
@@ -261,7 +261,7 @@ def getPolynomialData(loadPolynomialData, pathModelFolder, modelName='',
                                              allow_pickle=True).item()
         # Fit polynomial coefficients.
         print('Fit polynomials.')
-        from UtilsDynamicSimulations.OpenSimAD.polynomials_opensim_ad import getPolynomialCoefficients
+        from utils_dynamic_simulations.opensim_ad.polynomials_opensim_ad import getPolynomialCoefficients
         polynomialData = getPolynomialCoefficients(
             data4PolynomialFitting, joints, muscles, side=side)
         if pathModelFolder != 0:
@@ -288,7 +288,7 @@ def tendonShift(NSideMuscles):
 
 
 # %% Joint limit torques.
-# Data from https://www.tandfonline.com/doi/abs/10.1080/10255849908907988
+# data from https://www.tandfonline.com/doi/abs/10.1080/10255849908907988
 def passiveJointTorqueData(joint, model_type='rajagopal2016'):
     kAll = {'hip_flexion_r': [-2.44, 5.05, 1.51, -21.88],
             'hip_flexion_l': [-2.44, 5.05, 1.51, -21.88],

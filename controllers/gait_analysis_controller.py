@@ -1,8 +1,8 @@
-from ActivityAnalyses.gait_analysis import GaitAnalysis
-from Controllers.analysis_utils import menu_analysis, modify_output_folder
-from Controllers.data_controller import DataController
-from Utils.utils_plotting import plot_dataframe_with_shading, save_plots_to_excel, save_gait_metrics_to_excel
-from Utils.utils import *
+from activity_analyses.gait_analysis import GaitAnalysis
+from controllers.analysis_utils import menu_analysis, modify_output_folder
+from controllers.data_controller import DataController
+from utils.utils_plotting import plot_dataframe_with_shading, save_plots_to_excel, save_gait_metrics_to_excel
+from utils.utils import *
 import os
 import sys
 
@@ -12,11 +12,11 @@ class GaitAnalysisController:
     def __init__(self):
 
         sys.path.append("../")
-        sys.path.append("../ActivityAnalyses")
+        sys.path.append("../activity_analyses")
 
         # Paths
         self.baseDir = os.path.join(os.getcwd(), '..')
-        self.dataFolder = os.path.join(self.baseDir, 'Data')
+        self.dataFolder = os.path.join(self.baseDir, 'data')
 
         self.DataController = DataController('gait_analysis')
 

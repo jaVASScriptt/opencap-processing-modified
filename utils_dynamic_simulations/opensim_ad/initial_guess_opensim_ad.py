@@ -20,7 +20,7 @@ import pandas as pd
 import scipy.interpolate as interpolate
 
 
-# %% Data-driven initial guess.
+# %% data-driven initial guess.
 class DataDrivenGuessTracking:
     def __init__(self, Qs, N, d, joints, muscles):
 

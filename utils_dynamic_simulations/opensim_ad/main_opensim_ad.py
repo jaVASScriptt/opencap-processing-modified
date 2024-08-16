@@ -358,7 +358,7 @@ def run_tracking(baseDir, dataDir, subject, settings, case='0',
     pathEMGFolder = os.path.join(pathSubjectData, 'EMGData')
     pathMocapFolder = os.path.join(pathSubjectData, "OpenSimDataMocap")
     pathMocapIKFolder = os.path.join(pathMocapFolder, 'InverseKinematics')
-    pathMocapIDFolder = os.path.join(pathMocapFolder, 'InverseDynamics')
+    pathMocapIDFolder = os.path.join(pathMocapFolder, 'inverse_dynamics')
     # Path results and settings.
     pathResults = os.path.join(pathOSData, 'Dynamics', trialName)
     if 'repetition' in settings:
@@ -698,8 +698,8 @@ def run_tracking(baseDir, dataDir, subject, settings, case='0',
     # for the current model.
 
     # Paths
-    pathGenericTemplates = os.path.join(baseDir, "OpenSimPipeline")
-    pathDummyMotion = os.path.join(pathGenericTemplates, "MuscleAnalysis",
+    pathGenericTemplates = os.path.join(baseDir, "opensim_pipeline")
+    pathDummyMotion = os.path.join(pathGenericTemplates, "muscle_analysis",
                                    'DummyMotion.mot')
 
     # These are the ranges of motion used to fit the polynomial coefficients.
@@ -825,7 +825,7 @@ def run_tracking(baseDir, dataDir, subject, settings, case='0',
         # Plot polynomial approximations (when possible) for sanity check.
         plotPolynomials = False
         if plotPolynomials:
-            from UtilsDynamicSimulations.OpenSimAD.polynomials_opensim_ad import testPolynomials
+            from utils_dynamic_simulations.opensim_ad.polynomials_opensim_ad import testPolynomials
             path_data4PolynomialFitting = os.path.join(
                 pathModelFolder,
                 'data4PolynomialFitting_{}_{}.npy'.format(
@@ -891,7 +891,7 @@ def run_tracking(baseDir, dataDir, subject, settings, case='0',
         # contact configurations. Old versions of the external functions will
         # not work anymore. Results will not change.
         raise ValueError("""We recently updated our code, please delete the folder 
-        ExternalFunction under Data/<session_ID>/OpenSimData/Model/ 
+        ExternalFunction under data/<session_ID>/OpenSimData/Model/ 
         and rerun the example_kinetics.py.""")
 
     nContactSpheres = F_map['GRFs']['nContactSpheres']
@@ -2204,7 +2204,7 @@ def run_tracking(baseDir, dataDir, subject, settings, case='0',
 
         if writeGUI:
             # Kinematics and activations.
-            from Utils.utils import numpy_to_storage
+            from utils.utils import numpy_to_storage
             labels = ['time'] + joints
             if torque_driven_model:
                 coordLabels = ([joint + '/activation'
@@ -2274,7 +2274,7 @@ def run_tracking(baseDir, dataDir, subject, settings, case='0',
                 pathResults, 'GRF_resultant_{}_{}.mot'.format(
                     trialName, case)), datatype='GRF')
 
-        # %% Data processing.
+        # %% data processing.
         # Reference Qs adjusted with optimized offset.
         refData_nsc = Qs_toTrack.to_numpy()[:, 1::].T
         refData_offset_nsc = np.copy(refData_nsc)
@@ -2552,9 +2552,9 @@ def run_tracking(baseDir, dataDir, subject, settings, case='0',
 
         # %% Compute knee adduction moments.
         if computeKAM:
-            sys.path.append(os.path.join(baseDir, 'OpenSimPipeline',
-                                         'JointReaction'))
-            from OpenSimPipeline.JointReaction.compute_joint_loading import computeKAM
+            sys.path.append(os.path.join(baseDir, 'opensim_pipeline',
+                                         'joint_reaction'))
+            from opensim_pipeline.joint_reaction.compute_joint_loading import computeKAM
             KAM_labels = ['knee_adduction_r', 'knee_adduction_l']
             IDPath = os.path.join(
                 pathResults, 'kinetics_{}_{}.mot'.format(trialName, case))
@@ -2653,9 +2653,9 @@ def run_tracking(baseDir, dataDir, subject, settings, case='0',
                              datatype='muscle_forces')
             # Compute medial knee contact forces.
             if not computeKAM:
-                sys.path.append(os.path.join(baseDir, 'OpenSimPipeline',
-                                             'JointReaction'))
-            from OpenSimPipeline.JointReaction.compute_joint_loading import computeMCF
+                sys.path.append(os.path.join(baseDir, 'opensim_pipeline',
+                                             'joint_reaction'))
+            from opensim_pipeline.joint_reaction.compute_joint_loading import computeMCF
             MCF_labels = ['medial_knee_contact_force_r',
                           'medial_knee_contact_force_l']
             forcePath = os.path.join(pathResults,

@@ -34,9 +34,9 @@ import platform
 import opensim
 from InquirerPy import inquirer
 
-from Controllers.analysis_utils import clear_terminal, display_message
-from Utils.utils_api import get_api_url
-from Utils.utils_authentication import get_token
+from controllers.analysis_utils import clear_terminal, display_message
+from utils.utils_api import get_api_url
+from utils.utils_authentication import get_token
 import matplotlib.pyplot as plt
 from scipy.signal import gaussian
 
@@ -89,10 +89,10 @@ def retrieves_and_sorts_sessions():
 
     filtered_sessions_json = json.dumps(filtered_sessions, indent=4)
 
-    # Ensure the Data directory exists
-    os.makedirs('Data', exist_ok=True)
+    # Ensure the data directory exists
+    os.makedirs('data', exist_ok=True)
 
-    with open('Data/sessions_info.json', 'w') as f:
+    with open('data/sessions_info.json', 'w') as f:
         f.write(filtered_sessions_json)
 
     return filtered_sessions
@@ -108,7 +108,7 @@ def get_user_sessions():
 
 
 def get_sessions(is_public=None):
-    with open('Data/sessions_info.json') as f:
+    with open('data/sessions_info.json') as f:
         sessions_json = json.load(f)
 
     return [
@@ -121,7 +121,7 @@ def get_sessions(is_public=None):
 
 
 def get_trials_names_from_session(session_id):
-    with open('Data/sessions_info.json') as f:
+    with open('data/sessions_info.json') as f:
         sessions_json = json.load(f)
 
     trials = []
@@ -579,7 +579,7 @@ def download_videos_from_server(session_id, trial_id,
                                 trial_name=None, session_path=None):
     if session_path is None:
         data_dir = os.getcwd()
-        session_path = os.path.join(data_dir, 'Data', session_id)
+        session_path = os.path.join(data_dir, 'data', session_id)
     if not os.path.exists(session_path):
         os.makedirs(session_path, exist_ok=True)
 
@@ -767,7 +767,7 @@ def download_session(session_id, sessionBasePath=None,
     print('\nDownloading {}'.format(session_id))
 
     if sessionBasePath is None:
-        sessionBasePath = os.path.join(os.getcwd(), 'Data')
+        sessionBasePath = os.path.join(os.getcwd(), 'data')
 
     session = get_session_json(session_id)
     session_path = os.path.join(sessionBasePath, 'OpenCapData_' + session_id)

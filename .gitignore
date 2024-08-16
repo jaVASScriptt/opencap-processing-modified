@@ -7,7 +7,7 @@ __pycache__
 
 .vscode/*
 
-UtilsDynamicSimulations/OpenSimAD/build-ExpressionGraphF*
-UtilsDynamicSimulations/OpenSimAD/build-ExternalFunctionF*
-UtilsDynamicSimulations/OpenSimAD/install-ExternalFunctionF*
-UtilsDynamicSimulations/OpenSimAD/opensimAD-install/*
+utils_dynamic_simulations/opensim_ad/build-ExpressionGraphF*
+utils_dynamic_simulations/opensim_ad/build-ExternalFunctionF*
+utils_dynamic_simulations/opensim_ad/install-ExternalFunctionF*
+utils_dynamic_simulations/opensim_ad/opensimAD-install/*
