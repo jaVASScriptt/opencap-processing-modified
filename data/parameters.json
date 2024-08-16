@@ -1,50 +1,50 @@
 {
-    "gait_analysis": {
-        "sessions_trials": [
-            {
-                "session_id": "354cab85-19bb-4e51-9d9f-212eb14e4bc6",
-                "trial_name": "testsurfacehigh"
-            }
-        ],
-        "selected_columns": [
-            "pelvis_tilt",
-            "pelvis_list",
-            "pelvis_rotation",
-            "pelvis_tx",
-            "pelvis_ty",
-            "pelvis_tz",
-            "hip_flexion_r",
-            "hip_adduction_r",
-            "hip_rotation_r",
-            "knee_angle_r",
-            "ankle_angle_r",
-            "subtalar_angle_r",
-            "mtp_angle_r",
-            "lumbar_extension",
-            "lumbar_bending",
-            "lumbar_rotation",
-            "arm_flex_r",
-            "arm_add_r",
-            "arm_rot_r",
-            "elbow_flex_r",
-            "pro_sup_r"
-        ],
-        "analysis_folder": "C:/Users/NNL_L/OneDrive/Documents/Go"
-    },
-    "muscles_analysis": {
-        "session_id": "77c05395-9454-472e-bb7b-d511dfdac515",
-        "trial_name": "marche",
-        "motion_type": "walking",
-        "time_window": [
-            2.8864583250000004,
-            4.07083334
-        ],
-        "repetition": "0",
-        "case": "0",
-        "treadmill_speed": 0,
-        "contact_side": "all",
-        "ipopt_tolerance": 1,
-        "mesh_density": 10,
-        "output_folder": "C:/Users/NNL_L/OneDrive/Documents/Go"
-    }
+  "gait_analysis": {
+    "sessions_trials": [
+      {
+        "session_id": "354cab85-19bb-4e51-9d9f-212eb14e4bc6",
+        "trial_name": "testsurfacehigh"
+      }
+    ],
+    "selected_columns": [
+      "pelvis_tilt",
+      "pelvis_list",
+      "pelvis_rotation",
+      "pelvis_tx",
+      "pelvis_ty",
+      "pelvis_tz",
+      "hip_flexion_r",
+      "hip_adduction_r",
+      "hip_rotation_r",
+      "knee_angle_r",
+      "ankle_angle_r",
+      "subtalar_angle_r",
+      "mtp_angle_r",
+      "lumbar_extension",
+      "lumbar_bending",
+      "lumbar_rotation",
+      "arm_flex_r",
+      "arm_add_r",
+      "arm_rot_r",
+      "elbow_flex_r",
+      "pro_sup_r"
+    ],
+    "analysis_folder": "C:/Users/NNL_L/OneDrive/Documents/Go"
+  },
+  "muscles_analysis": {
+    "session_id": "77c05395-9454-472e-bb7b-d511dfdac515",
+    "trial_name": "marche",
+    "motion_type": "walking",
+    "time_window": [
+      2.8864583250000004,
+      4.07083334
+    ],
+    "repetition": "0",
+    "case": "0",
+    "treadmill_speed": 0,
+    "contact_side": "all",
+    "ipopt_tolerance": 1,
+    "mesh_density": 10,
+    "output_folder": "C:/Users/NNL_L/OneDrive/Documents/Go"
+  }
 }

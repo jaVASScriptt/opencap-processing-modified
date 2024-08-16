@@ -3,6 +3,7 @@ import os
 
 import pandas as pd
 
+
 class DataController:
     def __init__(self, analysis_type):
         self.analysis_type = analysis_type
@@ -64,10 +65,3 @@ class DataController:
         """Écrit les paramètres d'un type d'analyse dans un fichier Excel."""
         df = pd.DataFrame(self.parameters.items(), columns=['Paramètre', 'Valeur'])
         df.to_excel(os.path.join(output_file_path, 'analysis_parameters.xlsx'), index=False)
-
-
-
-
-
-
-

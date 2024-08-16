@@ -18,10 +18,10 @@
     limitations under the License.
 '''
 import os
-import pandas as pd
 
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
 
 
 def plot_dataframe(dataframes, x=None, y=[], xlabel=None, ylabel=None,
@@ -170,7 +170,7 @@ def plot_dataframe_with_shading(AllGaitResults, analysis_folder, leg=None, xlabe
 
             for j, (mean_df, sd_df) in enumerate(zip(mean_dataframe, sd_dataframe)):
                 col = column[:-2] + '_' + legs[j] if (
-                            legs and (column.endswith('_r') or column.endswith('_l'))) else column
+                        legs and (column.endswith('_r') or column.endswith('_l'))) else column
                 if col not in mean_df.columns:
                     continue
 
@@ -238,7 +238,6 @@ def plot_dataframe_with_shading(AllGaitResults, analysis_folder, leg=None, xlabe
     plt.tight_layout()
 
     if not no_show:
-
         # Save the plot before showing it
         plt.savefig(os.path.join(analysis_folder, f"plot.png"), dpi=300)
 

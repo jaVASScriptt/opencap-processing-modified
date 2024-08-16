@@ -17,28 +17,28 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 '''
+import glob
 import json
 import os
+import pickle
+import platform
+import shutil
+import urllib.request
+import zipfile
 from datetime import datetime
 
-import requests
-import urllib.request
-import shutil
+import matplotlib.pyplot as plt
 import numpy as np
-import pandas as pd
-import yaml
-import pickle
-import glob
-import zipfile
-import platform
 import opensim
+import pandas as pd
+import requests
+import yaml
 from InquirerPy import inquirer
-
-from controllers.analysis_utils import clear_terminal, display_message
+from scipy.signal import gaussian
 from utils.utils_api import get_api_url
 from utils.utils_authentication import get_token
-import matplotlib.pyplot as plt
-from scipy.signal import gaussian
+
+from controllers.analysis_utils import clear_terminal, display_message
 
 API_URL = get_api_url()
 API_TOKEN = get_token()
@@ -116,7 +116,8 @@ def get_sessions(is_public=None):
          s['id'] + ")" + " / subject:" +
          s['name'] + " - " +
          datetime.fromisoformat(s['created_at'].rstrip("Z")).strftime("%Y-%m-%d"))
-        for s in sessions_json if (is_public is None or s['public'] == is_public) and s['trials'] and not s.get('trashed', False)
+        for s in sessions_json if
+        (is_public is None or s['public'] == is_public) and s['trials'] and not s.get('trashed', False)
     ]
 
 

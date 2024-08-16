@@ -1,9 +1,9 @@
 import sys
 
+from utils.utils import *
+
 from controllers.gait_analysis_controller import GaitAnalysisController
 from controllers.muscle_analysis_controller import MuscleAnalysisController
-
-from utils.utils import *
 
 
 class ProgramLauncher:

@@ -20,8 +20,8 @@
     approximations of joint positions and velocities.
 '''
 
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
 
 
 class Polynomials:
@@ -425,7 +425,7 @@ def getPolynomialCoefficients(data4PolynomialFitting, joints,
             for j in range(muscle_dimension):
                 diff_mat[:, :, j] = polynomial.getVariableDerivatives(jointCoordinates[:, spanningInfo[i, :] == 1], j)
                 diff_mat_sq[jointCoordinates.shape[0] * j:jointCoordinates.shape[0] * (j + 1), :] = -(
-                diff_mat[:, :, j]).reshape(-1, diff_mat.shape[1])
+                    diff_mat[:, :, j]).reshape(-1, diff_mat.shape[1])
 
             A = np.concatenate((mat, diff_mat_sq), axis=0)
             B = np.concatenate((muscle_muscleTendonLengths, (muscle_momentArms.T).flatten()))

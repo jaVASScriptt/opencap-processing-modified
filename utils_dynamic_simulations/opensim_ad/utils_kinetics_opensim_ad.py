@@ -19,10 +19,11 @@
 '''
 
 import os
+
 import numpy as np
+import opensim
 import pandas as pd
 from utils import utils
-import opensim
 
 
 class KineticsOpenSimAD:

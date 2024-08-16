@@ -17,13 +17,13 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 '''
-import sys
 
-import requests
-from decouple import config
 import getpass
 import os
+
 import maskpass
+import requests
+from decouple import config
 from utils.utils_api import get_api_url
 
 API_URL = get_api_url()

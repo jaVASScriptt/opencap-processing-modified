@@ -18,29 +18,30 @@
     This script contains helper utilities.
 '''
 
-import os
-import sys
-import opensim
-import numpy as np
-import pandas as pd
-import casadi as ca
-import shutil
 import importlib
+import os
+import platform
+import re
+import shutil
+import subprocess
+import sys
+import urllib.request
+import zipfile
+
+import casadi as ca
+import matplotlib.pyplot as plt
+import numpy as np
+import opensim
+import pandas as pd
+import requests
+import seaborn as sns
 from scipy import signal
 from scipy.interpolate import interp1d
-import matplotlib.pyplot as plt
-import platform
-import urllib.request
-import requests
-import zipfile
-import seaborn as sns
-import subprocess
-import re
-
 from utils.utils import (storage_to_numpy, storage_to_dataframe,
                          download_kinematics, import_metadata, numpy_to_storage)
 from utils.utils_processing import (segment_squats, segment_STS, adjust_muscle_wrapping,
                                     generate_model_with_contacts)
+
 from utils_dynamic_simulations.opensim_ad.settings_opensim_ad import get_setup
 
 
@@ -698,8 +699,8 @@ def generateExternalFunction(
             f.write('\tOpenSim::Body* %s;\n' % c_body_name)
             f.write(
                 '\t%s = new OpenSim::Body(\"%s\", %.20f, Vec3(%.20f, %.20f, %.20f), Inertia(%.20f, %.20f, %.20f, 0., 0., 0.));\n' % (
-                c_body_name, c_body_name, c_body_mass, c_body_mass_center[0], c_body_mass_center[1],
-                c_body_mass_center[2], c_body_inertia_vec3[0], c_body_inertia_vec3[1], c_body_inertia_vec3[2]))
+                    c_body_name, c_body_name, c_body_mass, c_body_mass_center[0], c_body_mass_center[1],
+                    c_body_mass_center[2], c_body_inertia_vec3[0], c_body_inertia_vec3[1], c_body_inertia_vec3[2]))
             f.write('\tmodel->addBody(%s);\n' % (c_body_name))
             f.write('\n')
         if treadmill:
@@ -749,37 +750,38 @@ def generateExternalFunction(
                     c_coord = c_joint.get_coordinates(coord)
                     c_coord_name = c_coord.getName()
                     f.write('\tst_%s[%i].setCoordinateNames(OpenSim::Array<std::string>(\"%s\", 1, 1));\n' % (
-                    c_joint.getName(), coord, c_coord_name))
+                        c_joint.getName(), coord, c_coord_name))
                     f.write('\tst_%s[%i].setFunction(new LinearFunction(%.4f, %.4f));\n' % (
-                    c_joint.getName(), coord, rot1_f_slope, rot1_f_intercept))
+                        c_joint.getName(), coord, rot1_f_slope, rot1_f_intercept))
                 elif rot1_f.getConcreteClassName() == 'PolynomialFunction':
                     f.write('\tst_%s[%i].setCoordinateNames(OpenSim::Array<std::string>(\"%s\", 1, 1));\n' % (
-                    c_joint.getName(), coord, c_coord_name))
+                        c_joint.getName(), coord, c_coord_name))
                     rot1_f_obj = opensim.PolynomialFunction.safeDownCast(rot1_f)
                     rot1_f_coeffs = rot1_f_obj.getCoefficients().to_numpy()
                     c_nCoeffs = rot1_f_coeffs.shape[0]
                     if c_nCoeffs == 2:
                         f.write('\tosim_double_adouble st_%s_%i_coeffs[%i] = {%.20f, %.20f}; \n' % (
-                        c_joint.getName(), coord, c_nCoeffs, rot1_f_coeffs[0], rot1_f_coeffs[1]))
+                            c_joint.getName(), coord, c_nCoeffs, rot1_f_coeffs[0], rot1_f_coeffs[1]))
                     elif c_nCoeffs == 3:
                         f.write('\tosim_double_adouble st_%s_%i_coeffs[%i] = {%.20f, %.20f, %.20f}; \n' % (
-                        c_joint.getName(), coord, c_nCoeffs, rot1_f_coeffs[0], rot1_f_coeffs[1], rot1_f_coeffs[2]))
+                            c_joint.getName(), coord, c_nCoeffs, rot1_f_coeffs[0], rot1_f_coeffs[1], rot1_f_coeffs[2]))
                     elif c_nCoeffs == 4:
                         f.write('\tosim_double_adouble st_%s_%i_coeffs[%i] = {%.20f, %.20f, %.20f, %.20f}; \n' % (
-                        c_joint.getName(), coord, c_nCoeffs, rot1_f_coeffs[0], rot1_f_coeffs[1], rot1_f_coeffs[2],
-                        rot1_f_coeffs[3]))
+                            c_joint.getName(), coord, c_nCoeffs, rot1_f_coeffs[0], rot1_f_coeffs[1], rot1_f_coeffs[2],
+                            rot1_f_coeffs[3]))
                     elif c_nCoeffs == 5:
                         f.write(
                             '\tosim_double_adouble st_%s_%i_coeffs[%i] = {%.20f, %.20f, %.20f, %.20f, %.20f}; \n' % (
-                            c_joint.getName(), coord, c_nCoeffs, rot1_f_coeffs[0], rot1_f_coeffs[1], rot1_f_coeffs[2],
-                            rot1_f_coeffs[3], rot1_f_coeffs[4]))
+                                c_joint.getName(), coord, c_nCoeffs, rot1_f_coeffs[0], rot1_f_coeffs[1],
+                                rot1_f_coeffs[2],
+                                rot1_f_coeffs[3], rot1_f_coeffs[4]))
                     else:
                         raise ValueError("TODO")
                     f.write('\tVector st_%s_%i_coeffs_vec(%i); \n' % (c_joint.getName(), coord, c_nCoeffs))
                     f.write('\tfor (int i = 0; i < %i; ++i) st_%s_%i_coeffs_vec[i] = st_%s_%i_coeffs[i]; \n' % (
-                    c_nCoeffs, c_joint.getName(), coord, c_joint.getName(), coord))
+                        c_nCoeffs, c_joint.getName(), coord, c_joint.getName(), coord))
                     f.write('\tst_%s[%i].setFunction(new PolynomialFunction(st_%s_%i_coeffs_vec));\n' % (
-                    c_joint.getName(), coord, c_joint.getName(), coord))
+                        c_joint.getName(), coord, c_joint.getName(), coord))
                 elif rot1_f.getConcreteClassName() == 'MultiplierFunction':
                     rot1_f_obj = opensim.MultiplierFunction.safeDownCast(rot1_f)
                     rot1_f_obj_scale = rot1_f_obj.getScale()
@@ -789,48 +791,48 @@ def generateExternalFunction(
                         rot1_f_obj_f_obj = opensim.Constant.safeDownCast(rot1_f_obj_f)
                         rot1_f_obj_f_obj_value = rot1_f_obj_f_obj.getValue()
                         f.write('\tst_%s[%i].setFunction(new MultiplierFunction(new Constant(%.20f), %.20f));\n' % (
-                        c_joint.getName(), coord, rot1_f_obj_f_obj_value, rot1_f_obj_scale))
+                            c_joint.getName(), coord, rot1_f_obj_f_obj_value, rot1_f_obj_scale))
                     elif rot1_f_obj_f_name == 'PolynomialFunction':
                         f.write('\tst_%s[%i].setCoordinateNames(OpenSim::Array<std::string>(\"%s\", 1, 1));\n' % (
-                        c_joint.getName(), coord, c_coord_name))
+                            c_joint.getName(), coord, c_coord_name))
                         rot1_f_obj_f_obj = opensim.PolynomialFunction.safeDownCast(rot1_f_obj_f)
                         rot1_f_obj_f_coeffs = rot1_f_obj_f_obj.getCoefficients().to_numpy()
                         c_nCoeffs = rot1_f_obj_f_coeffs.shape[0]
                         if c_nCoeffs == 2:
                             f.write('\tosim_double_adouble st_%s_%i_coeffs[%i] = {%.20f, %.20f}; \n' % (
-                            c_joint.getName(), coord, c_nCoeffs, rot1_f_obj_f_coeffs[0], rot1_f_obj_f_coeffs[1]))
+                                c_joint.getName(), coord, c_nCoeffs, rot1_f_obj_f_coeffs[0], rot1_f_obj_f_coeffs[1]))
                         elif c_nCoeffs == 3:
                             f.write('\tosim_double_adouble st_%s_%i_coeffs[%i] = {%.20f, %.20f, %.20f}; \n' % (
-                            c_joint.getName(), coord, c_nCoeffs, rot1_f_obj_f_coeffs[0], rot1_f_obj_f_coeffs[1],
-                            rot1_f_obj_f_coeffs[2]))
+                                c_joint.getName(), coord, c_nCoeffs, rot1_f_obj_f_coeffs[0], rot1_f_obj_f_coeffs[1],
+                                rot1_f_obj_f_coeffs[2]))
                         elif c_nCoeffs == 4:
                             f.write('\tosim_double_adouble st_%s_%i_coeffs[%i] = {%.20f, %.20f, %.20f, %.20f}; \n' % (
-                            c_joint.getName(), coord, c_nCoeffs, rot1_f_obj_f_coeffs[0], rot1_f_obj_f_coeffs[1],
-                            rot1_f_obj_f_coeffs[2], rot1_f_obj_f_coeffs[3]))
+                                c_joint.getName(), coord, c_nCoeffs, rot1_f_obj_f_coeffs[0], rot1_f_obj_f_coeffs[1],
+                                rot1_f_obj_f_coeffs[2], rot1_f_obj_f_coeffs[3]))
                         elif c_nCoeffs == 5:
                             f.write(
                                 '\tosim_double_adouble st_%s_%i_coeffs[%i] = {%.20f, %.20f, %.20f, %.20f, %.20f}; \n' % (
-                                c_joint.getName(), coord, c_nCoeffs, rot1_f_obj_f_coeffs[0], rot1_f_obj_f_coeffs[1],
-                                rot1_f_obj_f_coeffs[2], rot1_f_obj_f_coeffs[3], rot1_f_obj_f_coeffs[4]))
+                                    c_joint.getName(), coord, c_nCoeffs, rot1_f_obj_f_coeffs[0], rot1_f_obj_f_coeffs[1],
+                                    rot1_f_obj_f_coeffs[2], rot1_f_obj_f_coeffs[3], rot1_f_obj_f_coeffs[4]))
                         else:
                             raise ValueError("TODO")
                         f.write('\tVector st_%s_%i_coeffs_vec(%i); \n' % (c_joint.getName(), coord, c_nCoeffs))
                         f.write('\tfor (int i = 0; i < %i; ++i) st_%s_%i_coeffs_vec[i] = st_%s_%i_coeffs[i]; \n' % (
-                        c_nCoeffs, c_joint.getName(), coord, c_joint.getName(), coord))
+                            c_nCoeffs, c_joint.getName(), coord, c_joint.getName(), coord))
                         f.write(
                             '\tst_%s[%i].setFunction(new MultiplierFunction(new PolynomialFunction(st_%s_%i_coeffs_vec), %.20f));\n' % (
-                            c_joint.getName(), coord, c_joint.getName(), coord, rot1_f_obj_scale))
+                                c_joint.getName(), coord, c_joint.getName(), coord, rot1_f_obj_scale))
                     else:
                         raise ValueError("Not supported")
                 elif rot1_f.getConcreteClassName() == 'Constant':
                     rot1_f_obj = opensim.Constant.safeDownCast(rot1_f)
                     rot1_f_obj_value = rot1_f_obj.getValue()
                     f.write('\tst_%s[%i].setFunction(new Constant(%.20f));\n' % (
-                    c_joint.getName(), coord, rot1_f_obj_value))
+                        c_joint.getName(), coord, rot1_f_obj_value))
                 else:
                     raise ValueError("Not supported")
                 f.write('\tst_%s[%i].setAxis(Vec3(%.20f, %.20f, %.20f));\n' % (
-                c_joint.getName(), coord, rot1_axis[0], rot1_axis[1], rot1_axis[2]))
+                    c_joint.getName(), coord, rot1_axis[0], rot1_axis[1], rot1_axis[2]))
 
                 # Rotation 2
                 rot2 = spatialtransform.get_rotation2()
@@ -844,37 +846,38 @@ def generateExternalFunction(
                     c_coord = c_joint.get_coordinates(coord)
                     c_coord_name = c_coord.getName()
                     f.write('\tst_%s[%i].setCoordinateNames(OpenSim::Array<std::string>(\"%s\", 1, 1));\n' % (
-                    c_joint.getName(), coord, c_coord_name))
+                        c_joint.getName(), coord, c_coord_name))
                     f.write('\tst_%s[%i].setFunction(new LinearFunction(%.4f, %.4f));\n' % (
-                    c_joint.getName(), coord, rot2_f_slope, rot2_f_intercept))
+                        c_joint.getName(), coord, rot2_f_slope, rot2_f_intercept))
                 elif rot2_f.getConcreteClassName() == 'PolynomialFunction':
                     f.write('\tst_%s[%i].setCoordinateNames(OpenSim::Array<std::string>(\"%s\", 1, 1));\n' % (
-                    c_joint.getName(), coord, c_coord_name))
+                        c_joint.getName(), coord, c_coord_name))
                     rot2_f_obj = opensim.PolynomialFunction.safeDownCast(rot2_f)
                     rot2_f_coeffs = rot2_f_obj.getCoefficients().to_numpy()
                     c_nCoeffs = rot2_f_coeffs.shape[0]
                     if c_nCoeffs == 2:
                         f.write('\tosim_double_adouble st_%s_%i_coeffs[%i] = {%.20f, %.20f}; \n' % (
-                        c_joint.getName(), coord, c_nCoeffs, rot2_f_coeffs[0], rot2_f_coeffs[1]))
+                            c_joint.getName(), coord, c_nCoeffs, rot2_f_coeffs[0], rot2_f_coeffs[1]))
                     elif c_nCoeffs == 3:
                         f.write('\tosim_double_adouble st_%s_%i_coeffs[%i] = {%.20f, %.20f, %.20f}; \n' % (
-                        c_joint.getName(), coord, c_nCoeffs, rot2_f_coeffs[0], rot2_f_coeffs[1], rot2_f_coeffs[2]))
+                            c_joint.getName(), coord, c_nCoeffs, rot2_f_coeffs[0], rot2_f_coeffs[1], rot2_f_coeffs[2]))
                     elif c_nCoeffs == 4:
                         f.write('\tosim_double_adouble st_%s_%i_coeffs[%i] = {%.20f, %.20f, %.20f, %.20f}; \n' % (
-                        c_joint.getName(), coord, c_nCoeffs, rot2_f_coeffs[0], rot2_f_coeffs[1], rot2_f_coeffs[2],
-                        rot2_f_coeffs[3]))
+                            c_joint.getName(), coord, c_nCoeffs, rot2_f_coeffs[0], rot2_f_coeffs[1], rot2_f_coeffs[2],
+                            rot2_f_coeffs[3]))
                     elif c_nCoeffs == 5:
                         f.write(
                             '\tosim_double_adouble st_%s_%i_coeffs[%i] = {%.20f, %.20f, %.20f, %.20f, %.20f}; \n' % (
-                            c_joint.getName(), coord, c_nCoeffs, rot2_f_coeffs[0], rot2_f_coeffs[1], rot2_f_coeffs[2],
-                            rot2_f_coeffs[3], rot2_f_coeffs[4]))
+                                c_joint.getName(), coord, c_nCoeffs, rot2_f_coeffs[0], rot2_f_coeffs[1],
+                                rot2_f_coeffs[2],
+                                rot2_f_coeffs[3], rot2_f_coeffs[4]))
                     else:
                         raise ValueError("TODO")
                     f.write('\tVector st_%s_%i_coeffs_vec(%i); \n' % (c_joint.getName(), coord, c_nCoeffs))
                     f.write('\tfor (int i = 0; i < %i; ++i) st_%s_%i_coeffs_vec[i] = st_%s_%i_coeffs[i]; \n' % (
-                    c_nCoeffs, c_joint.getName(), coord, c_joint.getName(), coord))
+                        c_nCoeffs, c_joint.getName(), coord, c_joint.getName(), coord))
                     f.write('\tst_%s[%i].setFunction(new PolynomialFunction(st_%s_%i_coeffs_vec));\n' % (
-                    c_joint.getName(), coord, c_joint.getName(), coord))
+                        c_joint.getName(), coord, c_joint.getName(), coord))
                 elif rot2_f.getConcreteClassName() == 'MultiplierFunction':
                     rot2_f_obj = opensim.MultiplierFunction.safeDownCast(rot2_f)
                     rot2_f_obj_scale = rot2_f_obj.getScale()
@@ -884,48 +887,48 @@ def generateExternalFunction(
                         rot2_f_obj_f_obj = opensim.Constant.safeDownCast(rot2_f_obj_f)
                         rot2_f_obj_f_obj_value = rot2_f_obj_f_obj.getValue()
                         f.write('\tst_%s[%i].setFunction(new MultiplierFunction(new Constant(%.20f), %.20f));\n' % (
-                        c_joint.getName(), coord, rot2_f_obj_f_obj_value, rot2_f_obj_scale))
+                            c_joint.getName(), coord, rot2_f_obj_f_obj_value, rot2_f_obj_scale))
                     elif rot2_f_obj_f_name == 'PolynomialFunction':
                         f.write('\tst_%s[%i].setCoordinateNames(OpenSim::Array<std::string>(\"%s\", 1, 1));\n' % (
-                        c_joint.getName(), coord, c_coord_name))
+                            c_joint.getName(), coord, c_coord_name))
                         rot2_f_obj_f_obj = opensim.PolynomialFunction.safeDownCast(rot2_f_obj_f)
                         rot2_f_obj_f_coeffs = rot2_f_obj_f_obj.getCoefficients().to_numpy()
                         c_nCoeffs = rot2_f_obj_f_coeffs.shape[0]
                         if c_nCoeffs == 2:
                             f.write('\tosim_double_adouble st_%s_%i_coeffs[%i] = {%.20f, %.20f}; \n' % (
-                            c_joint.getName(), coord, c_nCoeffs, rot2_f_obj_f_coeffs[0], rot2_f_obj_f_coeffs[1]))
+                                c_joint.getName(), coord, c_nCoeffs, rot2_f_obj_f_coeffs[0], rot2_f_obj_f_coeffs[1]))
                         elif c_nCoeffs == 3:
                             f.write('\tosim_double_adouble st_%s_%i_coeffs[%i] = {%.20f, %.20f, %.20f}; \n' % (
-                            c_joint.getName(), coord, c_nCoeffs, rot2_f_obj_f_coeffs[0], rot2_f_obj_f_coeffs[1],
-                            rot2_f_obj_f_coeffs[2]))
+                                c_joint.getName(), coord, c_nCoeffs, rot2_f_obj_f_coeffs[0], rot2_f_obj_f_coeffs[1],
+                                rot2_f_obj_f_coeffs[2]))
                         elif c_nCoeffs == 4:
                             f.write('\tosim_double_adouble st_%s_%i_coeffs[%i] = {%.20f, %.20f, %.20f, %.20f}; \n' % (
-                            c_joint.getName(), coord, c_nCoeffs, rot2_f_obj_f_coeffs[0], rot2_f_obj_f_coeffs[1],
-                            rot2_f_obj_f_coeffs[2], rot2_f_obj_f_coeffs[3]))
+                                c_joint.getName(), coord, c_nCoeffs, rot2_f_obj_f_coeffs[0], rot2_f_obj_f_coeffs[1],
+                                rot2_f_obj_f_coeffs[2], rot2_f_obj_f_coeffs[3]))
                         elif c_nCoeffs == 5:
                             f.write(
                                 '\tosim_double_adouble st_%s_%i_coeffs[%i] = {%.20f, %.20f, %.20f, %.20f, %.20f}; \n' % (
-                                c_joint.getName(), coord, c_nCoeffs, rot2_f_obj_f_coeffs[0], rot2_f_obj_f_coeffs[1],
-                                rot2_f_obj_f_coeffs[2], rot2_f_obj_f_coeffs[3], rot2_f_obj_f_coeffs[4]))
+                                    c_joint.getName(), coord, c_nCoeffs, rot2_f_obj_f_coeffs[0], rot2_f_obj_f_coeffs[1],
+                                    rot2_f_obj_f_coeffs[2], rot2_f_obj_f_coeffs[3], rot2_f_obj_f_coeffs[4]))
                         else:
                             raise ValueError("TODO")
                         f.write('\tVector st_%s_%i_coeffs_vec(%i); \n' % (c_joint.getName(), coord, c_nCoeffs))
                         f.write('\tfor (int i = 0; i < %i; ++i) st_%s_%i_coeffs_vec[i] = st_%s_%i_coeffs[i]; \n' % (
-                        c_nCoeffs, c_joint.getName(), coord, c_joint.getName(), coord))
+                            c_nCoeffs, c_joint.getName(), coord, c_joint.getName(), coord))
                         f.write(
                             '\tst_%s[%i].setFunction(new MultiplierFunction(new PolynomialFunction(st_%s_%i_coeffs_vec), %.20f));\n' % (
-                            c_joint.getName(), coord, c_joint.getName(), coord, rot2_f_obj_scale))
+                                c_joint.getName(), coord, c_joint.getName(), coord, rot2_f_obj_scale))
                     else:
                         raise ValueError("Not supported")
                 elif rot2_f.getConcreteClassName() == 'Constant':
                     rot2_f_obj = opensim.Constant.safeDownCast(rot2_f)
                     rot2_f_obj_value = rot2_f_obj.getValue()
                     f.write('\tst_%s[%i].setFunction(new Constant(%.20f));\n' % (
-                    c_joint.getName(), coord, rot2_f_obj_value))
+                        c_joint.getName(), coord, rot2_f_obj_value))
                 else:
                     raise ValueError("Not supported")
                 f.write('\tst_%s[%i].setAxis(Vec3(%.20f, %.20f, %.20f));\n' % (
-                c_joint.getName(), coord, rot2_axis[0], rot2_axis[1], rot2_axis[2]))
+                    c_joint.getName(), coord, rot2_axis[0], rot2_axis[1], rot2_axis[2]))
 
                 # Rotation 3
                 rot3 = spatialtransform.get_rotation3()
@@ -939,37 +942,38 @@ def generateExternalFunction(
                     c_coord = c_joint.get_coordinates(coord)
                     c_coord_name = c_coord.getName()
                     f.write('\tst_%s[%i].setCoordinateNames(OpenSim::Array<std::string>(\"%s\", 1, 1));\n' % (
-                    c_joint.getName(), coord, c_coord_name))
+                        c_joint.getName(), coord, c_coord_name))
                     f.write('\tst_%s[%i].setFunction(new LinearFunction(%.4f, %.4f));\n' % (
-                    c_joint.getName(), coord, rot3_f_slope, rot3_f_intercept))
+                        c_joint.getName(), coord, rot3_f_slope, rot3_f_intercept))
                 elif rot3_f.getConcreteClassName() == 'PolynomialFunction':
                     f.write('\tst_%s[%i].setCoordinateNames(OpenSim::Array<std::string>(\"%s\", 1, 1));\n' % (
-                    c_joint.getName(), coord, c_coord_name))
+                        c_joint.getName(), coord, c_coord_name))
                     rot3_f_obj = opensim.PolynomialFunction.safeDownCast(rot3_f)
                     rot3_f_coeffs = rot3_f_obj.getCoefficients().to_numpy()
                     c_nCoeffs = rot3_f_coeffs.shape[0]
                     if c_nCoeffs == 2:
                         f.write('\tosim_double_adouble st_%s_%i_coeffs[%i] = {%.20f, %.20f}; \n' % (
-                        c_joint.getName(), coord, c_nCoeffs, rot3_f_coeffs[0], rot3_f_coeffs[1]))
+                            c_joint.getName(), coord, c_nCoeffs, rot3_f_coeffs[0], rot3_f_coeffs[1]))
                     elif c_nCoeffs == 3:
                         f.write('\tosim_double_adouble st_%s_%i_coeffs[%i] = {%.20f, %.20f, %.20f}; \n' % (
-                        c_joint.getName(), coord, c_nCoeffs, rot3_f_coeffs[0], rot3_f_coeffs[1], rot3_f_coeffs[2]))
+                            c_joint.getName(), coord, c_nCoeffs, rot3_f_coeffs[0], rot3_f_coeffs[1], rot3_f_coeffs[2]))
                     elif c_nCoeffs == 4:
                         f.write('\tosim_double_adouble st_%s_%i_coeffs[%i] = {%.20f, %.20f, %.20f, %.20f}; \n' % (
-                        c_joint.getName(), coord, c_nCoeffs, rot3_f_coeffs[0], rot3_f_coeffs[1], rot3_f_coeffs[2],
-                        rot3_f_coeffs[3]))
+                            c_joint.getName(), coord, c_nCoeffs, rot3_f_coeffs[0], rot3_f_coeffs[1], rot3_f_coeffs[2],
+                            rot3_f_coeffs[3]))
                     elif c_nCoeffs == 5:
                         f.write(
                             '\tosim_double_adouble st_%s_%i_coeffs[%i] = {%.20f, %.20f, %.20f, %.20f, %.20f}; \n' % (
-                            c_joint.getName(), coord, c_nCoeffs, rot3_f_coeffs[0], rot3_f_coeffs[1], rot3_f_coeffs[2],
-                            rot3_f_coeffs[3], rot3_f_coeffs[4]))
+                                c_joint.getName(), coord, c_nCoeffs, rot3_f_coeffs[0], rot3_f_coeffs[1],
+                                rot3_f_coeffs[2],
+                                rot3_f_coeffs[3], rot3_f_coeffs[4]))
                     else:
                         raise ValueError("TODO")
                     f.write('\tVector st_%s_%i_coeffs_vec(%i); \n' % (c_joint.getName(), coord, c_nCoeffs))
                     f.write('\tfor (int i = 0; i < %i; ++i) st_%s_%i_coeffs_vec[i] = st_%s_%i_coeffs[i]; \n' % (
-                    c_nCoeffs, c_joint.getName(), coord, c_joint.getName(), coord))
+                        c_nCoeffs, c_joint.getName(), coord, c_joint.getName(), coord))
                     f.write('\tst_%s[%i].setFunction(new PolynomialFunction(st_%s_%i_coeffs_vec));\n' % (
-                    c_joint.getName(), coord, c_joint.getName(), coord))
+                        c_joint.getName(), coord, c_joint.getName(), coord))
                 elif rot3_f.getConcreteClassName() == 'MultiplierFunction':
                     rot3_f_obj = opensim.MultiplierFunction.safeDownCast(rot3_f)
                     rot3_f_obj_scale = rot3_f_obj.getScale()
@@ -979,48 +983,48 @@ def generateExternalFunction(
                         rot3_f_obj_f_obj = opensim.Constant.safeDownCast(rot3_f_obj_f)
                         rot3_f_obj_f_obj_value = rot3_f_obj_f_obj.getValue()
                         f.write('\tst_%s[%i].setFunction(new MultiplierFunction(new Constant(%.20f), %.20f));\n' % (
-                        c_joint.getName(), coord, rot3_f_obj_f_obj_value, rot3_f_obj_scale))
+                            c_joint.getName(), coord, rot3_f_obj_f_obj_value, rot3_f_obj_scale))
                     elif rot3_f_obj_f_name == 'PolynomialFunction':
                         f.write('\tst_%s[%i].setCoordinateNames(OpenSim::Array<std::string>(\"%s\", 1, 1));\n' % (
-                        c_joint.getName(), coord, c_coord_name))
+                            c_joint.getName(), coord, c_coord_name))
                         rot3_f_obj_f_obj = opensim.PolynomialFunction.safeDownCast(rot3_f_obj_f)
                         rot3_f_obj_f_coeffs = rot3_f_obj_f_obj.getCoefficients().to_numpy()
                         c_nCoeffs = rot3_f_obj_f_coeffs.shape[0]
                         if c_nCoeffs == 2:
                             f.write('\tosim_double_adouble st_%s_%i_coeffs[%i] = {%.20f, %.20f}; \n' % (
-                            c_joint.getName(), coord, c_nCoeffs, rot3_f_obj_f_coeffs[0], rot3_f_obj_f_coeffs[1]))
+                                c_joint.getName(), coord, c_nCoeffs, rot3_f_obj_f_coeffs[0], rot3_f_obj_f_coeffs[1]))
                         elif c_nCoeffs == 3:
                             f.write('\tosim_double_adouble st_%s_%i_coeffs[%i] = {%.20f, %.20f, %.20f}; \n' % (
-                            c_joint.getName(), coord, c_nCoeffs, rot3_f_obj_f_coeffs[0], rot3_f_obj_f_coeffs[1],
-                            rot3_f_obj_f_coeffs[2]))
+                                c_joint.getName(), coord, c_nCoeffs, rot3_f_obj_f_coeffs[0], rot3_f_obj_f_coeffs[1],
+                                rot3_f_obj_f_coeffs[2]))
                         elif c_nCoeffs == 4:
                             f.write('\tosim_double_adouble st_%s_%i_coeffs[%i] = {%.20f, %.20f, %.20f, %.20f}; \n' % (
-                            c_joint.getName(), coord, c_nCoeffs, rot3_f_obj_f_coeffs[0], rot3_f_obj_f_coeffs[1],
-                            rot3_f_obj_f_coeffs[2], rot3_f_obj_f_coeffs[3]))
+                                c_joint.getName(), coord, c_nCoeffs, rot3_f_obj_f_coeffs[0], rot3_f_obj_f_coeffs[1],
+                                rot3_f_obj_f_coeffs[2], rot3_f_obj_f_coeffs[3]))
                         elif c_nCoeffs == 5:
                             f.write(
                                 '\tosim_double_adouble st_%s_%i_coeffs[%i] = {%.20f, %.20f, %.20f, %.20f, %.20f}; \n' % (
-                                c_joint.getName(), coord, c_nCoeffs, rot3_f_obj_f_coeffs[0], rot3_f_obj_f_coeffs[1],
-                                rot3_f_obj_f_coeffs[2], rot3_f_obj_f_coeffs[3], rot3_f_obj_f_coeffs[4]))
+                                    c_joint.getName(), coord, c_nCoeffs, rot3_f_obj_f_coeffs[0], rot3_f_obj_f_coeffs[1],
+                                    rot3_f_obj_f_coeffs[2], rot3_f_obj_f_coeffs[3], rot3_f_obj_f_coeffs[4]))
                         else:
                             raise ValueError("TODO")
                         f.write('\tVector st_%s_%i_coeffs_vec(%i); \n' % (c_joint.getName(), coord, c_nCoeffs))
                         f.write('\tfor (int i = 0; i < %i; ++i) st_%s_%i_coeffs_vec[i] = st_%s_%i_coeffs[i]; \n' % (
-                        c_nCoeffs, c_joint.getName(), coord, c_joint.getName(), coord))
+                            c_nCoeffs, c_joint.getName(), coord, c_joint.getName(), coord))
                         f.write(
                             '\tst_%s[%i].setFunction(new MultiplierFunction(new PolynomialFunction(st_%s_%i_coeffs_vec), %.20f));\n' % (
-                            c_joint.getName(), coord, c_joint.getName(), coord, rot3_f_obj_scale))
+                                c_joint.getName(), coord, c_joint.getName(), coord, rot3_f_obj_scale))
                     else:
                         raise ValueError("Not supported")
                 elif rot3_f.getConcreteClassName() == 'Constant':
                     rot3_f_obj = opensim.Constant.safeDownCast(rot3_f)
                     rot3_f_obj_value = rot3_f_obj.getValue()
                     f.write('\tst_%s[%i].setFunction(new Constant(%.20f));\n' % (
-                    c_joint.getName(), coord, rot3_f_obj_value))
+                        c_joint.getName(), coord, rot3_f_obj_value))
                 else:
                     raise ValueError("Not supported")
                 f.write('\tst_%s[%i].setAxis(Vec3(%.20f, %.20f, %.20f));\n' % (
-                c_joint.getName(), coord, rot3_axis[0], rot3_axis[1], rot3_axis[2]))
+                    c_joint.getName(), coord, rot3_axis[0], rot3_axis[1], rot3_axis[2]))
 
                 # Translation 1
                 tr1 = spatialtransform.get_translation1()
@@ -1034,37 +1038,37 @@ def generateExternalFunction(
                     c_coord = c_joint.get_coordinates(coord)
                     c_coord_name = c_coord.getName()
                     f.write('\tst_%s[%i].setCoordinateNames(OpenSim::Array<std::string>(\"%s\", 1, 1));\n' % (
-                    c_joint.getName(), coord, c_coord_name))
+                        c_joint.getName(), coord, c_coord_name))
                     f.write('\tst_%s[%i].setFunction(new LinearFunction(%.4f, %.4f));\n' % (
-                    c_joint.getName(), coord, tr1_f_slope, tr1_f_intercept))
+                        c_joint.getName(), coord, tr1_f_slope, tr1_f_intercept))
                 elif tr1_f.getConcreteClassName() == 'PolynomialFunction':
                     f.write('\tst_%s[%i].setCoordinateNames(OpenSim::Array<std::string>(\"%s\", 1, 1));\n' % (
-                    c_joint.getName(), coord, c_coord_name))
+                        c_joint.getName(), coord, c_coord_name))
                     tr1_f_obj = opensim.PolynomialFunction.safeDownCast(tr1_f)
                     tr1_f_coeffs = tr1_f_obj.getCoefficients().to_numpy()
                     c_nCoeffs = tr1_f_coeffs.shape[0]
                     if c_nCoeffs == 2:
                         f.write('\tosim_double_adouble st_%s_%i_coeffs[%i] = {%.20f, %.20f}; \n' % (
-                        c_joint.getName(), coord, c_nCoeffs, tr1_f_coeffs[0], tr1_f_coeffs[1]))
+                            c_joint.getName(), coord, c_nCoeffs, tr1_f_coeffs[0], tr1_f_coeffs[1]))
                     elif c_nCoeffs == 3:
                         f.write('\tosim_double_adouble st_%s_%i_coeffs[%i] = {%.20f, %.20f, %.20f}; \n' % (
-                        c_joint.getName(), coord, c_nCoeffs, tr1_f_coeffs[0], tr1_f_coeffs[1], tr1_f_coeffs[2]))
+                            c_joint.getName(), coord, c_nCoeffs, tr1_f_coeffs[0], tr1_f_coeffs[1], tr1_f_coeffs[2]))
                     elif c_nCoeffs == 4:
                         f.write('\tosim_double_adouble st_%s_%i_coeffs[%i] = {%.20f, %.20f, %.20f, %.20f}; \n' % (
-                        c_joint.getName(), coord, c_nCoeffs, tr1_f_coeffs[0], tr1_f_coeffs[1], tr1_f_coeffs[2],
-                        tr1_f_coeffs[3]))
+                            c_joint.getName(), coord, c_nCoeffs, tr1_f_coeffs[0], tr1_f_coeffs[1], tr1_f_coeffs[2],
+                            tr1_f_coeffs[3]))
                     elif c_nCoeffs == 5:
                         f.write(
                             '\tosim_double_adouble st_%s_%i_coeffs[%i] = {%.20f, %.20f, %.20f, %.20f, %.20f}; \n' % (
-                            c_joint.getName(), coord, c_nCoeffs, tr1_f_coeffs[0], tr1_f_coeffs[1], tr1_f_coeffs[2],
-                            tr1_f_coeffs[3], tr1_f_coeffs[4]))
+                                c_joint.getName(), coord, c_nCoeffs, tr1_f_coeffs[0], tr1_f_coeffs[1], tr1_f_coeffs[2],
+                                tr1_f_coeffs[3], tr1_f_coeffs[4]))
                     else:
                         raise ValueError("TODO")
                     f.write('\tVector st_%s_%i_coeffs_vec(%i); \n' % (c_joint.getName(), coord, c_nCoeffs))
                     f.write('\tfor (int i = 0; i < %i; ++i) st_%s_%i_coeffs_vec[i] = st_%s_%i_coeffs[i]; \n' % (
-                    c_nCoeffs, c_joint.getName(), coord, c_joint.getName(), coord))
+                        c_nCoeffs, c_joint.getName(), coord, c_joint.getName(), coord))
                     f.write('\tst_%s[%i].setFunction(new PolynomialFunction(st_%s_%i_coeffs_vec));\n' % (
-                    c_joint.getName(), coord, c_joint.getName(), coord))
+                        c_joint.getName(), coord, c_joint.getName(), coord))
                 elif tr1_f.getConcreteClassName() == 'MultiplierFunction':
                     tr1_f_obj = opensim.MultiplierFunction.safeDownCast(tr1_f)
                     tr1_f_obj_scale = tr1_f_obj.getScale()
@@ -1074,37 +1078,37 @@ def generateExternalFunction(
                         tr1_f_obj_f_obj = opensim.Constant.safeDownCast(tr1_f_obj_f)
                         tr1_f_obj_f_obj_value = tr1_f_obj_f_obj.getValue()
                         f.write('\tst_%s[%i].setFunction(new MultiplierFunction(new Constant(%.20f), %.20f));\n' % (
-                        c_joint.getName(), coord, tr1_f_obj_f_obj_value, tr1_f_obj_scale))
+                            c_joint.getName(), coord, tr1_f_obj_f_obj_value, tr1_f_obj_scale))
                     elif tr1_f_obj_f_name == 'PolynomialFunction':
                         f.write('\tst_%s[%i].setCoordinateNames(OpenSim::Array<std::string>(\"%s\", 1, 1));\n' % (
-                        c_joint.getName(), coord, c_coord_name))
+                            c_joint.getName(), coord, c_coord_name))
                         tr1_f_obj_f_obj = opensim.PolynomialFunction.safeDownCast(tr1_f_obj_f)
                         tr1_f_obj_f_coeffs = tr1_f_obj_f_obj.getCoefficients().to_numpy()
                         c_nCoeffs = tr1_f_obj_f_coeffs.shape[0]
                         if c_nCoeffs == 2:
                             f.write('\tosim_double_adouble st_%s_%i_coeffs[%i] = {%.20f, %.20f}; \n' % (
-                            c_joint.getName(), coord, c_nCoeffs, tr1_f_obj_f_coeffs[0], tr1_f_obj_f_coeffs[1]))
+                                c_joint.getName(), coord, c_nCoeffs, tr1_f_obj_f_coeffs[0], tr1_f_obj_f_coeffs[1]))
                         elif c_nCoeffs == 3:
                             f.write('\tosim_double_adouble st_%s_%i_coeffs[%i] = {%.20f, %.20f, %.20f}; \n' % (
-                            c_joint.getName(), coord, c_nCoeffs, tr1_f_obj_f_coeffs[0], tr1_f_obj_f_coeffs[1],
-                            tr1_f_obj_f_coeffs[2]))
+                                c_joint.getName(), coord, c_nCoeffs, tr1_f_obj_f_coeffs[0], tr1_f_obj_f_coeffs[1],
+                                tr1_f_obj_f_coeffs[2]))
                         elif c_nCoeffs == 4:
                             f.write('\tosim_double_adouble st_%s_%i_coeffs[%i] = {%.20f, %.20f, %.20f, %.20f}; \n' % (
-                            c_joint.getName(), coord, c_nCoeffs, tr1_f_obj_f_coeffs[0], tr1_f_obj_f_coeffs[1],
-                            tr1_f_obj_f_coeffs[2], tr1_f_obj_f_coeffs[3]))
+                                c_joint.getName(), coord, c_nCoeffs, tr1_f_obj_f_coeffs[0], tr1_f_obj_f_coeffs[1],
+                                tr1_f_obj_f_coeffs[2], tr1_f_obj_f_coeffs[3]))
                         elif c_nCoeffs == 5:
                             f.write(
                                 '\tosim_double_adouble st_%s_%i_coeffs[%i] = {%.20f, %.20f, %.20f, %.20f, %.20f}; \n' % (
-                                c_joint.getName(), coord, c_nCoeffs, tr1_f_obj_f_coeffs[0], tr1_f_obj_f_coeffs[1],
-                                tr1_f_obj_f_coeffs[2], tr1_f_obj_f_coeffs[3], tr1_f_obj_f_coeffs[4]))
+                                    c_joint.getName(), coord, c_nCoeffs, tr1_f_obj_f_coeffs[0], tr1_f_obj_f_coeffs[1],
+                                    tr1_f_obj_f_coeffs[2], tr1_f_obj_f_coeffs[3], tr1_f_obj_f_coeffs[4]))
                         else:
                             raise ValueError("TODO")
                         f.write('\tVector st_%s_%i_coeffs_vec(%i); \n' % (c_joint.getName(), coord, c_nCoeffs))
                         f.write('\tfor (int i = 0; i < %i; ++i) st_%s_%i_coeffs_vec[i] = st_%s_%i_coeffs[i]; \n' % (
-                        c_nCoeffs, c_joint.getName(), coord, c_joint.getName(), coord))
+                            c_nCoeffs, c_joint.getName(), coord, c_joint.getName(), coord))
                         f.write(
                             '\tst_%s[%i].setFunction(new MultiplierFunction(new PolynomialFunction(st_%s_%i_coeffs_vec), %.20f));\n' % (
-                            c_joint.getName(), coord, c_joint.getName(), coord, tr1_f_obj_scale))
+                                c_joint.getName(), coord, c_joint.getName(), coord, tr1_f_obj_scale))
                     else:
                         raise ValueError("Not supported")
                 elif tr1_f.getConcreteClassName() == 'Constant':
@@ -1115,7 +1119,7 @@ def generateExternalFunction(
                 else:
                     raise ValueError("Not supported")
                 f.write('\tst_%s[%i].setAxis(Vec3(%.20f, %.20f, %.20f));\n' % (
-                c_joint.getName(), coord, tr1_axis[0], tr1_axis[1], tr1_axis[2]))
+                    c_joint.getName(), coord, tr1_axis[0], tr1_axis[1], tr1_axis[2]))
 
                 # Translation 2
                 tr2 = spatialtransform.get_translation2()
@@ -1129,37 +1133,37 @@ def generateExternalFunction(
                     c_coord = c_joint.get_coordinates(coord)
                     c_coord_name = c_coord.getName()
                     f.write('\tst_%s[%i].setCoordinateNames(OpenSim::Array<std::string>(\"%s\", 1, 1));\n' % (
-                    c_joint.getName(), coord, c_coord_name))
+                        c_joint.getName(), coord, c_coord_name))
                     f.write('\tst_%s[%i].setFunction(new LinearFunction(%.4f, %.4f));\n' % (
-                    c_joint.getName(), coord, tr2_f_slope, tr2_f_intercept))
+                        c_joint.getName(), coord, tr2_f_slope, tr2_f_intercept))
                 elif tr2_f.getConcreteClassName() == 'PolynomialFunction':
                     f.write('\tst_%s[%i].setCoordinateNames(OpenSim::Array<std::string>(\"%s\", 1, 1));\n' % (
-                    c_joint.getName(), coord, c_coord_name))
+                        c_joint.getName(), coord, c_coord_name))
                     tr2_f_obj = opensim.PolynomialFunction.safeDownCast(tr2_f)
                     tr2_f_coeffs = tr2_f_obj.getCoefficients().to_numpy()
                     c_nCoeffs = tr2_f_coeffs.shape[0]
                     if c_nCoeffs == 2:
                         f.write('\tosim_double_adouble st_%s_%i_coeffs[%i] = {%.20f, %.20f}; \n' % (
-                        c_joint.getName(), coord, c_nCoeffs, tr2_f_coeffs[0], tr2_f_coeffs[1]))
+                            c_joint.getName(), coord, c_nCoeffs, tr2_f_coeffs[0], tr2_f_coeffs[1]))
                     elif c_nCoeffs == 3:
                         f.write('\tosim_double_adouble st_%s_%i_coeffs[%i] = {%.20f, %.20f, %.20f}; \n' % (
-                        c_joint.getName(), coord, c_nCoeffs, tr2_f_coeffs[0], tr2_f_coeffs[1], tr2_f_coeffs[2]))
+                            c_joint.getName(), coord, c_nCoeffs, tr2_f_coeffs[0], tr2_f_coeffs[1], tr2_f_coeffs[2]))
                     elif c_nCoeffs == 4:
                         f.write('\tosim_double_adouble st_%s_%i_coeffs[%i] = {%.20f, %.20f, %.20f, %.20f}; \n' % (
-                        c_joint.getName(), coord, c_nCoeffs, tr2_f_coeffs[0], tr2_f_coeffs[1], tr2_f_coeffs[2],
-                        tr2_f_coeffs[3]))
+                            c_joint.getName(), coord, c_nCoeffs, tr2_f_coeffs[0], tr2_f_coeffs[1], tr2_f_coeffs[2],
+                            tr2_f_coeffs[3]))
                     elif c_nCoeffs == 5:
                         f.write(
                             '\tosim_double_adouble st_%s_%i_coeffs[%i] = {%.20f, %.20f, %.20f, %.20f, %.20f}; \n' % (
-                            c_joint.getName(), coord, c_nCoeffs, tr2_f_coeffs[0], tr2_f_coeffs[1], tr2_f_coeffs[2],
-                            tr2_f_coeffs[3], tr2_f_coeffs[4]))
+                                c_joint.getName(), coord, c_nCoeffs, tr2_f_coeffs[0], tr2_f_coeffs[1], tr2_f_coeffs[2],
+                                tr2_f_coeffs[3], tr2_f_coeffs[4]))
                     else:
                         raise ValueError("TODO")
                     f.write('\tVector st_%s_%i_coeffs_vec(%i); \n' % (c_joint.getName(), coord, c_nCoeffs))
                     f.write('\tfor (int i = 0; i < %i; ++i) st_%s_%i_coeffs_vec[i] = st_%s_%i_coeffs[i]; \n' % (
-                    c_nCoeffs, c_joint.getName(), coord, c_joint.getName(), coord))
+                        c_nCoeffs, c_joint.getName(), coord, c_joint.getName(), coord))
                     f.write('\tst_%s[%i].setFunction(new PolynomialFunction(st_%s_%i_coeffs_vec));\n' % (
-                    c_joint.getName(), coord, c_joint.getName(), coord))
+                        c_joint.getName(), coord, c_joint.getName(), coord))
                 elif tr2_f.getConcreteClassName() == 'MultiplierFunction':
                     tr2_f_obj = opensim.MultiplierFunction.safeDownCast(tr2_f)
                     tr2_f_obj_scale = tr2_f_obj.getScale()
@@ -1169,37 +1173,37 @@ def generateExternalFunction(
                         tr2_f_obj_f_obj = opensim.Constant.safeDownCast(tr2_f_obj_f)
                         tr2_f_obj_f_obj_value = tr2_f_obj_f_obj.getValue()
                         f.write('\tst_%s[%i].setFunction(new MultiplierFunction(new Constant(%.20f), %.20f));\n' % (
-                        c_joint.getName(), coord, tr2_f_obj_f_obj_value, tr2_f_obj_scale))
+                            c_joint.getName(), coord, tr2_f_obj_f_obj_value, tr2_f_obj_scale))
                     elif tr2_f_obj_f_name == 'PolynomialFunction':
                         f.write('\tst_%s[%i].setCoordinateNames(OpenSim::Array<std::string>(\"%s\", 1, 1));\n' % (
-                        c_joint.getName(), coord, c_coord_name))
+                            c_joint.getName(), coord, c_coord_name))
                         tr2_f_obj_f_obj = opensim.PolynomialFunction.safeDownCast(tr2_f_obj_f)
                         tr2_f_obj_f_coeffs = tr2_f_obj_f_obj.getCoefficients().to_numpy()
                         c_nCoeffs = tr2_f_obj_f_coeffs.shape[0]
                         if c_nCoeffs == 2:
                             f.write('\tosim_double_adouble st_%s_%i_coeffs[%i] = {%.20f, %.20f}; \n' % (
-                            c_joint.getName(), coord, c_nCoeffs, tr2_f_obj_f_coeffs[0], tr2_f_obj_f_coeffs[1]))
+                                c_joint.getName(), coord, c_nCoeffs, tr2_f_obj_f_coeffs[0], tr2_f_obj_f_coeffs[1]))
                         elif c_nCoeffs == 3:
                             f.write('\tosim_double_adouble st_%s_%i_coeffs[%i] = {%.20f, %.20f, %.20f}; \n' % (
-                            c_joint.getName(), coord, c_nCoeffs, tr2_f_obj_f_coeffs[0], tr2_f_obj_f_coeffs[1],
-                            tr2_f_obj_f_coeffs[2]))
+                                c_joint.getName(), coord, c_nCoeffs, tr2_f_obj_f_coeffs[0], tr2_f_obj_f_coeffs[1],
+                                tr2_f_obj_f_coeffs[2]))
                         elif c_nCoeffs == 4:
                             f.write('\tosim_double_adouble st_%s_%i_coeffs[%i] = {%.20f, %.20f, %.20f, %.20f}; \n' % (
-                            c_joint.getName(), coord, c_nCoeffs, tr2_f_obj_f_coeffs[0], tr2_f_obj_f_coeffs[1],
-                            tr2_f_obj_f_coeffs[2], tr2_f_obj_f_coeffs[3]))
+                                c_joint.getName(), coord, c_nCoeffs, tr2_f_obj_f_coeffs[0], tr2_f_obj_f_coeffs[1],
+                                tr2_f_obj_f_coeffs[2], tr2_f_obj_f_coeffs[3]))
                         elif c_nCoeffs == 5:
                             f.write(
                                 '\tosim_double_adouble st_%s_%i_coeffs[%i] = {%.20f, %.20f, %.20f, %.20f, %.20f}; \n' % (
-                                c_joint.getName(), coord, c_nCoeffs, tr2_f_obj_f_coeffs[0], tr2_f_obj_f_coeffs[1],
-                                tr2_f_obj_f_coeffs[2], tr2_f_obj_f_coeffs[3], tr2_f_obj_f_coeffs[4]))
+                                    c_joint.getName(), coord, c_nCoeffs, tr2_f_obj_f_coeffs[0], tr2_f_obj_f_coeffs[1],
+                                    tr2_f_obj_f_coeffs[2], tr2_f_obj_f_coeffs[3], tr2_f_obj_f_coeffs[4]))
                         else:
                             raise ValueError("TODO")
                         f.write('\tVector st_%s_%i_coeffs_vec(%i); \n' % (c_joint.getName(), coord, c_nCoeffs))
                         f.write('\tfor (int i = 0; i < %i; ++i) st_%s_%i_coeffs_vec[i] = st_%s_%i_coeffs[i]; \n' % (
-                        c_nCoeffs, c_joint.getName(), coord, c_joint.getName(), coord))
+                            c_nCoeffs, c_joint.getName(), coord, c_joint.getName(), coord))
                         f.write(
                             '\tst_%s[%i].setFunction(new MultiplierFunction(new PolynomialFunction(st_%s_%i_coeffs_vec), %.20f));\n' % (
-                            c_joint.getName(), coord, c_joint.getName(), coord, tr2_f_obj_scale))
+                                c_joint.getName(), coord, c_joint.getName(), coord, tr2_f_obj_scale))
                     else:
                         raise ValueError("Not supported")
                 elif tr2_f.getConcreteClassName() == 'Constant':
@@ -1210,7 +1214,7 @@ def generateExternalFunction(
                 else:
                     raise ValueError("Not supported")
                 f.write('\tst_%s[%i].setAxis(Vec3(%.20f, %.20f, %.20f));\n' % (
-                c_joint.getName(), coord, tr2_axis[0], tr2_axis[1], tr2_axis[2]))
+                    c_joint.getName(), coord, tr2_axis[0], tr2_axis[1], tr2_axis[2]))
 
                 # Translation 3
                 tr3 = spatialtransform.get_translation3()
@@ -1224,37 +1228,37 @@ def generateExternalFunction(
                     c_coord = c_joint.get_coordinates(coord)
                     c_coord_name = c_coord.getName()
                     f.write('\tst_%s[%i].setCoordinateNames(OpenSim::Array<std::string>(\"%s\", 1, 1));\n' % (
-                    c_joint.getName(), coord, c_coord_name))
+                        c_joint.getName(), coord, c_coord_name))
                     f.write('\tst_%s[%i].setFunction(new LinearFunction(%.4f, %.4f));\n' % (
-                    c_joint.getName(), coord, tr3_f_slope, tr3_f_intercept))
+                        c_joint.getName(), coord, tr3_f_slope, tr3_f_intercept))
                 elif tr3_f.getConcreteClassName() == 'PolynomialFunction':
                     f.write('\tst_%s[%i].setCoordinateNames(OpenSim::Array<std::string>(\"%s\", 1, 1));\n' % (
-                    c_joint.getName(), coord, c_coord_name))
+                        c_joint.getName(), coord, c_coord_name))
                     tr3_f_obj = opensim.PolynomialFunction.safeDownCast(tr3_f)
                     tr3_f_coeffs = tr3_f_obj.getCoefficients().to_numpy()
                     c_nCoeffs = tr3_f_coeffs.shape[0]
                     if c_nCoeffs == 2:
                         f.write('\tosim_double_adouble st_%s_%i_coeffs[%i] = {%.20f, %.20f}; \n' % (
-                        c_joint.getName(), coord, c_nCoeffs, tr3_f_coeffs[0], tr3_f_coeffs[1]))
+                            c_joint.getName(), coord, c_nCoeffs, tr3_f_coeffs[0], tr3_f_coeffs[1]))
                     elif c_nCoeffs == 3:
                         f.write('\tosim_double_adouble st_%s_%i_coeffs[%i] = {%.20f, %.20f, %.20f}; \n' % (
-                        c_joint.getName(), coord, c_nCoeffs, tr3_f_coeffs[0], tr3_f_coeffs[1], tr3_f_coeffs[2]))
+                            c_joint.getName(), coord, c_nCoeffs, tr3_f_coeffs[0], tr3_f_coeffs[1], tr3_f_coeffs[2]))
                     elif c_nCoeffs == 4:
                         f.write('\tosim_double_adouble st_%s_%i_coeffs[%i] = {%.20f, %.20f, %.20f, %.20f}; \n' % (
-                        c_joint.getName(), coord, c_nCoeffs, tr3_f_coeffs[0], tr3_f_coeffs[1], tr3_f_coeffs[2],
-                        tr3_f_coeffs[3]))
+                            c_joint.getName(), coord, c_nCoeffs, tr3_f_coeffs[0], tr3_f_coeffs[1], tr3_f_coeffs[2],
+                            tr3_f_coeffs[3]))
                     elif c_nCoeffs == 5:
                         f.write(
                             '\tosim_double_adouble st_%s_%i_coeffs[%i] = {%.20f, %.20f, %.20f, %.20f, %.20f}; \n' % (
-                            c_joint.getName(), coord, c_nCoeffs, tr3_f_coeffs[0], tr3_f_coeffs[1], tr3_f_coeffs[2],
-                            tr3_f_coeffs[3], tr3_f_coeffs[4]))
+                                c_joint.getName(), coord, c_nCoeffs, tr3_f_coeffs[0], tr3_f_coeffs[1], tr3_f_coeffs[2],
+                                tr3_f_coeffs[3], tr3_f_coeffs[4]))
                     else:
                         raise ValueError("TODO")
                     f.write('\tVector st_%s_%i_coeffs_vec(%i); \n' % (c_joint.getName(), coord, c_nCoeffs))
                     f.write('\tfor (int i = 0; i < %i; ++i) st_%s_%i_coeffs_vec[i] = st_%s_%i_coeffs[i]; \n' % (
-                    c_nCoeffs, c_joint.getName(), coord, c_joint.getName(), coord))
+                        c_nCoeffs, c_joint.getName(), coord, c_joint.getName(), coord))
                     f.write('\tst_%s[%i].setFunction(new PolynomialFunction(st_%s_%i_coeffs_vec));\n' % (
-                    c_joint.getName(), coord, c_joint.getName(), coord))
+                        c_joint.getName(), coord, c_joint.getName(), coord))
                 elif tr3_f.getConcreteClassName() == 'MultiplierFunction':
                     tr3_f_obj = opensim.MultiplierFunction.safeDownCast(tr3_f)
                     tr3_f_obj_scale = tr3_f_obj.getScale()
@@ -1264,37 +1268,37 @@ def generateExternalFunction(
                         tr3_f_obj_f_obj = opensim.Constant.safeDownCast(tr3_f_obj_f)
                         tr3_f_obj_f_obj_value = tr3_f_obj_f_obj.getValue()
                         f.write('\tst_%s[%i].setFunction(new MultiplierFunction(new Constant(%.20f), %.20f));\n' % (
-                        c_joint.getName(), coord, tr3_f_obj_f_obj_value, tr3_f_obj_scale))
+                            c_joint.getName(), coord, tr3_f_obj_f_obj_value, tr3_f_obj_scale))
                     elif tr3_f_obj_f_name == 'PolynomialFunction':
                         f.write('\tst_%s[%i].setCoordinateNames(OpenSim::Array<std::string>(\"%s\", 1, 1));\n' % (
-                        c_joint.getName(), coord, c_coord_name))
+                            c_joint.getName(), coord, c_coord_name))
                         tr3_f_obj_f_obj = opensim.PolynomialFunction.safeDownCast(tr3_f_obj_f)
                         tr3_f_obj_f_coeffs = tr3_f_obj_f_obj.getCoefficients().to_numpy()
                         c_nCoeffs = tr3_f_obj_f_coeffs.shape[0]
                         if c_nCoeffs == 2:
                             f.write('\tosim_double_adouble st_%s_%i_coeffs[%i] = {%.20f, %.20f}; \n' % (
-                            c_joint.getName(), coord, c_nCoeffs, tr3_f_obj_f_coeffs[0], tr3_f_obj_f_coeffs[1]))
+                                c_joint.getName(), coord, c_nCoeffs, tr3_f_obj_f_coeffs[0], tr3_f_obj_f_coeffs[1]))
                         elif c_nCoeffs == 3:
                             f.write('\tosim_double_adouble st_%s_%i_coeffs[%i] = {%.20f, %.20f, %.20f}; \n' % (
-                            c_joint.getName(), coord, c_nCoeffs, tr3_f_obj_f_coeffs[0], tr3_f_obj_f_coeffs[1],
-                            tr3_f_obj_f_coeffs[2]))
+                                c_joint.getName(), coord, c_nCoeffs, tr3_f_obj_f_coeffs[0], tr3_f_obj_f_coeffs[1],
+                                tr3_f_obj_f_coeffs[2]))
                         elif c_nCoeffs == 4:
                             f.write('\tosim_double_adouble st_%s_%i_coeffs[%i] = {%.20f, %.20f, %.20f, %.20f}; \n' % (
-                            c_joint.getName(), coord, c_nCoeffs, tr3_f_obj_f_coeffs[0], tr3_f_obj_f_coeffs[1],
-                            tr3_f_obj_f_coeffs[2], tr3_f_obj_f_coeffs[3]))
+                                c_joint.getName(), coord, c_nCoeffs, tr3_f_obj_f_coeffs[0], tr3_f_obj_f_coeffs[1],
+                                tr3_f_obj_f_coeffs[2], tr3_f_obj_f_coeffs[3]))
                         elif c_nCoeffs == 5:
                             f.write(
                                 '\tosim_double_adouble st_%s_%i_coeffs[%i] = {%.20f, %.20f, %.20f, %.20f, %.20f}; \n' % (
-                                c_joint.getName(), coord, c_nCoeffs, tr3_f_obj_f_coeffs[0], tr3_f_obj_f_coeffs[1],
-                                tr3_f_obj_f_coeffs[2], tr3_f_obj_f_coeffs[3], tr3_f_obj_f_coeffs[4]))
+                                    c_joint.getName(), coord, c_nCoeffs, tr3_f_obj_f_coeffs[0], tr3_f_obj_f_coeffs[1],
+                                    tr3_f_obj_f_coeffs[2], tr3_f_obj_f_coeffs[3], tr3_f_obj_f_coeffs[4]))
                         else:
                             raise ValueError("TODO")
                         f.write('\tVector st_%s_%i_coeffs_vec(%i); \n' % (c_joint.getName(), coord, c_nCoeffs))
                         f.write('\tfor (int i = 0; i < %i; ++i) st_%s_%i_coeffs_vec[i] = st_%s_%i_coeffs[i]; \n' % (
-                        c_nCoeffs, c_joint.getName(), coord, c_joint.getName(), coord))
+                            c_nCoeffs, c_joint.getName(), coord, c_joint.getName(), coord))
                         f.write(
                             '\tst_%s[%i].setFunction(new MultiplierFunction(new PolynomialFunction(st_%s_%i_coeffs_vec), %.20f));\n' % (
-                            c_joint.getName(), coord, c_joint.getName(), coord, tr3_f_obj_scale))
+                                c_joint.getName(), coord, c_joint.getName(), coord, tr3_f_obj_scale))
                     else:
                         raise ValueError("Not supported")
                 elif tr3_f.getConcreteClassName() == 'Constant':
@@ -1305,43 +1309,45 @@ def generateExternalFunction(
                 else:
                     raise ValueError("Not supported")
                 f.write('\tst_%s[%i].setAxis(Vec3(%.20f, %.20f, %.20f));\n' % (
-                c_joint.getName(), coord, tr3_axis[0], tr3_axis[1], tr3_axis[2]))
+                    c_joint.getName(), coord, tr3_axis[0], tr3_axis[1], tr3_axis[2]))
 
                 # Joint.
                 f.write('\tOpenSim::%s* %s;\n' % (c_joint_type, c_joint.getName()))
                 if parent_frame_name == "ground":
                     f.write(
                         '\t%s = new OpenSim::%s(\"%s\", model->getGround(), Vec3(%.20f, %.20f, %.20f), Vec3(%.20f, %.20f, %.20f), *%s, Vec3(%.20f, %.20f, %.20f), Vec3(%.20f, %.20f, %.20f), st_%s);\n' % (
-                        c_joint.getName(), c_joint_type, c_joint.getName(), parent_frame_trans[0],
-                        parent_frame_trans[1], parent_frame_trans[2], parent_frame_or[0], parent_frame_or[1],
-                        parent_frame_or[2], child_frame_name, child_frame_trans[0], child_frame_trans[1],
-                        child_frame_trans[2], child_frame_or[0], child_frame_or[1], child_frame_or[2],
-                        c_joint.getName()))
+                            c_joint.getName(), c_joint_type, c_joint.getName(), parent_frame_trans[0],
+                            parent_frame_trans[1], parent_frame_trans[2], parent_frame_or[0], parent_frame_or[1],
+                            parent_frame_or[2], child_frame_name, child_frame_trans[0], child_frame_trans[1],
+                            child_frame_trans[2], child_frame_or[0], child_frame_or[1], child_frame_or[2],
+                            c_joint.getName()))
                 else:
                     f.write(
                         '\t%s = new OpenSim::%s(\"%s\", *%s, Vec3(%.20f, %.20f, %.20f), Vec3(%.20f, %.20f, %.20f), *%s, Vec3(%.20f, %.20f, %.20f), Vec3(%.20f, %.20f, %.20f), st_%s);\n' % (
-                        c_joint.getName(), c_joint_type, c_joint.getName(), parent_frame_name, parent_frame_trans[0],
-                        parent_frame_trans[1], parent_frame_trans[2], parent_frame_or[0], parent_frame_or[1],
-                        parent_frame_or[2], child_frame_name, child_frame_trans[0], child_frame_trans[1],
-                        child_frame_trans[2], child_frame_or[0], child_frame_or[1], child_frame_or[2],
-                        c_joint.getName()))
+                            c_joint.getName(), c_joint_type, c_joint.getName(), parent_frame_name,
+                            parent_frame_trans[0],
+                            parent_frame_trans[1], parent_frame_trans[2], parent_frame_or[0], parent_frame_or[1],
+                            parent_frame_or[2], child_frame_name, child_frame_trans[0], child_frame_trans[1],
+                            child_frame_trans[2], child_frame_or[0], child_frame_or[1], child_frame_or[2],
+                            c_joint.getName()))
 
             elif c_joint_type == 'PinJoint' or c_joint_type == 'WeldJoint':
                 f.write('\tOpenSim::%s* %s;\n' % (c_joint_type, c_joint.getName()))
                 if parent_frame_name == "ground":
                     f.write(
                         '\t%s = new OpenSim::%s(\"%s\", model->getGround(), Vec3(%.20f, %.20f, %.20f), Vec3(%.20f, %.20f, %.20f), *%s, Vec3(%.20f, %.20f, %.20f), Vec3(%.20f, %.20f, %.20f));\n' % (
-                        c_joint.getName(), c_joint_type, c_joint.getName(), parent_frame_trans[0],
-                        parent_frame_trans[1], parent_frame_trans[2], parent_frame_or[0], parent_frame_or[1],
-                        parent_frame_or[2], child_frame_name, child_frame_trans[0], child_frame_trans[1],
-                        child_frame_trans[2], child_frame_or[0], child_frame_or[1], child_frame_or[2]))
+                            c_joint.getName(), c_joint_type, c_joint.getName(), parent_frame_trans[0],
+                            parent_frame_trans[1], parent_frame_trans[2], parent_frame_or[0], parent_frame_or[1],
+                            parent_frame_or[2], child_frame_name, child_frame_trans[0], child_frame_trans[1],
+                            child_frame_trans[2], child_frame_or[0], child_frame_or[1], child_frame_or[2]))
                 else:
                     f.write(
                         '\t%s = new OpenSim::%s(\"%s\", *%s, Vec3(%.20f, %.20f, %.20f), Vec3(%.20f, %.20f, %.20f), *%s, Vec3(%.20f, %.20f, %.20f), Vec3(%.20f, %.20f, %.20f));\n' % (
-                        c_joint.getName(), c_joint_type, c_joint.getName(), parent_frame_name, parent_frame_trans[0],
-                        parent_frame_trans[1], parent_frame_trans[2], parent_frame_or[0], parent_frame_or[1],
-                        parent_frame_or[2], child_frame_name, child_frame_trans[0], child_frame_trans[1],
-                        child_frame_trans[2], child_frame_or[0], child_frame_or[1], child_frame_or[2]))
+                            c_joint.getName(), c_joint_type, c_joint.getName(), parent_frame_name,
+                            parent_frame_trans[0],
+                            parent_frame_trans[1], parent_frame_trans[2], parent_frame_or[0], parent_frame_or[1],
+                            parent_frame_or[2], child_frame_name, child_frame_trans[0], child_frame_trans[1],
+                            child_frame_trans[2], child_frame_or[0], child_frame_or[1], child_frame_or[2]))
             else:
                 raise ValueError("TODO: joint type not yet supported")
             f.write('\tmodel->addJoint(%s);\n' % (c_joint.getName()))
@@ -1393,35 +1399,37 @@ def generateExternalFunction(
                         ground_contact = "model->getGround()"
 
                     f.write('\t%s = new %s(\"%s\", *%s, %s);\n' % (
-                    c_force_elt.getName(), c_force_elt.getConcreteClassName(), c_force_elt.getName(), geo1_frameName,
-                    ground_contact))
+                        c_force_elt.getName(), c_force_elt.getConcreteClassName(), c_force_elt.getName(),
+                        geo1_frameName,
+                        ground_contact))
                 else:
                     f.write('\t%s = new %s(\"%s\", *%s, *%s);\n' % (
-                    c_force_elt.getName(), c_force_elt.getConcreteClassName(), c_force_elt.getName(), geo1_frameName,
-                    geo0_frameName))
+                        c_force_elt.getName(), c_force_elt.getConcreteClassName(), c_force_elt.getName(),
+                        geo1_frameName,
+                        geo0_frameName))
 
                 f.write('\tVec3 %s_location(%.20f, %.20f, %.20f);\n' % (
-                c_force_elt.getName(), geo1_loc[0], geo1_loc[1], geo1_loc[2]))
+                    c_force_elt.getName(), geo1_loc[0], geo1_loc[1], geo1_loc[2]))
                 f.write('\t%s->set_contact_sphere_location(%s_location);\n' % (
-                c_force_elt.getName(), c_force_elt.getName()))
+                    c_force_elt.getName(), c_force_elt.getName()))
                 f.write('\tdouble %s_radius = (%.20f);\n' % (c_force_elt.getName(), geo1_radius))
                 f.write(
                     '\t%s->set_contact_sphere_radius(%s_radius );\n' % (c_force_elt.getName(), c_force_elt.getName()))
                 f.write('\t%s->set_contact_half_space_location(Vec3(%.20f, %.20f, %.20f));\n' % (
-                c_force_elt.getName(), geo0_loc[0], geo0_loc[1], geo0_loc[2]))
+                    c_force_elt.getName(), geo0_loc[0], geo0_loc[1], geo0_loc[2]))
                 f.write('\t%s->set_contact_half_space_orientation(Vec3(%.20f, %.20f, %.20f));\n' % (
-                c_force_elt.getName(), geo0_or[0], geo0_or[1], geo0_or[2]))
+                    c_force_elt.getName(), geo0_or[0], geo0_or[1], geo0_or[2]))
 
                 f.write('\t%s->set_stiffness(%.20f);\n' % (c_force_elt.getName(), c_force_elt_obj.get_stiffness()))
                 f.write('\t%s->set_dissipation(%.20f);\n' % (c_force_elt.getName(), c_force_elt_obj.get_dissipation()))
                 f.write('\t%s->set_static_friction(%.20f);\n' % (
-                c_force_elt.getName(), c_force_elt_obj.get_static_friction()))
+                    c_force_elt.getName(), c_force_elt_obj.get_static_friction()))
                 f.write('\t%s->set_dynamic_friction(%.20f);\n' % (
-                c_force_elt.getName(), c_force_elt_obj.get_dynamic_friction()))
+                    c_force_elt.getName(), c_force_elt_obj.get_dynamic_friction()))
                 f.write('\t%s->set_viscous_friction(%.20f);\n' % (
-                c_force_elt.getName(), c_force_elt_obj.get_viscous_friction()))
+                    c_force_elt.getName(), c_force_elt_obj.get_viscous_friction()))
                 f.write('\t%s->set_transition_velocity(%.20f);\n' % (
-                c_force_elt.getName(), c_force_elt_obj.get_transition_velocity()))
+                    c_force_elt.getName(), c_force_elt_obj.get_transition_velocity()))
 
                 f.write('\t%s->connectSocket_sphere_frame(*%s);\n' % (c_force_elt.getName(), geo1_frameName))
                 if geo0_frameName == "ground":
@@ -1516,13 +1524,13 @@ def generateExternalFunction(
                 c_force_elt_name = c_force_elt.getName()
 
                 f.write('\tArray<osim_double_adouble> Force_%s = %s->getRecordValues(*state);\n' % (
-                str(count), c_force_elt_name))
+                    str(count), c_force_elt_name))
                 f.write('\tSpatialVec GRF_%s;\n' % (str(count)))
 
                 f.write('\tGRF_%s[0] = Vec3(Force_%s[3], Force_%s[4], Force_%s[5]);\n' % (
-                str(count), str(count), str(count), str(count)))
+                    str(count), str(count), str(count), str(count)))
                 f.write('\tGRF_%s[1] = Vec3(Force_%s[0], Force_%s[1], Force_%s[2]);\n' % (
-                str(count), str(count), str(count), str(count)))
+                    str(count), str(count), str(count), str(count)))
 
                 socket1Name = c_force_elt.getSocketNames()[1]
                 socket1 = c_force_elt.getSocket(socket1Name)
@@ -1532,7 +1540,7 @@ def generateExternalFunction(
                 geo1_frameName = geo1.getFrame().getName()
 
                 f.write('\tint c_idx_%s = model->getBodySet().get("%s").getMobilizedBodyIndex();\n' % (
-                str(count), geo1_frameName))
+                    str(count), geo1_frameName))
                 f.write('\tappliedBodyForces[c_idx_%s] += GRF_%s;\n' % (str(count), str(count)))
                 count += 1
                 f.write('\n')
@@ -1608,20 +1616,20 @@ def generateExternalFunction(
 
                 if not geo1_frameName in geo1_frameNames:
                     f.write('\tSimTK::Transform TR_GB_%s = %s->getMobilizedBody().getBodyTransform(*state);\n' % (
-                    geo1_frameName, geo1_frameName))
+                        geo1_frameName, geo1_frameName))
                     geo1_frameNames.append(geo1_frameName)
 
                 f.write('\tVec3 %s_location_G = %s->findStationLocationInGround(*state, %s_location);\n' % (
-                c_force_elt_name, geo1_frameName, c_force_elt_name))
+                    c_force_elt_name, geo1_frameName, c_force_elt_name))
                 f.write('\tVec3 %s_locationCP_G = %s_location_G - %s_radius * normal;\n' % (
-                c_force_elt_name, c_force_elt_name, c_force_elt_name))
+                    c_force_elt_name, c_force_elt_name, c_force_elt_name))
                 f.write('\tVec3 locationCP_G_adj_%i = %s_locationCP_G - 0.5*%s_locationCP_G[1] * normal;\n' % (
-                count, c_force_elt_name, c_force_elt_name))
+                    count, c_force_elt_name, c_force_elt_name))
                 f.write(
                     '\tVec3 %s_locationCP_B = model->getGround().findStationLocationInAnotherFrame(*state, locationCP_G_adj_%i, *%s);\n' % (
-                    c_force_elt_name, count, geo1_frameName))
+                        c_force_elt_name, count, geo1_frameName))
                 f.write('\tVec3 GRM_%i = (TR_GB_%s*%s_locationCP_B) %% GRF_%s[1];\n' % (
-                count, geo1_frameName, c_force_elt_name, str(count)))
+                    count, geo1_frameName, c_force_elt_name, str(count)))
 
                 if c_force_elt_name[-2:] == "_r":
                     f.write('\tGRM_r += GRM_%i;\n' % (count))
@@ -1706,7 +1714,7 @@ def generateExternalFunction(
             c_force_elt = forceSet.get(i)
             if c_force_elt.getConcreteClassName() == "SmoothSphereHalfSpaceForce":
                 f.write('\tfor (int i = 0; i < 3; ++i) res[0][i + %i] = value<T>(locationCP_G_adj_%i[i]);\n' % (
-                count_acc, count))
+                    count_acc, count))
                 F_map['COPs'][c_force_elt.getName()] = range(count_acc, count_acc + 3)
                 count += 1
                 count_acc += 3
@@ -1722,7 +1730,7 @@ def generateExternalFunction(
             if (c_body_name == 'patella_l' or c_body_name == 'patella_r'):
                 continue
             f.write('\tfor (int i = 0; i < 3; ++i) res[0][i + %i] = value<T>(%s_or[i]);\n' % (
-            count_acc + count * 3, c_body_name))
+                count_acc + count * 3, c_body_name))
             F_map['body_origins'][c_body_name] = range(count_acc + count * 3, count_acc + count * 3 + 3)
             count += 1
         count_acc += 3 * count
@@ -2121,7 +2129,6 @@ def download_file_2(url, file_name):
 # %% Plot results simulations.
 # TODO: simplify and clean up.
 def plotResultsOpenSimAD(dataDir, subject, motion_filename, settings, output_dir, cases=['default'], mainPlots=True):
-
     if output_dir is not None:
         os.makedirs(output_dir, exist_ok=True)
 

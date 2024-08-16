@@ -1,14 +1,12 @@
+import os
 import sys
 
-from InquirerPy import inquirer
+from utils.utils import *
 
 from controllers.analysis_utils import menu_analysis, modify_output_folder, get_periode_walk_run
 from controllers.data_controller import DataController
-from utils.utils import *
-import os
-
-from utils_dynamic_simulations.opensim_ad.utils_opensim_ad import processInputsOpenSimAD, plotResultsOpenSimAD
 from utils_dynamic_simulations.opensim_ad.main_opensim_ad import run_tracking
+from utils_dynamic_simulations.opensim_ad.utils_opensim_ad import processInputsOpenSimAD, plotResultsOpenSimAD
 
 
 class MuscleAnalysisController:

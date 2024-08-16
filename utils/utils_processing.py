@@ -452,7 +452,7 @@ def adjust_muscle_wrapping(
                 point2.set_location(loc2Vec)
                 momentArm_scaled = getMomentArms(scaledModel, pose_hipFlexors, 'psoas_r', coord_hipFlexors)[iPose]
             while np.abs(momentArm_scaled) <= np.max([0.7 * np.abs(momentArm_unscaled),
-                                                      0.015]) and radius > 0.7 * originalRadius:  #above approach did not succeed, drop the cyl radius some
+                                                      0.015]) and radius > 0.7 * originalRadius:  # above approach did not succeed, drop the cyl radius some
                 wrapCyl.set_radius(radius - 0.002)
                 momentArm_scaled = getMomentArms(scaledModel, pose_hipFlexors, 'psoas_r', coord_hipFlexors)[iPose]
                 pelvis = scaledBodySet.get('pelvis')

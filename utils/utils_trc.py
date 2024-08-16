@@ -2,10 +2,10 @@
 
 import os
 import warnings
-from scipy.spatial.transform import Rotation as R
 
 import numpy as np
 from numpy.lib.recfunctions import append_fields
+from scipy.spatial.transform import Rotation as R
 
 
 class TRCFile(object):

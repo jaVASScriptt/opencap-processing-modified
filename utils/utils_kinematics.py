@@ -18,17 +18,18 @@
     limitations under the License.
 '''
 
-import os
-import opensim
 import copy
-from utils import utils
+import os
+
+import numpy as np
+import opensim
 import pandas as pd
 import scipy.interpolate as interpolate
-
+from scipy.spatial.transform import Rotation
 from utils.utils_processing import lowPassFilter
 from utils.utils_trc import trc_2_dict
-import numpy as np
-from scipy.spatial.transform import Rotation
+
+from utils import utils
 
 
 class Kinematics:
