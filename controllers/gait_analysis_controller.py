@@ -1,8 +1,7 @@
-import os
 import sys
 
-from utils.utils import *
-from utils.utils_plotting import plot_dataframe_with_shading, save_plots_to_excel, save_gait_metrics_to_excel
+from tools.utils import *
+from tools.utils_plotting import plot_dataframe_with_shading, save_plots_to_excel, save_gait_metrics_to_excel
 
 from activity_analyses.gait_analysis import GaitAnalysis
 from controllers.analysis_utils import menu_analysis, modify_output_folder

@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import filedialog
 
-from utils.utils import *
+from tools.utils import *
 
 
 def clear_terminal():

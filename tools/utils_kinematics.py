@@ -26,10 +26,10 @@ import opensim
 import pandas as pd
 import scipy.interpolate as interpolate
 from scipy.spatial.transform import Rotation
-from utils.utils_processing import lowPassFilter
-from utils.utils_trc import trc_2_dict
+from tools.utils_processing import lowPassFilter
+from tools.utils_trc import trc_2_dict
 
-from utils import utils
+from tools import utils
 
 
 class Kinematics:

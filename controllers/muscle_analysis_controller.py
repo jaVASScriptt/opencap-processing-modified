@@ -1,7 +1,7 @@
 import os
 import sys
 
-from utils.utils import *
+from tools.utils import *
 
 from controllers.analysis_utils import menu_analysis, modify_output_folder, get_periode_walk_run
 from controllers.data_controller import DataController

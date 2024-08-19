@@ -16,12 +16,11 @@
     limitations under the License.
 '''
 
+import opensim
+import os
+import numpy as np
 import copy
 import glob
-import os
-
-import numpy as np
-import opensim
 
 
 # %% Compute knee adduction moments.

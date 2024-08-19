@@ -22,17 +22,16 @@
     underlying the tracking simulation of coordinates.
 '''
 
-import copy
 # %% Packages.
 import os
-import platform
-import sys
-
 import casadi as ca
 import numpy as np
-import pandas as pd
-import scipy.interpolate as interpolate
+import sys
 import yaml
+import scipy.interpolate as interpolate
+import platform
+import copy
+import pandas as pd
 
 
 # %% Settings.
@@ -2205,7 +2204,7 @@ def run_tracking(baseDir, dataDir, subject, settings, case='0',
 
         if writeGUI:
             # Kinematics and activations.
-            from utils.utils import numpy_to_storage
+            from tools.utils import numpy_to_storage
             labels = ['time'] + joints
             if torque_driven_model:
                 coordLabels = ([joint + '/activation'
@@ -2454,14 +2453,14 @@ def run_tracking(baseDir, dataDir, subject, settings, case='0',
                     accelerationTrackingTerm_opt = f_NQsToTrackWSum2(Qddsk_opt[idx_coordinates_toTrack],
                                                                      dataToTrack_Qdds_sc[:, k], w_dataToTrack)
                     accelerationTrackingTerm_opt_all += (
-                            weights['accelerationTrackingTerm'] * accelerationTrackingTerm_opt * h * B[j + 1])
+                                weights['accelerationTrackingTerm'] * accelerationTrackingTerm_opt * h * B[j + 1])
                 if withReserveActuators:
                     reserveActuatorTerm_opt = 0
                     for c_j in reserveActuatorCoordinates:
                         reserveActuatorTerm_opt += ca.sumsqr(rActk_opt[c_j])
                     reserveActuatorTerm_opt /= len(reserveActuatorCoordinates)
                     reserveActuatorTerm_opt_all += (
-                            weights['reserveActuatorTerm'] * reserveActuatorTerm_opt * h * B[j + 1])
+                                weights['reserveActuatorTerm'] * reserveActuatorTerm_opt * h * B[j + 1])
                 if min_ratio_vGRF and weights['vGRFRatioTerm'] > 0:
                     for side in contactSides:
                         vGRF_front_opt = 0

@@ -1,6 +1,6 @@
 '''
     ---------------------------------------------------------------------------
-    OpenCap processing: utils.py
+    OpenCap processing: tools.py
     ---------------------------------------------------------------------------
 
     Copyright 2022 Stanford University and the Authors
@@ -35,8 +35,8 @@ import requests
 import yaml
 from InquirerPy import inquirer
 from scipy.signal import gaussian
-from utils.utils_api import get_api_url
-from utils.utils_authentication import get_token
+from tools.utils_api import get_api_url
+from tools.utils_authentication import get_token
 
 from controllers.analysis_utils import clear_terminal, display_message
 

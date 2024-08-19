@@ -16,9 +16,9 @@
     limitations under the License.
 '''
 
-import numpy as np
-import pandas as pd
 import scipy.interpolate as interpolate
+import pandas as pd
+import numpy as np
 
 
 class BoundsTracking:

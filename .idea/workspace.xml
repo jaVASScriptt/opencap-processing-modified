@@ -4,12 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="878c8489-bd1d-4a43-8dc4-70878a59f97c" name="Changes" comment="connect disconnect api upgrade">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Controllers/program_controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/program_controller.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data/parameters.json" beforeDir="false" afterPath="$PROJECT_DIR$/Data/parameters.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Utils/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/Utils/utils.py" afterDir="false" />
-    </list>
+    <list default="true" id="878c8489-bd1d-4a43-8dc4-70878a59f97c" name="Changes" comment="reformat files" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -213,7 +208,15 @@
       <option name="project" value="LOCAL" />
       <updated>1723664380047</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="reformat files">
+      <option name="closed" value="true" />
+      <created>1723839056113</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1723839056113</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -231,7 +234,8 @@
     <MESSAGE value="Ajout du choix des courbes pour le gait_analysis + correction comparaison inutile en cas de courbe seule" />
     <MESSAGE value="ajout detection  de cycle automatique" />
     <MESSAGE value="connect disconnect api upgrade" />
-    <option name="LAST_COMMIT_MESSAGE" value="connect disconnect api upgrade" />
+    <MESSAGE value="reformat files" />
+    <option name="LAST_COMMIT_MESSAGE" value="reformat files" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
