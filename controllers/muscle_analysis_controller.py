@@ -89,18 +89,18 @@ class MuscleAnalysisController:
             choices=self.motion_types)
         self.DataController.set("motion_type", self.motion_type)
 
-    def initialize_trial_selection(self):
-        self.trial_name = self.get_user_selection(
-            message="Select a trial:",
-            choices=get_trials_names_from_session(self.session_id))
-        self.DataController.set("trial_name", self.trial_name)
-
     def initialize_session_selection(self):
         ask_sessions = self.get_user_selection(
             message="Do you want to see your sessions or public sessions?",
             choices=["My sessions", "Public sessions", "All sessions", "Manual input"])
         self.handle_session_selection(ask_sessions)
         self.DataController.set("session_id", self.session_id)
+
+        self.trial_name = self.get_user_selection(
+            message="Select a trial:",
+            choices=get_trials_names_from_session(self.session_id))
+        self.DataController.set("trial_name", self.trial_name)
+
 
     def initialize_complexity(self):
         complexity = self.get_user_selection(
@@ -254,7 +254,6 @@ class MuscleAnalysisController:
 
     def setup(self):
         self.initialize_session_selection()
-        self.initialize_trial_selection()
         self.initialize_motion_type()
         self.initialize_time_settings()
         self.initialize_case()
@@ -264,15 +263,13 @@ class MuscleAnalysisController:
         self.initialize_output_folder()
 
     def modify_parameters(self):
-        answer = self.get_user_selection("What do you want to modify?",
-                                         ["Session", "Trial", "Motion type", "Time settings", "Case", "Treadmill speed",
+        answer = self.get_user_selection("What do you want to modify??",
+                                         ["Trial", "Motion type", "Time settings", "Case", "Treadmill speed",
                                           "Contact side", "Complexity", "Output folder"])
 
         match answer:
-            case "Session":
-                self.initialize_session_selection()
             case "Trial":
-                self.initialize_trial_selection()
+                self.initialize_session_selection()
             case "Motion type":
                 self.initialize_motion_type()
             case "Time settings":

@@ -21,7 +21,7 @@ def menu_analysis(self):
     choices = ["data change", "Start an analysis", "Home"]
     while True:
         choice = self.get_user_selection("What do you want to do?", choices)
-        if choice == "data change":
+        if choice == "Data change":
             data_choices = ["Full setup", "Select an element to change"]
             data_choice = self.get_user_selection("What do you want to do?", data_choices)
             if data_choice == "Full setup":
