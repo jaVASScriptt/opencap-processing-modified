@@ -8,7 +8,7 @@ can be found [here](https://github.com/stanfordnmbl/opencap-processing).
 ### General
 
 1. Install [Anaconda](https://www.anaconda.com/)
-2. Open Anaconda prompt
+2. Open Terminal
 3. Create environment (python 3.11 recommended): `conda create -n opencap-processing python=3.11`
 4. Activate environment: `conda activate opencap-processing`
 5. Install OpenSim: `conda install -c opensim-org opensim=4.5=py311np123`
