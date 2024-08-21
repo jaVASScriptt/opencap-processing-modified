@@ -8,10 +8,11 @@ can be found [here](https://github.com/stanfordnmbl/opencap-processing).
 ### General
 
 1. Install [Anaconda](https://www.anaconda.com/)
-2. Open Terminal
-3. Create environment (python 3.11 recommended): `conda create -n opencap-processing python=3.11`
-4. Activate environment: `conda activate opencap-processing`
-5. Install OpenSim: `conda install -c opensim-org opensim=4.5=py311np123`
+2. Check "ADD TO ENVIRONMENT VARIABLES"
+3. Open Terminal
+4. Create environment (python 3.11 recommended): `conda create -n opencap-processing python=3.11`
+5. Activate environment: `conda activate opencap-processing`
+6. Install OpenSim: `conda install -c opensim-org opensim=4.5=py311np123`
     - Test that OpenSim was successfully installed:
         - Start python: `python`
         - Import OpenSim: `import opensim`
@@ -20,7 +21,7 @@ can be found [here](https://github.com/stanfordnmbl/opencap-processing).
         - Exit python: `quit()`
     - Visit this [webpage](https://opensimconfluence.atlassian.net/wiki/spaces/OpenSim/pages/53116061/Conda+Package) for
       more details about the OpenSim conda package.
-6. Clone the repository to your machine:
+7. Clone the repository to your machine:
     - Navigate to the directory where you want to download the code: eg. `cd Documents`. Make sure there are no spaces
       in this path.
     - Clone the repository: `git clone https://github.com/stanfordnmbl/opencap-processing.git`
